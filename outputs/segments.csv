@@ -1,0 +1,1633 @@
+alert_id,segment_index,segment_text,communicative_function,language,export_timestamp
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-00,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-01,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-02,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-03,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-04,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-05,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,0,Flood warning: Move to higher ground now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-06,1,Do not attempt to drive through flood waters.,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-07,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-08,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-09,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-10,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-11,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-12,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,0,Evacuate immediately due to wildfire approaching the area.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,1,Life,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-13,2,threatening conditions expected.,context,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,0,Extreme heat alert: Stay hydrated,directive,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,1,seek cooling centers now.,urgency,en,2026-02-08T23:07:22.517362
+WEATHER-CA-20260208-14,2,Risk of heatstroke is severe.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-00,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-01,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-02,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-03,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-04,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-05,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-06,0,Voluntary evacuation advised for coastal areas before tonight due to incoming storm surge.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-07,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-08,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-09,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,0,Mandatory evacuation for Zone A effective immediately.,urgency,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-10,1,Follow instructions from local authorities.,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,0,Shelter,directive,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,1,in,context,en,2026-02-08T23:07:22.517362
+EVACUATION-CA-20260208-11,2,place order for affected neighborhoods until 6pm due to hazardous materials incident.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-00,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-01,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-02,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-03,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-04,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-05,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-06,0,Curfew in effect from 9pm to 6am for public safety.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-07,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,0,Civil emergency message: Hazardous materials spill near River Road.,risk,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,1,Stay indoors,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-08,2,close windows.,context,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,0,Law enforcement advisory: Avoid downtown area due to ongoing operations.,directive,en,2026-02-08T23:07:22.517362
+PUBLIC_SAFETY-CA-20260208-09,1,Follow official guidance.,authority,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,0,Environmental hazard: Chemical odor reported.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,1,Authorities investigating.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-00,2,Avoid the area.,directive,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-01,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-02,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-03,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-04,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-05,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,0,Boil water notice until further notice.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-06,1,Use bottled water if available.,context,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,0,Public health alert: Air quality is dangerous due to smoke.,risk,en,2026-02-08T23:07:22.517362
+HEALTH-CA-20260208-07,1,Limit outdoor activity.,context,en,2026-02-08T23:07:22.517362

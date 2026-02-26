@@ -1,0 +1,4 @@
+name,test,statistic,p_value,effect_size,export_timestamp
+H1,kruskal_wallis,0.0,1.0,,2026-02-08T23:07:22.517362
+H2,kruskal_wallis,,,,2026-02-08T23:07:22.517362
+H3,mann_whitney_u,8316.0,0.20032654136687444,,2026-02-08T23:07:22.517362

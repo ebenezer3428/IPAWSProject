@@ -1,0 +1,101 @@
+﻿{
+  "alerts": 3,
+  "segments_evaluated": 9,
+  "samples": [
+    {
+      "alert_id": "07b49c75-0aac-495e-9505-18695908940c",
+      "segment": "Flash Flood Warning issued December 25 at 3:11AM PST until December 25 at 6:15AM PST by NWS San Francisco CA\nFFWMTR\n\nThe National Weather Service in San Francisco has issued a\n\n* Flash Flood Warning for...\nEast Central San Mateo County in northern California...\nNorthwestern Santa Clara County in northern California...\n\n* Until 615 AM PST.",
+      "translation": "**Advertencia de Inundaci≤n Repentina emitida el 25 de diciembre a las 3:11 AM PST hasta el 25 de diciembre a las 6:15 AM PST por el Servicio Meteorol≤gico Nacional de San Francisco, CA**\n\nEl Servicio Meteorol≤gico Nacional en San Francisco ha emitido una\n\n* **Advertencia de Inundaci≤n Repentina para...**\nCondado de San Mateo, Este Central, en el norte de California...\nCondado de Santa Clara, Noroeste, en el norte de California...\n\n* **Hasta las 6:15 AM PST.** \n\n**íAct·e de inmediato!**",
+      "scores": {
+        "pf1_urgency_preservation": 2,
+        "pf2_directive_clarity": 2,
+        "pf3_risk_severity": 2,
+        "pf4_authority_attribution": 2,
+        "pf5_temporal_accuracy": 2,
+        "pf6_procedural_completeness": 2,
+        "if1_respectful_tone": 2,
+        "if2_inclusion": 2,
+        "if3_empathy_marker": 2,
+        "if4_linguistic_clarity": 2,
+        "if5_cultural_appropriateness": 2,
+        "if6_trust_signal": 2
+      }
+    },
+    {
+      "alert_id": "07b49c75-0aac-495e-9505-18695908940c",
+      "segment": "* At 311 AM PST, Doppler radar indicated thunderstorms producing\nheavy rain across the warned area.",
+      "translation": "* A las 3:11 AM PST, el radar Doppler indic≤ tormentas elΘctricas que estßn produciendo lluvia intensa en el ßrea bajo advertencia.",
+      "scores": {
+        "pf1_urgency_preservation": 1,
+        "pf2_directive_clarity": 0,
+        "pf3_risk_severity": 1,
+        "pf4_authority_attribution": 0,
+        "pf5_temporal_accuracy": 2,
+        "pf6_procedural_completeness": 2,
+        "if1_respectful_tone": 2,
+        "if2_inclusion": 2,
+        "if3_empathy_marker": 1,
+        "if4_linguistic_clarity": 2,
+        "if5_cultural_appropriateness": 2,
+        "if6_trust_signal": 1
+      }
+    },
+    {
+      "alert_id": "07b49c75-0aac-495e-9505-18695908940c",
+      "segment": "Between 0.2",
+      "translation": "Lo siento, parece que el mensaje estß incompleto. Por favor, proporcione el texto completo que desea traducir.",
+      "scores": {
+        "pf1_urgency_preservation": 0,
+        "pf2_directive_clarity": 0,
+        "pf3_risk_severity": 0,
+        "pf4_authority_attribution": 0,
+        "pf5_temporal_accuracy": 0,
+        "pf6_procedural_completeness": 0,
+        "if1_respectful_tone": 1,
+        "if2_inclusion": 2,
+        "if3_empathy_marker": 0,
+        "if4_linguistic_clarity": 0,
+        "if5_cultural_appropriateness": 2,
+        "if6_trust_signal": 0
+      }
+    },
+    {
+      "alert_id": "bd5c4fad-cb4e-4f14-beea-0c91e2faf936",
+      "segment": "Flash Flood Warning issued November 14 at 5:03PM PST until November 14 at 8:00PM PST by NWS Sacramento CA\nFFWSTO\n\nThe National Weather Service in Sacramento has issued a\n\n* Flash Flood Warning for...\nThe Tehama County Division of the Park Fire burn scar in...\nEastern Tehama County in northern California...\n\n* Until 800 PM PST.",
+      "translation": "**Advertencia de Inundaci≤n Repentina emitida el 14 de noviembre a las 5:03 PM PST hasta el 14 de noviembre a las 8:00 PM PST por el Servicio Meteorol≤gico Nacional de Sacramento, CA**  \nFFWSTO\n\nEl Servicio Meteorol≤gico Nacional en Sacramento ha emitido una\n\n* **Advertencia de Inundaci≤n Repentina para...**  \nLa zona afectada por el incendio Park en el condado de Tehama en...  \nEl este del condado de Tehama en el norte de California...\n\n* **Hasta las 8:00 PM PST.**  \n\n**íAct·e de inmediato!** Si se encuentra en esta ßrea, **evac·e** a un lugar seguro o **ref·giese** en un lugar elevado. Esta situaci≤n es **potencialmente mortal**.",
+      "scores": {
+        "pf1_urgency_preservation": 2,
+        "pf2_directive_clarity": 2,
+        "pf3_risk_severity": 2,
+        "pf4_authority_attribution": 2,
+        "pf5_temporal_accuracy": 2,
+        "pf6_procedural_completeness": 2,
+        "if1_respectful_tone": 2,
+        "if2_inclusion": 2,
+        "if3_empathy_marker": 2,
+        "if4_linguistic_clarity": 2,
+        "if5_cultural_appropriateness": 2,
+        "if6_trust_signal": 2
+      }
+    },
+    {
+      "alert_id": "bd5c4fad-cb4e-4f14-beea-0c91e2faf936",
+      "segment": "* At 503 PM PST, Doppler radar indicated thunderstorms producing\nheavy rain over the Tehama County Division of the Park Fire Burn\nScar.",
+      "translation": "* A las 5:03 PM PST, el radar Doppler indic≤ tormentas elΘctricas que estßn produciendo lluvias intensas sobre la zona quemada del incendio Park en el Condado de Tehama.",
+      "scores": {
+        "pf1_urgency_preservation": 1,
+        "pf2_directive_clarity": 0,
+        "pf3_risk_severity": 1,
+        "pf4_authority_attribution": 0,
+        "pf5_temporal_accuracy": 2,
+        "pf6_procedural_completeness": 2,
+        "if1_respectful_tone": 2,
+        "if2_inclusion": 2,
+        "if3_empathy_marker": 1,
+        "if4_linguistic_clarity": 2,
+        "if5_cultural_appropriateness": 2,
+        "if6_trust_signal": 1
+      }
+    }
+  ]
+}

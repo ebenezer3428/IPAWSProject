@@ -1,0 +1,262 @@
+timestamp,evaluator_id,language,source_segment,translated_segment,pf1_urgency_preservation,pf2_directive_clarity,pf3_risk_severity,pf4_authority_attribution,pf5_temporal_accuracy,pf6_procedural_completeness,if1_respectful_tone,if2_inclusion,if3_empathy_marker,if4_linguistic_clarity,if5_cultural_appropriateness,if6_trust_signal,rationale
+2026-02-11T06:02:12.705006,,es,"Flash Flood Warning issued July 18 at 3:37PM PDT until July 18 at 5:30PM PDT by NWS San Diego CA
+FFWSGX
+
+The National Weather Service in San Diego has issued a
+
+* Flash Flood Warning for...
+Riverside County in southern California...
+
+* Until 530 PM PDT.","**Advertencia de Inundación Repentina emitida el 18 de julio a las 3:37 PM PDT hasta el 18 de julio a las 5:30 PM PDT por el Servicio Meteorológico Nacional de San Diego, CA**  
+FFWSGX
+
+El Servicio Meteorológico Nacional en San Diego ha emitido una
+
+* **Advertencia de Inundación Repentina para...**  
+El condado de Riverside en el sur de California...
+
+* **Hasta las 5:30 PM PDT.**  
+
+**¡ACTÚE AHORA! Esta es una situación potencialmente mortal. Evacúe inmediatamente si se encuentra en un área afectada.**",1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T06:05:01.352317,,es,"Locations impacted include...
+Fresno, Clovis, Sanger, Reedley, Selma, Parlier, Bowles, Del Rey,
+Calwa, Easton,","Las ubicaciones afectadas incluyen...  
+Fresno, Clovis, Sanger, Reedley, Selma, Parlier, Bowles, Del Rey,  
+Calwa, Easton.  
+
+**¡Actúe de inmediato!**",2,2,1,1,0,1,2,1,1,1,1,1,{}
+2026-02-11T06:05:03.209427,,es,"Locations impacted include...
+Fresno, Clovis, Sanger, Reedley, Selma, Parlier, Bowles, Del Rey,
+Calwa, Easton,","Las ubicaciones afectadas incluyen...  
+Fresno, Clovis, Sanger, Reedley, Selma, Parlier, Bowles, Del Rey,  
+Calwa, Easton.  
+
+**¡Actúe de inmediato!**",2,2,1,1,0,1,2,1,1,1,1,1,{}
+2026-02-11T06:05:04.372048,,es,"Locations impacted include...
+Fresno, Clovis, Sanger, Reedley, Selma, Parlier, Bowles, Del Rey,
+Calwa, Easton,","Las ubicaciones afectadas incluyen...  
+Fresno, Clovis, Sanger, Reedley, Selma, Parlier, Bowles, Del Rey,  
+Calwa, Easton.  
+
+**¡Actúe de inmediato!**",2,2,1,1,0,1,2,1,1,1,1,1,{}
+2026-02-11T06:12:01.061002,,es,Evacuate immediately due to wildfire.,Evacúe de inmediato debido a un incendio forestal.,1,1,1,2,1,1,0,1,0,1,0,1,{}
+2026-02-11T06:13:30.915330,,hi,"Flash Flood Warning issued May 4 at 6:33PM PDT until May 4 at 7:45PM PDT by NWS Las Vegas NV
+FFWVEF
+
+The National Weather Service in Las Vegas has extended the
+
+* Flash Flood Warning for...
+Southwestern Mohave County in northwestern Arizona...
+San Bernardino County in southern California...
+
+* Until 745 PM PDT /745 PM MST/.
+
+* At 633 PM PDT /633 PM MST/, Local law enforcement reported
+thunderstorms producing heavy rain across the warned area.","फ्लैश बाढ़ चेतावनी जारी की गई 4 मई को शाम 6:33 बजे PDT से लेकर 4 मई को शाम 7:45 बजे PDT तक, एनडब्ल्यूएस लास वेगास NV द्वारा  
+FFWVEF
+
+लास वेगास में राष्ट्रीय मौसम सेवा ने निम्नलिखित के लिए फ्लैश बाढ़ चेतावनी को बढ़ा दिया है...
+
+* दक्षिण-पश्चिमी मोहावे काउंटी, उत्तरी एरिज़ोना में...
+* सैन बर्नार्डिनो काउंटी, दक्षिणी कैलिफोर्निया में...
+
+* यह चेतावनी शाम 7:45 बजे PDT / शाम 7:45 बजे MST तक प्रभावी रहेगी।
+
+* शाम 6:33 बजे PDT / शाम 6:33 बजे MST पर, स्थानीय कानून प्रवर्तन ने चेतावनी क्षेत्र में भारी बारिश उत्पन्न करने वाले तूफानों की सूचना दी। 
+
+कृपया तुरंत सावधानी बरतें और सुरक्षित स्थान पर शरण लें।",0,1,0,1,0,1,1,1,1,1,1,1,{}
+2026-02-11T06:16:47.633878,,es,Evacuate immediately due to wildfire.,Evacúe de inmediato debido a un incendio forestal.,1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T06:25:01.083204,,es,Evacuate immediately due to wildfire.,Evacúe de inmediato debido a un incendio forestal.,1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T07:12:12.404436,,es,"Flash Flood Warning issued September 20 at 2:17PM PDT until September 20 at 5:30PM PDT by NWS San Diego CA
+FFWSGX
+
+The National Weather Service in San Diego has issued a
+
+* Flash Flood Warning for...
+San Bernardino County in southern California...
+
+* Until 530 PM PDT.","**Advertencia de Inundación Repentina emitida el 20 de septiembre a las 2:17 PM PDT hasta el 20 de septiembre a las 5:30 PM PDT por el Servicio Meteorológico Nacional de San Diego, CA**  
+FFWSGX
+
+El Servicio Meteorológico Nacional en San Diego ha emitido una
+
+* **Advertencia de Inundación Repentina para...**  
+Condado de San Bernardino en el sur de California...
+
+* **Hasta las 5:30 PM PDT.**  
+
+**¡Actúe de inmediato!**",1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T07:12:16.329861,,es,"Flash Flood Warning issued September 20 at 2:17PM PDT until September 20 at 5:30PM PDT by NWS San Diego CA
+FFWSGX
+
+The National Weather Service in San Diego has issued a
+
+* Flash Flood Warning for...
+San Bernardino County in southern California...
+
+* Until 530 PM PDT.","**Advertencia de Inundación Repentina emitida el 20 de septiembre a las 2:17 PM PDT hasta el 20 de septiembre a las 5:30 PM PDT por el Servicio Meteorológico Nacional de San Diego, CA**  
+FFWSGX
+
+El Servicio Meteorológico Nacional en San Diego ha emitido una
+
+* **Advertencia de Inundación Repentina para...**  
+Condado de San Bernardino en el sur de California...
+
+* **Hasta las 5:30 PM PDT.**  
+
+**¡Actúe de inmediato!**",1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T07:12:18.678565,,es,"Flash Flood Warning issued September 20 at 2:17PM PDT until September 20 at 5:30PM PDT by NWS San Diego CA
+FFWSGX
+
+The National Weather Service in San Diego has issued a
+
+* Flash Flood Warning for...
+San Bernardino County in southern California...
+
+* Until 530 PM PDT.","**Advertencia de Inundación Repentina emitida el 20 de septiembre a las 2:17 PM PDT hasta el 20 de septiembre a las 5:30 PM PDT por el Servicio Meteorológico Nacional de San Diego, CA**  
+FFWSGX
+
+El Servicio Meteorológico Nacional en San Diego ha emitido una
+
+* **Advertencia de Inundación Repentina para...**  
+Condado de San Bernardino en el sur de California...
+
+* **Hasta las 5:30 PM PDT.**  
+
+**¡Actúe de inmediato!**",1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T07:20:09.627716,,hi,"Flash flooding is ongoing or expected
+to begin shortly.",तत्काल बाढ़ का खतरा जारी है या शीघ्र ही शुरू होने की संभावना है।,0,1,2,1,0,1,1,1,1,2,0,0,{}
+2026-02-11T07:21:12.258185,,hi,Mobile homes will be damaged or destroyed.,मोबाइल घरों को नुकसान पहुँच सकता है या वे नष्ट हो सकते हैं।,0,1,2,1,0,1,1,1,1,2,0,0,{}
+2026-02-11T08:36:10.026925,,es,"AMBER Alert
+AN AMBER ALERT IS BEING ISSUED BY THE CALIFORNIA HIGHWAY PATROL ON BEHALF OF THE CHINO HILLS POLICE DEPARTMENT.","Alerta AMBER  
+SE EMITE UNA ALERTA AMBER POR PARTE DEL PATRULLAJE DE CARRETERAS DE CALIFORNIA EN NOMBRE DEL DEPARTAMENTO DE POLICÍA DE CHINO HILLS.",1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T08:36:23.267536,,es,"AMBER Alert
+AN AMBER ALERT IS BEING ISSUED BY THE CALIFORNIA HIGHWAY PATROL ON BEHALF OF THE CHINO HILLS POLICE DEPARTMENT.","Alerta AMBER  
+SE EMITE UNA ALERTA AMBER POR PARTE DEL PATRULLAJE DE CARRETERAS DE CALIFORNIA EN NOMBRE DEL DEPARTAMENTO DE POLICÍA DE CHINO HILLS.",1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T09:02:18.637288,,hi,"AMBER Alert
+AN AMBER ALERT IS BEING ISSUED BY THE CALIFORNIA HIGHWAY PATROL ON BEHALF OF THE LOS ANGELES SHERIFFS DEPARTMENT.","एंबेर अलर्ट  
+कैलिफ़ोर्निया हाईवे पेट्रोल द्वारा लॉस एंजेलेस शेरिफ़ विभाग की ओर से एक एंबेर अलर्ट जारी किया जा रहा है।",1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-11T09:02:26.934213,,hi,"AMBER Alert
+AN AMBER ALERT IS BEING ISSUED BY THE CALIFORNIA HIGHWAY PATROL ON BEHALF OF THE LOS ANGELES SHERIFFS DEPARTMENT.","एंबेर अलर्ट  
+कैलिफ़ोर्निया हाईवे पेट्रोल द्वारा लॉस एंजेलेस शेरिफ़ विभाग की ओर से एक एंबेर अलर्ट जारी किया जा रहा है।",1,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-12T02:25:59.437221,,hi,"Flash Flood Warning issued December 25 at 11:04AM PST until December 25 at 6:00PM PST by NWS Los Angeles/Oxnard CA
+FFWLOX
+
+The National Weather Service in Los Angeles/Oxnard has issued a
+
+* Flash Flood Warning for...
+Southern","केंद्रीय सैंटा बारबरा काउंटी, दक्षिण-पश्चिम कैलिफ़ोर्निया में...
+
+उत्तर-पश्चिम",2,1,1,1,1,1,1,1,1,1,1,1,{}
+2026-02-21T18:03:32.168678,,es,"Flash Flood Warning issued September 4 at 3:25PM PDT until September 4 at 7:30PM PDT by NWS Phoenix AZ
+FFWPSR
+
+The National Weather Service in Phoenix has issued a
+
+* Flash Flood Warning for...
+Northeastern Imperial County in southeastern California...
+Riverside County in southern California...
+
+* Until 730 PM PDT.
+
+* At 325 PM PDT, Doppler radar indicated thunderstorms producing
+heavy rain across the warned area. Between 0.25 and 0.75 inches of
+rain have fallen. Additional rainfall amounts up to 1 inch are
+possible in the warned area. Flash flooding is ongoing or expected
+to begin shortly.
+
+HAZARD...Life threatening flash flooding. Thunderstorms
+producing flash flooding.
+
+SOURCE...Radar.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+Palo Verde and Cibola.
+
+This includes CA Route 78 between mile markers 65 and 74.","**Advertencia de Inundación Repentina emitida el 4 de septiembre a las 3:25 PM PDT hasta el 4 de septiembre a las 7:30 PM PDT por el NWS Phoenix AZ**  
+FFWPSR
+
+El Servicio Meteorológico Nacional en Phoenix ha emitido una
+
+* **Advertencia de Inundación Repentina para...**  
+el noreste del Condado de Imperial en el sureste de California...  
+el Condado de Riverside en el sur de California...
+
+* **Hasta las 7:30 PM PDT.**
+
+* A las 3:25 PM PDT, el radar Doppler indicó tormentas eléctricas produciendo  
+fuertes lluvias en el área advertida. Se han registrado entre 0.25 y 0.75 pulgadas de  
+lluvia. Se esperan cantidades adicionales de lluvia de hasta 1 pulgada en el área advertida.  
+Las inundaciones repentinas están ocurriendo o se espera que comiencen en breve.
+
+**PELIGRO... Inundaciones repentinas que amenazan la vida. Tormentas eléctricas  
+produciendo inundaciones repentinas.**
+
+**FUENTE... Radar.**
+
+**IMPACTO... Inundaciones repentinas que amenazan la vida de arroyos y ríos,  
+áreas urbanas, carreteras, calles y pasos subterráneos.**
+
+* Algunas ubicaciones que experimentarán inundaciones repentinas incluyen...  
+Palo Verde y Cibola.
+
+Esto incluye la Ruta CA 78 entre los hitos 65 y 74.",1,1,2,1,0,1,2,1,1,2,1,1,{}
+2026-02-21T18:03:32.234553,,es,"Flash Flood Warning issued September 4 at 3:25PM PDT until September 4 at 7:30PM PDT by NWS Phoenix AZ
+FFWPSR
+
+The National Weather Service in Phoenix has issued a
+
+* Flash Flood Warning for...
+Northeastern Imperial County in southeastern California...
+Riverside County in southern California...
+
+* Until 730 PM PDT.
+
+* At 325 PM PDT, Doppler radar indicated thunderstorms producing
+heavy rain across the warned area. Between 0.25 and 0.75 inches of
+rain have fallen. Additional rainfall amounts up to 1 inch are
+possible in the warned area. Flash flooding is ongoing or expected
+to begin shortly.
+
+HAZARD...Life threatening flash flooding. Thunderstorms
+producing flash flooding.
+
+SOURCE...Radar.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+Palo Verde and Cibola.
+
+This includes CA Route 78 between mile markers 65 and 74.","**Advertencia de Inundación Repentina emitida el 4 de septiembre a las 3:25 PM PDT hasta el 4 de septiembre a las 7:30 PM PDT por el NWS Phoenix AZ**  
+FFWPSR
+
+El Servicio Meteorológico Nacional en Phoenix ha emitido una
+
+* **Advertencia de Inundación Repentina para...**  
+el noreste del Condado de Imperial en el sureste de California...  
+el Condado de Riverside en el sur de California...
+
+* **Hasta las 7:30 PM PDT.**
+
+* A las 3:25 PM PDT, el radar Doppler indicó tormentas eléctricas produciendo  
+fuertes lluvias en el área advertida. Se han registrado entre 0.25 y 0.75 pulgadas de  
+lluvia. Se esperan cantidades adicionales de lluvia de hasta 1 pulgada en el área advertida.  
+Las inundaciones repentinas están ocurriendo o se espera que comiencen en breve.
+
+**PELIGRO... Inundaciones repentinas que amenazan la vida. Tormentas eléctricas  
+produciendo inundaciones repentinas.**
+
+**FUENTE... Radar.**
+
+**IMPACTO... Inundaciones repentinas que amenazan la vida de arroyos y ríos,  
+áreas urbanas, carreteras, calles y pasos subterráneos.**
+
+* Algunas ubicaciones que experimentarán inundaciones repentinas incluyen...  
+Palo Verde y Cibola.
+
+Esto incluye la Ruta CA 78 entre los hitos 65 y 74.",1,1,2,1,0,1,2,1,1,2,1,1,{}
