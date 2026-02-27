@@ -72,6 +72,11 @@ firebase use --add
 firebase deploy --only hosting
 ```
 
+If you rely on the GitHub Action to publish the site, push a trivial commit to
+`main` (for example, updating documentation) and the `Deploy Web to Firebase
+Hosting` workflow will rebuild with the latest `.env.production` values and
+promote the bundle automatically.
+
 Alternative without local project alias:
 
 ```powershell
