@@ -13,7 +13,37 @@
 .container { max-width: 1100px; margin: 0 auto; padding: 12px }
 .theme-toggle { padding: 6px 10px }
 .error { color: var(--danger) }
-.sticky-actions { position: sticky; bottom: 0; backdrop-filter: saturate(160%) blur(6px); background: rgba(17,24,39,0.8); border-top: 1px solid var(--border); padding: 8px; display: flex; gap: 8px }
+.sticky-actions { position: sticky; bottom: 0; backdrop-filter: saturate(160%) blur(6px); background: color-mix(in srgb, var(--surface-elev) 92%, transparent); border-top: 1px solid var(--border); padding: 8px; display: flex; gap: 8px; flex-wrap: wrap }
+.bottom-nav {
+	position: sticky;
+	bottom: 10px;
+	z-index: 30;
+	background: color-mix(in srgb, var(--surface-elev) 96%, transparent);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 8px;
+	display: flex;
+	gap: 8px;
+	justify-content: space-between;
+	backdrop-filter: saturate(160%) blur(6px);
+}
+.bottom-nav .primary { min-width: 120px }
+.loading-inline {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+.spinner {
+	width: 12px;
+	height: 12px;
+	border: 2px solid currentColor;
+	border-right-color: transparent;
+	border-radius: 999px;
+	animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+	to { transform: rotate(360deg); }
+}
 .collapse { margin-top: 8px }
 .collapse > summary { cursor: pointer; font-weight: 500 }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }

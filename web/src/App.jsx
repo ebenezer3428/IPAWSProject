@@ -136,7 +136,7 @@ function Health({ onNavigate }) {
   )
 }
 
-function AlertsTable({ alerts = [], onSelect, selectedId, pageSizeOptions = [10, 25, 50, 100], initialPageSize = 25 }) {
+function AlertsTable({ alerts = [], onSelect, selectedId, pageSizeOptions = [10, 25, 50, 100], initialPageSize = 25, showPager = true }) {
   const [sortKey, setSortKey] = useState('timestamp')
   const [sortDir, setSortDir] = useState('desc')
   const [page, setPage] = useState(0)
@@ -167,6 +167,24 @@ function AlertsTable({ alerts = [], onSelect, selectedId, pageSizeOptions = [10,
   const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize))
   const safePage = Math.min(page, totalPages - 1)
   const pageItems = sorted.slice(safePage * pageSize, safePage * pageSize + pageSize)
+
+  useEffect(() => {
+    if (selectedId == null) return
+    const selectedIndex = sorted.findIndex(a => a.alert_id === selectedId)
+    if (selectedIndex < 0) return
+    const desiredPage = Math.floor(selectedIndex / pageSize)
+    if (desiredPage !== safePage) {
+      setPage(desiredPage)
+    }
+  }, [selectedId, sorted, pageSize, safePage])
+
+  useEffect(() => {
+    if (!onSelect || pageItems.length === 0) return
+    const selectedExists = selectedId != null && sorted.some(a => a.alert_id === selectedId)
+    if (!selectedExists) {
+      onSelect(pageItems[0])
+    }
+  }, [pageItems, onSelect, selectedId, sorted])
 
   const clickHeader = (key) => {
     if (sortKey === key) {
@@ -214,11 +232,13 @@ function AlertsTable({ alerts = [], onSelect, selectedId, pageSizeOptions = [10,
           </select>
         </label>
         <button onClick={exportCsv}>Export CSV</button>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
-          <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={safePage === 0}>Prev</button>
-          <span>Page {safePage + 1} / {totalPages}</span>
-          <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={safePage >= totalPages - 1}>Next</button>
-        </div>
+        {showPager && (
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
+            <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={safePage === 0}>Prev</button>
+            <span>Page {safePage + 1} / {totalPages}</span>
+            <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={safePage >= totalPages - 1}>Next</button>
+          </div>
+        )}
       </div>
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -258,6 +278,32 @@ function AlertSummary({ alert }) {
         <div><strong>Time:</strong> {alert.timestamp ? new Date(alert.timestamp).toLocaleString() : ''}</div>
         <div><strong>Area:</strong> {alert.area || alert.state || ''}</div>
       </div>
+    </div>
+  )
+}
+
+function LoadingLabel({ text = 'Loading…' }) {
+  return (
+    <span className="loading-inline" aria-live="polite">
+      <span className="spinner" aria-hidden="true" />
+      <span>{text}</span>
+    </span>
+  )
+}
+
+function EvalContextStrip({ mode, language, currentIndex, total, alertId, loading, error }) {
+  return (
+    <div className="card" style={{ padding: 10, marginTop: 10 }}>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+        <span className="pill">Mode: {mode}</span>
+        <span className="pill">Language: {language === 'es' ? 'Spanish' : 'Hindi'}</span>
+        <span className="pill">Message: {total > 0 ? `${currentIndex + 1} / ${total}` : '0 / 0'}</span>
+        <span className="pill">Alert: {alertId || 'None selected'}</span>
+        <span className="pill" style={{ opacity: loading ? 1 : 0.7 }}>
+          {loading ? <LoadingLabel text="Working…" /> : 'Ready'}
+        </span>
+      </div>
+      {error && <p className="error" style={{ marginTop: 8 }}>Translation failed: {error}</p>}
     </div>
   )
 }
@@ -820,10 +866,18 @@ function SingleEval() {
 
 export default function App() {
   const [tab, setTab] = useState('Health')
-  const [light, setLight] = useState(false)
+  const [light, setLight] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ui_theme')
+      if (saved === 'light') return true
+      if (saved === 'dark') return false
+    } catch {}
+    return true
+  })
   const [collapsed, setCollapsed] = useState(false)
   useEffect(() => {
     document.body.classList.toggle('light', light)
+    try { localStorage.setItem('ui_theme', light ? 'light' : 'dark') } catch {}
   }, [light])
   return (
     <>
@@ -980,6 +1034,7 @@ function BatchEval() {
   const [autoEval, setAutoEval] = useState(null)
   const [humanSaved, setHumanSaved] = useState(null)
   const [autoLoading, setAutoLoading] = useState(false)
+  const [translationError, setTranslationError] = useState('')
   const KEYS = [
     ['pf1_urgency_preservation', 'Urgency preservation'],
     ['pf2_directive_clarity', 'Directive clarity'],
@@ -1001,8 +1056,10 @@ function BatchEval() {
   const LEFT_KEYS = KEYS.slice(0, half)
   const RIGHT_KEYS = KEYS.slice(half)
   const [showViz, setShowViz] = useState(false)
+  const [compare, setCompare] = useState(true)
   const translationRef = useRef(null)
   const sourcePaneRef = useRef(null)
+  const autoTranslateKeyRef = useRef('')
   const syncingRef = useRef(false)
   const syncScroll = (fromEl, toEl) => {
     if (!fromEl || !toEl) return
@@ -1032,8 +1089,11 @@ function BatchEval() {
     const el = translationRef.current
     if (!el) return
     el.style.height = 'auto'
-    el.style.height = el.scrollHeight + 'px'
-  }, [translation])
+    const maxH = 300
+    const h = el.scrollHeight
+    el.style.height = Math.min(h, maxH) + 'px'
+    el.style.overflow = h > maxH ? 'auto' : 'hidden'
+  }, [translation, compare])
   useEffect(() => { try { sessionStorage.setItem('batch_language', targetLanguage) } catch {} }, [targetLanguage])
   useEffect(() => { try { sessionStorage.setItem('batch_translation', translation) } catch {} }, [translation])
   useEffect(() => { try { sessionStorage.setItem('batch_use_whole', useWholeMessage ? '1' : '0') } catch {} }, [useWholeMessage])
@@ -1044,11 +1104,17 @@ function BatchEval() {
       const params = new URLSearchParams({ daysBack, state: stateCode })
       const r = await fetch(apiUrl('/alerts?' + params.toString()))
       const data = await r.json()
-      setAlerts(data)
+      const normalizedAlerts = (Array.isArray(data) ? data : []).slice().sort((a, b) => {
+        const ta = a?.timestamp ? new Date(a.timestamp).getTime() : 0
+        const tb = b?.timestamp ? new Date(b.timestamp).getTime() : 0
+        return tb - ta
+      })
+      setAlerts(normalizedAlerts)
       setIdx(0)
       setSegments([])
       setSegIdx(0)
       setTranslation('')
+      setTranslationError('')
       setAutoEval(null)
     } catch (e) {
       setAlertError(String(e))
@@ -1061,6 +1127,26 @@ function BatchEval() {
   const currentSegment = segments[segIdx]?.segment_text || ''
   const currentFunction = segments[segIdx]?.communicative_function || ''
   const currentText = useWholeMessage ? (currentAlert?.source_text || '') : currentSegment
+
+  const selectAlertIndex = (nextIdx) => {
+    const safeIdx = Math.max(0, Math.min(alerts.length - 1, nextIdx))
+    setIdx(safeIdx)
+    setSegments([])
+    setSegIdx(0)
+    setAutoEval(null)
+    setTranslation('')
+    setTranslationError('')
+  }
+
+  useEffect(() => {
+    const alertId = currentAlert?.alert_id || ''
+    const sourceKey = useWholeMessage ? `whole:${alertId}` : `segment:${alertId}:${segIdx}`
+    const key = `${targetLanguage}|${sourceKey}|${currentText}`
+    if (!currentText || autoLoading) return
+    if (autoTranslateKeyRef.current === key) return
+    autoTranslateKeyRef.current = key
+    autoTranslate()
+  }, [currentText, currentAlert, segIdx, useWholeMessage, targetLanguage])
 
   const loadSegments = async () => {
     if (!currentAlert) return
@@ -1085,13 +1171,23 @@ function BatchEval() {
   const autoTranslate = async () => {
     if (!currentText) return
     setAutoLoading(true)
+    setTranslationError('')
     try {
       const r = await fetch(apiUrl('/translate'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gpt4o' })
       })
       const data = await r.json()
+      if (!r.ok) {
+        setTranslation('')
+        setTranslationError(data?.detail || 'Unable to translate right now.')
+        return
+      }
       setTranslation(data.translation || '')
+      if (!data.translation) setTranslationError('No translation was returned for this message.')
+    } catch (e) {
+      setTranslation('')
+      setTranslationError(String(e))
     } finally {
       setAutoLoading(false)
     }
@@ -1183,6 +1279,16 @@ function BatchEval() {
   return (
     <div className="card">
       <h2>Batch Evaluation</h2>
+      <p style={{ opacity: 0.8, marginTop: 4 }}>Use this page for alert-by-alert review with automatic translation and manual scoring.</p>
+      <EvalContextStrip
+        mode={useWholeMessage ? 'Whole Message' : 'Segmented'}
+        language={targetLanguage}
+        currentIndex={idx}
+        total={alerts.length}
+        alertId={currentAlert?.alert_id}
+        loading={autoLoading || loadingAlerts || loadingSegs}
+        error={translationError}
+      />
       <div className="card" style={{ padding: 8, marginTop: 8 }}>
         <div className="row" style={{ flexWrap: 'wrap' }}>
           {steps.map(s => (
@@ -1208,25 +1314,26 @@ function BatchEval() {
             <input type="checkbox" checked={useWholeMessage} onChange={e => setUseWholeMessage(e.target.checked)} />
             Use whole message (no segmentation)
           </label>
-          <button className="primary" onClick={loadBatch} disabled={loadingAlerts}>{loadingAlerts ? 'Loading…' : 'Load Batch'}</button>
+          <button className="primary" onClick={loadBatch} disabled={loadingAlerts}>{loadingAlerts ? <LoadingLabel text="Loading Alerts…" /> : 'Load Alerts'}</button>
         </div>
         {alertError && <p className="error" style={{ marginTop: 8 }}>{alertError}</p>}
       </div>
 
-      <div className="card" style={{ padding: 12, marginTop: 12 }}>
-        <h3>Alerts</h3>
-        <AlertSummary alert={currentAlert} />
-        <AlertsTable alerts={alerts} selectedId={alerts[idx]?.alert_id} pageSizeOptions={[1,10,25,50,100]} initialPageSize={1} onSelect={(a) => {
-          const i = alerts.findIndex(x => x.alert_id === a.alert_id)
-          setIdx(i >= 0 ? i : 0)
-          setSegments([]); setSegIdx(0); setAutoEval(null); setTranslation('')
-        }} />
-        {!useWholeMessage && (
-          <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-            <button onClick={loadSegments} disabled={!currentAlert || loadingSegs}>{loadingSegs ? 'Segmenting…' : 'Segment Selected'}</button>
-          </div>
-        )}
-      </div>
+      <details className="collapse card" style={{ padding: 12, marginTop: 12 }}>
+        <summary>Alerts</summary>
+        <div style={{ marginTop: 8 }}>
+          <AlertSummary alert={currentAlert} />
+          <AlertsTable alerts={alerts} selectedId={alerts[idx]?.alert_id} pageSizeOptions={[1,10,25,50,100]} initialPageSize={1} showPager={false} onSelect={(a) => {
+            const i = alerts.findIndex(x => x.alert_id === a.alert_id)
+            selectAlertIndex(i >= 0 ? i : 0)
+          }} />
+          {!useWholeMessage && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+              <button onClick={loadSegments} disabled={!currentAlert || loadingSegs}>{loadingSegs ? <LoadingLabel text="Segmenting…" /> : 'Segment Selected'}</button>
+            </div>
+          )}
+        </div>
+      </details>
 
       <div className="card" style={{ padding: 12, marginTop: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -1255,35 +1362,34 @@ function BatchEval() {
         )}
       </div>
 
-      <div className="card" style={{ padding: 12, marginTop: 12 }}>
-        <h3>{useWholeMessage ? 'Selected Alert Text' : 'Segments'}</h3>
-        {useWholeMessage ? (
-          currentAlert ? (
-            <div style={{ whiteSpace: 'pre-wrap', background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: 12 }}>
-              {currentText || 'No text.'}
-            </div>
-          ) : <p>No alert selected.</p>
-        ) : (
-          <>
-            {segments.length === 0 && <p>No segments loaded yet.</p>}
-            {segments.length > 0 && (
-              <>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                  <button onClick={() => setSegIdx(i => Math.max(0, i - 1))} disabled={segIdx === 0}>Prev</button>
-                  <span>{segIdx + 1} / {segments.length}</span>
-                  <button onClick={() => setSegIdx(i => Math.min(segments.length - 1, i + 1))} disabled={segIdx >= segments.length - 1}>Next</button>
-                </div>
-                <p style={{ marginTop: 8 }}><strong>Source:</strong> {currentSegment}</p>
-                {currentFunction && <p><em>Function:</em> {currentFunction}</p>}
-              </>
-            )}
-          </>
-        )}
-      </div>
+      {alerts.length === 0 && (
+        <div className="card" style={{ padding: 12, marginTop: 12 }}>
+          <p style={{ margin: 0 }}>No alerts loaded yet. Click <strong>Load Alerts</strong> to begin.</p>
+        </div>
+      )}
+
+      {!useWholeMessage && alerts.length > 0 && (
+        <div className="card" style={{ padding: 12, marginTop: 12 }}>
+          <h3>Segments</h3>
+          {segments.length === 0 && <p>No segments loaded yet.</p>}
+          {segments.length > 0 && (
+            <>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <button onClick={() => setSegIdx(i => Math.max(0, i - 1))} disabled={segIdx === 0}>Prev</button>
+                <span>{segIdx + 1} / {segments.length}</span>
+                <button onClick={() => setSegIdx(i => Math.min(segments.length - 1, i + 1))} disabled={segIdx >= segments.length - 1}>Next</button>
+              </div>
+              <p style={{ marginTop: 8 }}><strong>Source:</strong> {currentSegment}</p>
+              {currentFunction && <p><em>Function:</em> {currentFunction}</p>}
+            </>
+          )}
+        </div>
+      )}
 
       <div className="card" style={{ padding: 12, marginTop: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <h3 style={{ margin: 0, flex: 1 }}>Translation</h3>
+          {autoLoading && <LoadingLabel text="Translating…" />}
           <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
               <option value="es">Spanish</option>
@@ -1291,22 +1397,29 @@ function BatchEval() {
             </select>
           </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <input type="checkbox" checked={true} onChange={() => {}} /> Compare mode
+            <input type="checkbox" checked={compare} onChange={e => setCompare(e.target.checked)} /> Compare mode
           </label>
         </div>
-        <div className="two-col" style={{ marginTop: 8 }}>
-          <div>
+        {compare ? (
+          <div className="two-col" style={{ marginTop: 8 }}>
+            <div>
+              <h4 style={{ margin: 0 }}>Source</h4>
+              <div ref={sourcePaneRef} onScroll={onSourceScroll} className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap', maxHeight: 300 }}>{currentText}</div>
+            </div>
+            <div>
+              <h4 style={{ margin: 0 }}>Translation</h4>
+              <textarea ref={translationRef} onScroll={onTransScroll} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Translated segment" />
+            </div>
+          </div>
+        ) : (
+          <div style={{ marginTop: 8 }}>
             <h4 style={{ margin: 0 }}>Source</h4>
-            <div ref={sourcePaneRef} onScroll={onSourceScroll} className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap' }}>{currentText}</div>
+            <div className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap', maxHeight: 300 }}>{currentText}</div>
+            <h4 style={{ margin: '10px 0 0 0' }}>Translation</h4>
+            <textarea ref={translationRef} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Translated segment" />
           </div>
-          <div>
-            <h4 style={{ margin: 0 }}>Translation</h4>
-            <textarea ref={translationRef} onScroll={onTransScroll} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none' }} placeholder="Translated segment" />
-          </div>
-        </div>
+        )}
         <div className="sticky-actions">
-          <button className="primary" onClick={autoTranslate} disabled={autoLoading || !currentText}>Auto Translate</button>
-          <button className="primary" onClick={runAutoEval} disabled={autoLoading || !translation}>Auto Evaluate</button>
           <button onClick={saveHuman} disabled={autoLoading || !translation}>Save Human</button>
         </div>
       </div>
@@ -1380,6 +1493,11 @@ function BatchEval() {
           </div>
         )}
       </div>
+
+      <div className="bottom-nav" style={{ marginTop: 12 }}>
+        <button className="primary" onClick={() => selectAlertIndex(idx - 1)} disabled={idx <= 0}>Back</button>
+        <button className="primary" onClick={() => selectAlertIndex(idx + 1)} disabled={idx >= alerts.length - 1 || alerts.length === 0}>Next</button>
+      </div>
     </div>
   )
 }
@@ -1405,8 +1523,11 @@ function WholeEval() {
   const [autoEval, setAutoEval] = useState(null)
   const [humanSaved, setHumanSaved] = useState(null)
   const [autoLoading, setAutoLoading] = useState(false)
+  const [translationError, setTranslationError] = useState('')
+  const [compare, setCompare] = useState(true)
   const translationRef = useRef(null)
   const sourcePaneRef = useRef(null)
+  const autoTranslateKeyRef = useRef('')
 
   useEffect(() => { try { sessionStorage.setItem('whole_language', targetLanguage) } catch {} }, [targetLanguage])
   useEffect(() => { try { sessionStorage.setItem('whole_translation', translation) } catch {} }, [translation])
@@ -1414,11 +1535,11 @@ function WholeEval() {
     const el = translationRef.current
     if (!el) return
     el.style.height = 'auto'
-    const maxH = 320
+    const maxH = 300
     const h = el.scrollHeight
     el.style.height = Math.min(h, maxH) + 'px'
     el.style.overflow = h > maxH ? 'auto' : 'hidden'
-  }, [translation])
+  }, [translation, compare])
 
   const onSourceScroll = (e) => {
     const src = e.currentTarget
@@ -1442,9 +1563,15 @@ function WholeEval() {
       const params = new URLSearchParams({ daysBack, state: stateCode })
       const r = await fetch(apiUrl('/alerts?' + params.toString()))
       const data = await r.json()
-      setAlerts(data)
+      const normalizedAlerts = (Array.isArray(data) ? data : []).slice().sort((a, b) => {
+        const ta = a?.timestamp ? new Date(a.timestamp).getTime() : 0
+        const tb = b?.timestamp ? new Date(b.timestamp).getTime() : 0
+        return tb - ta
+      })
+      setAlerts(normalizedAlerts)
       setIdx(0)
       setTranslation('')
+      setTranslationError('')
       setAutoEval(null)
       setHumanSaved(null)
     } catch (e) {
@@ -1457,16 +1584,44 @@ function WholeEval() {
   const currentAlert = alerts[idx]
   const currentText = currentAlert?.source_text || ''
 
+  const selectAlertIndex = (nextIdx) => {
+    const safeIdx = Math.max(0, Math.min(alerts.length - 1, nextIdx))
+    setIdx(safeIdx)
+    setTranslation('')
+    setTranslationError('')
+    setAutoEval(null)
+    setHumanSaved(null)
+  }
+
+  useEffect(() => {
+    const alertId = currentAlert?.alert_id || ''
+    const key = `${targetLanguage}|${alertId}|${currentText}`
+    if (!currentText || autoLoading) return
+    if (autoTranslateKeyRef.current === key) return
+    autoTranslateKeyRef.current = key
+    autoTranslate()
+  }, [currentAlert, currentText, targetLanguage])
+
   const autoTranslate = async () => {
     if (!currentText) return
     setAutoLoading(true)
+    setTranslationError('')
     try {
       const r = await fetch(apiUrl('/translate'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gpt4o' })
       })
       const data = await r.json()
+      if (!r.ok) {
+        setTranslation('')
+        setTranslationError(data?.detail || 'Unable to translate right now.')
+        return
+      }
       setTranslation(data.translation || '')
+      if (!data.translation) setTranslationError('No translation was returned for this message.')
+    } catch (e) {
+      setTranslation('')
+      setTranslationError(String(e))
     } finally {
       setAutoLoading(false)
     }
@@ -1568,6 +1723,16 @@ function WholeEval() {
   return (
     <div className="card">
       <h2>Whole Message Evaluation</h2>
+      <p style={{ opacity: 0.8, marginTop: 4 }}>Use this page for full-message translation review and scoring without segmentation.</p>
+      <EvalContextStrip
+        mode="Whole Message"
+        language={targetLanguage}
+        currentIndex={idx}
+        total={alerts.length}
+        alertId={currentAlert?.alert_id}
+        loading={autoLoading || loadingAlerts}
+        error={translationError}
+      />
       <div className="card" style={{ padding: 12, marginTop: 12 }}>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <label>Days Back
@@ -1582,31 +1747,31 @@ function WholeEval() {
               <option value="hi">Hindi</option>
             </select>
           </label>
-          <button onClick={loadBatch} disabled={loadingAlerts}>{loadingAlerts ? 'Loading…' : 'Load Batch'}</button>
+          <button onClick={loadBatch} disabled={loadingAlerts}>{loadingAlerts ? <LoadingLabel text="Loading Alerts…" /> : 'Load Alerts'}</button>
         </div>
         {alertError && <p className="error" style={{ marginTop: 8 }}>{alertError}</p>}
       </div>
 
-      <div className="card" style={{ padding: 12, marginTop: 12 }}>
-        <h3>Alerts</h3>
-        <AlertsTable alerts={alerts} selectedId={alerts[idx]?.alert_id} pageSizeOptions={[1,10,25,50,100]} initialPageSize={1} onSelect={(a) => {
-          const i = alerts.findIndex(x => x.alert_id === a.alert_id)
-          setIdx(i >= 0 ? i : 0)
-          setTranslation(''); setAutoEval(null); setHumanSaved(null)
-        }} />
-        {currentAlert && (
-          <div style={{ marginTop: 8 }}>
-            <h4>Selected Alert Text</h4>
-            <div style={{ whiteSpace: 'pre-wrap', background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: 12 }}>
-              {currentText}
-            </div>
-          </div>
-        )}
-      </div>
+      <details className="collapse card" style={{ padding: 12, marginTop: 12 }}>
+        <summary>Alerts</summary>
+        <div style={{ marginTop: 8 }}>
+          <AlertsTable alerts={alerts} selectedId={alerts[idx]?.alert_id} pageSizeOptions={[1,10,25,50,100]} initialPageSize={1} showPager={false} onSelect={(a) => {
+            const i = alerts.findIndex(x => x.alert_id === a.alert_id)
+            selectAlertIndex(i >= 0 ? i : 0)
+          }} />
+        </div>
+      </details>
+
+      {alerts.length === 0 && (
+        <div className="card" style={{ padding: 12, marginTop: 12 }}>
+          <p style={{ margin: 0 }}>No alerts loaded yet. Click <strong>Load Alerts</strong> to begin.</p>
+        </div>
+      )}
 
       <div className="card" style={{ padding: 12, marginTop: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <h3 style={{ margin: 0, flex: 1 }}>Translation</h3>
+          {autoLoading && <LoadingLabel text="Translating…" />}
           <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
               <option value="es">Spanish</option>
@@ -1614,23 +1779,28 @@ function WholeEval() {
             </select>
           </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <input type="checkbox" checked={true} onChange={() => {}} /> Compare mode
+            <input type="checkbox" checked={compare} onChange={e => setCompare(e.target.checked)} /> Compare mode
           </label>
         </div>
-        <div className="two-col" style={{ marginTop: 8 }}>
-          <div>
+        {compare ? (
+          <div className="two-col" style={{ marginTop: 8 }}>
+            <div>
+              <h4 style={{ margin: 0 }}>Source</h4>
+              <div ref={sourcePaneRef} onScroll={onSourceScroll} className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap', maxHeight: 300 }}>{currentText}</div>
+            </div>
+            <div>
+              <h4 style={{ margin: 0 }}>Translation</h4>
+              <textarea ref={translationRef} onScroll={onTransScroll} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Translated message" />
+            </div>
+          </div>
+        ) : (
+          <div style={{ marginTop: 8 }}>
             <h4 style={{ margin: 0 }}>Source</h4>
-            <div ref={sourcePaneRef} onScroll={onSourceScroll} className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap' }}>{currentText}</div>
+            <div className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap', maxHeight: 300 }}>{currentText}</div>
+            <h4 style={{ margin: '10px 0 0 0' }}>Translation</h4>
+            <textarea ref={translationRef} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Translated message" />
           </div>
-          <div>
-            <h4 style={{ margin: 0 }}>Translation</h4>
-            <textarea ref={translationRef} onScroll={onTransScroll} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none' }} placeholder="Translated message" />
-          </div>
-        </div>
-        <div className="sticky-actions">
-          <button className="primary" onClick={autoTranslate} disabled={autoLoading || !currentText}>Auto Translate</button>
-          <button className="primary" onClick={runAutoEval} disabled={autoLoading || !translation}>Auto Evaluate</button>
-        </div>
+        )}
       </div>
 
       {autoEval && (
@@ -1726,6 +1896,11 @@ function WholeEval() {
             <Bar data={stackedData} options={{ responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } } }} />
           </div>
         ) : null}
+      </div>
+
+      <div className="bottom-nav" style={{ marginTop: 12 }}>
+        <button className="primary" onClick={() => selectAlertIndex(idx - 1)} disabled={idx <= 0}>Back</button>
+        <button className="primary" onClick={() => selectAlertIndex(idx + 1)} disabled={idx >= alerts.length - 1 || alerts.length === 0}>Next</button>
       </div>
     </div>
   )
