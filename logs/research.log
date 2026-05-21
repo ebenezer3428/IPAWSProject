@@ -1817,3 +1817,100 @@
 2026-05-20 22:32:11,249 | INFO | ipaws_research | Returning 296 alerts after processing
 2026-05-20 22:32:11,253 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
 2026-05-20 22:32:11,985 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:44:47,331 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:45:48,289 | WARNING | ipaws_research | FEMA Open API fetch failed: 
+2026-05-20 22:45:48,305 | INFO | ipaws_research | Returning 0 alerts after processing
+2026-05-20 22:45:48,305 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:46:01,579 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:46:01,630 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:46:02,608 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:46:02,656 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:46:08,944 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:47:32,947 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:47:37,483 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:47:37,523 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:47:38,403 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:47:38,442 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:47:39,140 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:47:39,172 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:47:39,991 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:13,481 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:14,256 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:14,291 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:14,997 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:15,023 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:15,900 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:15,929 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:16,692 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:16,740 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:17,531 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:17,564 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:18,314 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:18,337 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:19,087 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:19,112 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:19,853 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:26,970 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:27,714 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:27,749 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:28,488 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:28,514 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:29,295 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:29,312 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:30,179 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:36,180 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:37,054 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:37,086 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:37,754 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:37,786 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:38,494 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:48:38,525 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:48:39,177 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:34,376 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:39,580 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:39,607 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:40,314 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:40,340 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:41,058 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:41,074 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:45,064 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:45,128 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:45,793 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:45,818 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:46,568 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:46,603 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:47,253 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:47,286 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:47,956 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:54,660 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:55,269 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:55,300 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:56,075 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:56,099 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:56,850 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:53:56,867 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:53:57,516 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:55:12,328 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:55:13,060 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:55:13,095 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:55:13,910 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:55:13,942 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:55:14,543 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:55:14,576 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:55:15,200 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:55:34,407 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:55:35,111 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:55:35,142 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:55:35,842 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:55:35,871 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:55:36,521 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:55:36,558 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:55:37,241 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:56:37,642 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:56:41,553 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:56:41,578 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:56:42,184 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:56:42,219 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:56:42,893 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:56:42,920 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:56:43,596 | INFO | ipaws_research | Returning 296 alerts after processing
