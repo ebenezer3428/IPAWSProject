@@ -2,6 +2,8 @@
 
 A lightweight frontend for your FastAPI backend.
 
+Full backend + frontend architecture documentation: `../docs/ARCHITECTURE.md`.
+
 ## Dev Setup
 
 1. Start the backend API:
@@ -20,19 +22,30 @@ Push-Location C:\Users\miniv\IPAWSProject\web
 
 Vite proxy in `vite.config.js` forwards `/health`, `/alerts`, `/segment`, `/translate`, `/evaluate`, `/templates`, `/config` to `http://localhost:8000`.
 
+Authentication routes used by the UI:
+
+- `/auth/login`
+- `/auth/session`
+
 ## Features
 
+- Login: Role-based login (`User` / `Admin`) with backend session validation
 - Health: Calls `/health` and displays server status
 - Alerts: Lists recent CA alerts via `/alerts?daysBack=7&state=CA`
 - Translate: Form to POST `/translate` (choose language and system)
 - Evaluate: Form to POST `/evaluate` and show scores + rationale
 - Human Eval: Manual scoring form that POSTs `/evaluate/human` and saves to outputs/human_fairness_scores.csv
- - Batch Eval: Load alerts, segment selected alert, choose target language (es/hi), auto-translate/evaluate each segment, and save human scores per segment
+- Batch Eval: Message navigation with `Back`/`Next`, auto-translation on selection change, compare mode toggle, loading indicators, collapsible alerts pane
+- Whole Eval: Sidebar control pane (metadata + load controls), message navigation with `Back`/`Next`, compare mode toggle, loading indicators, collapsible alerts pane
 
 ## Notes
 
 - Ensure `.env` contains `OPENAI_API_KEY` and `OFFLINE_MODE="0"` for online translation/evaluation.
 - If you change backend port, update `server.proxy` in `vite.config.js`.
+- Backend auth env vars should be configured in API runtime:
+	- `APP_ADMIN_PASSWORD` (required)
+	- `APP_USER_PASSWORD` (optional)
+	- `SESSION_TTL_SECONDS` (optional)
 
 ## Deploy live with Firebase Hosting
 

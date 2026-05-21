@@ -5,10 +5,11 @@ import './App.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const apiUrl = (path) => `${API_BASE_URL}${path}`
+const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval', 'Admin Analytics']
+const USER_TABS = ['Health', 'Alerts', 'Single Eval', 'Batch Eval', 'Whole Eval']
 
-function Nav({ current, onChange, collapsed, onToggleCollapse }) {
-  const tabs = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval']
-  const icons = { 'Health': '🏠', 'Alerts': '📡', 'Single Eval': '🧪', 'Human Eval': '👤', 'Batch Eval': '📚', 'Whole Eval': '🧾' }
+function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TABS }) {
+  const icons = { 'Health': '🏠', 'Alerts': '📡', 'Single Eval': '🧪', 'Human Eval': '👤', 'Batch Eval': '📚', 'Whole Eval': '🧾', 'Admin Analytics': '📊' }
   return (
     <aside className="sidebar">
       <div className="sidebar-tools">
@@ -26,6 +27,64 @@ function Nav({ current, onChange, collapsed, onToggleCollapse }) {
         ))}
       </nav>
     </aside>
+  )
+}
+
+function LoginPage({ onLogin, light, onToggleTheme }) {
+  const [role, setRole] = useState('user')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const submit = async (e) => {
+    e.preventDefault()
+    setError('')
+    if (!username.trim() || !password.trim()) {
+      setError('Enter username and password to continue.')
+      return
+    }
+    setLoading(true)
+    const result = await onLogin({ role, username: username.trim(), password })
+    if (!result?.ok) {
+      setError(result?.error || 'Login failed. Please try again.')
+      setLoading(false)
+      return
+    }
+    setLoading(false)
+  }
+
+  return (
+    <>
+      <header className="header">
+        <div className="brand">IPAWS Research UI</div>
+        <div className="row">
+          <button className="theme-toggle" onClick={onToggleTheme}>{light ? 'Dark' : 'Light'} Theme</button>
+        </div>
+      </header>
+      <div className="container" style={{ maxWidth: 560 }}>
+        <div className="card" style={{ padding: 16, marginTop: 24 }}>
+          <h2 style={{ marginTop: 0 }}>Login</h2>
+          <p style={{ opacity: 0.8 }}>Sign in as User or Admin.</p>
+          <form onSubmit={submit} style={{ display: 'grid', gap: 10, marginTop: 10 }}>
+            <label>Role
+              <select value={role} onChange={e => setRole(e.target.value)}>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </label>
+            <label>Username
+              <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Enter username" />
+            </label>
+            <label>Password
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter password" />
+            </label>
+            {error && <p className="error" style={{ margin: 0 }}>{error}</p>}
+            <button className="primary" type="submit" disabled={loading}>{loading ? 'Signing in…' : `Login as ${role === 'admin' ? 'Admin' : 'User'}`}</button>
+          </form>
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -288,6 +347,284 @@ function LoadingLabel({ text = 'Loading…' }) {
       <span className="spinner" aria-hidden="true" />
       <span>{text}</span>
     </span>
+  )
+}
+
+const formatPercent = (value) => Number.isFinite(Number(value)) ? `${Number(value).toFixed(1)}%` : '—'
+const formatScore = (value) => Number.isFinite(Number(value)) ? Number(value).toFixed(2) : '—'
+
+function DashboardStat({ label, value, subtext }) {
+  return (
+    <div className="card stat-card">
+      <div className="stat-label">{label}</div>
+      <div className="stat-value">{value}</div>
+      {subtext && <div className="stat-subtext">{subtext}</div>}
+    </div>
+  )
+}
+
+function AdminAnalytics({ auth }) {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  const load = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const r = await fetch(apiUrl('/admin/analysis'), {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) {
+        throw new Error(payload?.detail || `Unable to load analytics (${r.status})`)
+      }
+      setData(payload)
+    } catch (e) {
+      setError(e?.message || String(e))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    load()
+  }, [auth?.token])
+
+  if (loading) {
+    return (
+      <div className="card chart-card">
+        <h2 style={{ marginTop: 0 }}>Admin Analytics</h2>
+        <LoadingLabel text="Loading submitted data…" />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="card chart-card">
+        <h2 style={{ marginTop: 0 }}>Admin Analytics</h2>
+        <p className="error">{error}</p>
+        <button className="primary" onClick={load}>Retry</button>
+      </div>
+    )
+  }
+
+  const human = data?.human || {}
+  const composite = data?.composite || {}
+  const humanLanguages = human.languages || []
+  const humanMetrics = human.metrics || []
+  const submissionsByDay = human.submissions_by_day || []
+  const evaluators = human.evaluators || []
+  const recentSubmissions = human.recent_submissions || []
+  const systemRows = composite.by_language_system || []
+  const bestSystems = composite.best_by_language || []
+  const palette = ['rgba(79, 70, 229, 0.72)', 'rgba(14, 165, 233, 0.72)', 'rgba(16, 185, 129, 0.72)', 'rgba(245, 158, 11, 0.72)', 'rgba(244, 63, 94, 0.72)']
+
+  const humanLanguageChart = {
+    labels: humanLanguages.map(item => item.language?.toUpperCase() || 'N/A'),
+    datasets: [{
+      label: 'Submissions',
+      data: humanLanguages.map(item => item.count || 0),
+      backgroundColor: humanLanguages.map((_, idx) => palette[idx % palette.length]),
+      borderRadius: 8,
+    }],
+  }
+
+  const metricChart = {
+    labels: humanMetrics.map(item => item.label),
+    datasets: [{
+      label: 'Average score %',
+      data: humanMetrics.map(item => item.average_pct || 0),
+      backgroundColor: 'rgba(79, 70, 229, 0.72)',
+      borderRadius: 6,
+    }],
+  }
+
+  const trendChart = {
+    labels: submissionsByDay.map(item => item.date),
+    datasets: [{
+      label: 'Daily submissions',
+      data: submissionsByDay.map(item => item.count || 0),
+      borderColor: 'rgba(14, 165, 233, 1)',
+      backgroundColor: 'rgba(14, 165, 233, 0.18)',
+      tension: 0.28,
+      fill: true,
+    }],
+  }
+
+  const compositeLanguages = [...new Set(systemRows.map(item => item.language?.toUpperCase() || 'N/A'))]
+  const compositeSystems = [...new Set(systemRows.map(item => item.system || 'unknown'))]
+  const compositeChart = {
+    labels: compositeLanguages,
+    datasets: compositeSystems.map((system, idx) => ({
+      label: system,
+      data: compositeLanguages.map(language => {
+        const match = systemRows.find(item => (item.system || 'unknown') === system && (item.language?.toUpperCase() || 'N/A') === language)
+        return match ? match.avg_ofs : 0
+      }),
+      backgroundColor: palette[idx % palette.length],
+      borderRadius: 6,
+    })),
+  }
+
+  return (
+    <>
+      <div className="row" style={{ justifyContent: 'space-between', marginTop: 12, marginBottom: 12, flexWrap: 'wrap' }}>
+        <div>
+          <h2 style={{ margin: 0 }}>Admin Analytics</h2>
+          <p style={{ margin: '6px 0 0 0', opacity: 0.8 }}>Analyze submitted human evaluations and model performance exports.</p>
+        </div>
+        <button className="primary" onClick={load}>Refresh</button>
+      </div>
+
+      <div className="stat-grid">
+        <DashboardStat label="Human submissions" value={human.total_submissions || 0} subtext={`${human.unique_messages || 0} unique messages`} />
+        <DashboardStat label="Average human score" value={formatPercent(human.average_score_pct || 0)} subtext={`Raw average ${formatScore(human.average_score || 0)} / 2.00`} />
+        <DashboardStat label="Named evaluators" value={human.named_evaluators || 0} subtext={`${evaluators.length || 0} total evaluator profiles`} />
+        <DashboardStat label="Composite records" value={composite.total_records || 0} subtext={`${bestSystems.length || 0} best-system comparisons`} />
+      </div>
+
+      <div className="two-col">
+        <div className="card chart-card">
+          <h3 style={{ marginTop: 0 }}>Submission Trend</h3>
+          <p style={{ marginTop: 0, opacity: 0.75 }}>Daily volume of submitted human scoring rows.</p>
+          {submissionsByDay.length > 0 ? (
+            <div style={{ height: 280 }}>
+              <Line data={trendChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+            </div>
+          ) : <p style={{ opacity: 0.75 }}>No human submissions available yet.</p>}
+        </div>
+
+        <div className="card chart-card">
+          <h3 style={{ marginTop: 0 }}>Human Evaluation Coverage</h3>
+          <p style={{ marginTop: 0, opacity: 0.75 }}>Submission count by target language.</p>
+          {humanLanguages.length > 0 ? (
+            <div style={{ height: 280 }}>
+              <Bar data={humanLanguageChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+            </div>
+          ) : <p style={{ opacity: 0.75 }}>No language distribution to display.</p>}
+        </div>
+      </div>
+
+      <div className="two-col">
+        <div className="card chart-card">
+          <h3 style={{ marginTop: 0 }}>Metric Performance</h3>
+          <p style={{ marginTop: 0, opacity: 0.75 }}>Average human score by fairness dimension.</p>
+          {humanMetrics.length > 0 ? (
+            <div style={{ height: 320 }}>
+              <Bar data={metricChart} options={{ responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { suggestedMax: 100 } } }} />
+            </div>
+          ) : <p style={{ opacity: 0.75 }}>Metric averages will appear after submissions are saved.</p>}
+        </div>
+
+        <div className="card chart-card">
+          <h3 style={{ marginTop: 0 }}>Composite OFS by Language & System</h3>
+          <p style={{ marginTop: 0, opacity: 0.75 }}>Overall fairness score benchmarks from exported composite data.</p>
+          {systemRows.length > 0 ? (
+            <div style={{ height: 320 }}>
+              <Bar data={compositeChart} options={{ responsive: true, maintainAspectRatio: false, scales: { y: { suggestedMin: 0 } } }} />
+            </div>
+          ) : <p style={{ opacity: 0.75 }}>No composite score exports were found.</p>}
+        </div>
+      </div>
+
+      <div className="two-col">
+        <div className="card chart-card">
+          <h3 style={{ marginTop: 0 }}>Evaluator Activity</h3>
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Evaluator</th>
+                  <th>Submissions</th>
+                  <th>Avg score</th>
+                  <th>Languages</th>
+                </tr>
+              </thead>
+              <tbody>
+                {evaluators.length > 0 ? evaluators.slice(0, 8).map(item => (
+                  <tr key={item.evaluator_id}>
+                    <td>{item.evaluator_id}</td>
+                    <td>{item.count}</td>
+                    <td>{formatPercent(item.average_score_pct)}</td>
+                    <td>{(item.languages || []).join(', ') || '—'}</td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan={4} style={{ opacity: 0.75 }}>No evaluator activity yet.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="card chart-card">
+          <h3 style={{ marginTop: 0 }}>Best Composite System by Language</h3>
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Language</th>
+                  <th>System</th>
+                  <th>OFS</th>
+                  <th>PFI / IFI</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bestSystems.length > 0 ? bestSystems.map(item => (
+                  <tr key={item.language}>
+                    <td>{item.language?.toUpperCase()}</td>
+                    <td>{item.system}</td>
+                    <td>{formatScore(item.avg_ofs)}</td>
+                    <td>{formatScore(item.avg_pfi)} / {formatScore(item.avg_ifi)}</td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan={4} style={{ opacity: 0.75 }}>No composite export data yet.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div className="card chart-card">
+        <h3 style={{ marginTop: 0 }}>Recent Human Submissions</h3>
+        <div className="table-wrap">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Evaluator</th>
+                <th>Language</th>
+                <th>Avg score</th>
+                <th>Source preview</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentSubmissions.length > 0 ? recentSubmissions.map((item, idx) => (
+                <tr key={`${item.timestamp}-${idx}`}>
+                  <td>{item.timestamp ? new Date(item.timestamp).toLocaleString() : '—'}</td>
+                  <td>{item.evaluator_id}</td>
+                  <td>{item.language?.toUpperCase()}</td>
+                  <td>{formatPercent(item.average_score_pct)}</td>
+                  <td>{item.source_preview || '—'}</td>
+                  <td>{item.notes || '—'}</td>
+                </tr>
+              )) : (
+                <tr>
+                  <td colSpan={6} style={{ opacity: 0.75 }}>Submitted rows will appear here after evaluators save scores.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -875,21 +1212,114 @@ export default function App() {
     return true
   })
   const [collapsed, setCollapsed] = useState(false)
+  const [auth, setAuth] = useState(() => {
+    try {
+      const raw = sessionStorage.getItem('ui_auth')
+      if (!raw) return null
+      const parsed = JSON.parse(raw)
+      if (!parsed?.role || !parsed?.username || !parsed?.token) return null
+      return parsed
+    } catch {
+      return null
+    }
+  })
+  const [authChecking, setAuthChecking] = useState(true)
+
+  const availableTabs = auth?.role === 'admin' ? DEFAULT_TABS : USER_TABS
+
+  useEffect(() => {
+    if (!availableTabs.includes(tab)) {
+      setTab(availableTabs[0] || 'Health')
+    }
+  }, [auth, tab])
+
+  useEffect(() => {
+    const validate = async () => {
+      if (!auth?.token) {
+        setAuthChecking(false)
+        return
+      }
+      try {
+        const r = await fetch(apiUrl('/auth/session'), {
+          headers: { Authorization: `Bearer ${auth.token}` }
+        })
+        if (!r.ok) {
+          setAuth(null)
+          try { sessionStorage.removeItem('ui_auth') } catch {}
+        }
+      } catch {
+        setAuth(null)
+        try { sessionStorage.removeItem('ui_auth') } catch {}
+      } finally {
+        setAuthChecking(false)
+      }
+    }
+    validate()
+  }, [])
+
   useEffect(() => {
     document.body.classList.toggle('light', light)
     try { localStorage.setItem('ui_theme', light ? 'light' : 'dark') } catch {}
   }, [light])
+
+  const handleLogin = async ({ role, username, password }) => {
+    try {
+      const r = await fetch(apiUrl('/auth/login'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role, username, password })
+      })
+      const data = await r.json()
+      if (!r.ok) {
+        return { ok: false, error: data?.detail || 'Invalid username or password' }
+      }
+      const session = {
+        role: data.role,
+        username: data.username,
+        token: data.token,
+        expires_at: data.expires_at,
+      }
+      setAuth(session)
+      try { sessionStorage.setItem('ui_auth', JSON.stringify(session)) } catch {}
+      setTab('Health')
+      return { ok: true }
+    } catch {
+      return { ok: false, error: 'Unable to reach authentication service' }
+    }
+  }
+
+  const handleLogout = () => {
+    setAuth(null)
+    try { sessionStorage.removeItem('ui_auth') } catch {}
+    setTab('Health')
+  }
+
+  if (authChecking) {
+    return (
+      <div className="container" style={{ maxWidth: 560, paddingTop: 40 }}>
+        <div className="card" style={{ padding: 16 }}>
+          <LoadingLabel text="Checking session…" />
+        </div>
+      </div>
+    )
+  }
+
+  if (!auth) {
+    return <LoginPage onLogin={handleLogin} light={light} onToggleTheme={() => setLight(v => !v)} />
+  }
+
   return (
     <>
       <header className="header">
-        <div className="brand">IPAWS Research UI</div>
+        <div className="brand">IPAWS Research UI ({auth.role === 'admin' ? 'Admin' : 'User'})</div>
         <div className="row">
           <button className="theme-toggle" onClick={() => setLight(v => !v)}>{light ? 'Dark' : 'Light'} Theme</button>
+          <button onClick={handleLogout}>Logout</button>
         </div>
       </header>
       <div className="container">
         <div className={`app-layout ${collapsed ? 'collapsed' : ''}`}>
-          <Nav current={tab} onChange={setTab} collapsed={collapsed} onToggleCollapse={() => setCollapsed(v => !v)} />
+          <Nav current={tab} onChange={setTab} collapsed={collapsed} onToggleCollapse={() => setCollapsed(v => !v)} tabs={availableTabs} />
           <main>
             {tab === 'Health' && <Health onNavigate={setTab} />}
             {tab === 'Alerts' && <Alerts />}
@@ -897,6 +1327,7 @@ export default function App() {
             {tab === 'Human Eval' && <HumanEval />}
             {tab === 'Batch Eval' && <BatchEval />}
             {tab === 'Whole Eval' && <WholeEval />}
+            {tab === 'Admin Analytics' && auth?.role === 'admin' && <AdminAnalytics auth={auth} />}
           </main>
         </div>
       </div>

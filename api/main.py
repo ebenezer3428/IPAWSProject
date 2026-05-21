@@ -1,13 +1,19 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Header
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 from datetime import datetime
+from collections import defaultdict
+import csv
+import json
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import secrets
+import time
+import hmac
 
 # Ensure .env variables (e.g., OPENAI_API_KEY) are loaded on startup
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
@@ -30,6 +36,24 @@ app.add_middleware(
 
 # In-memory state to expose latest results
 CURRENT_STATE: Dict[str, object] = {}
+SESSIONS: Dict[str, Dict[str, object]] = {}
+SESSION_TTL_SECONDS = int(os.getenv("SESSION_TTL_SECONDS", "28800"))  # 8 hours default
+OUTPUTS_DIR = Path(__file__).resolve().parents[1] / "outputs"
+FAIRNESS_METRIC_LABELS: Dict[str, str] = {
+    "pf1_urgency_preservation": "Urgency preservation",
+    "pf2_directive_clarity": "Directive clarity",
+    "pf3_risk_severity": "Risk severity",
+    "pf4_authority_attribution": "Authority attribution",
+    "pf5_temporal_accuracy": "Temporal accuracy",
+    "pf6_procedural_completeness": "Procedural completeness",
+    "if1_respectful_tone": "Respectful tone",
+    "if2_inclusion": "Inclusion",
+    "if3_empathy_marker": "Empathy marker",
+    "if4_linguistic_clarity": "Linguistic clarity",
+    "if5_cultural_appropriateness": "Cultural appropriateness",
+    "if6_trust_signal": "Trust signal",
+}
+FAIRNESS_METRIC_KEYS = list(FAIRNESS_METRIC_LABELS.keys())
 
 class TranslationRequest(BaseModel):
     source_text: str
@@ -97,6 +121,23 @@ class TemplatesBuildResponse(BaseModel):
     counts: Dict[str, int]
     saved: bool
 
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+    role: str = Field(default="user", pattern="^(user|admin)$")
+
+class LoginResponse(BaseModel):
+    token: str
+    role: str
+    username: str
+    expires_at: str
+
+class SessionStatusResponse(BaseModel):
+    valid: bool
+    role: str
+    username: str
+    expires_at: str
+
 # Simple dedupe by normalized source_text
 def _normalize_text(text: str) -> str:
     import re
@@ -116,6 +157,269 @@ def _dedupe_by_text(alerts: List[EmergencyAlert]) -> List[EmergencyAlert]:
         out.append(a)
     return out
 
+def _password_for_role(role: str) -> str:
+    if role == "admin":
+        return os.getenv("APP_ADMIN_PASSWORD") or os.getenv("ADMIN_PASSWORD") or ""
+    return (
+        os.getenv("APP_USER_PASSWORD")
+        or os.getenv("USER_PASSWORD")
+        or os.getenv("APP_ADMIN_PASSWORD")
+        or os.getenv("ADMIN_PASSWORD")
+        or ""
+    )
+
+def _create_session(username: str, role: str) -> Dict[str, object]:
+    token = secrets.token_urlsafe(32)
+    exp = time.time() + SESSION_TTL_SECONDS
+    SESSIONS[token] = {
+        "username": username,
+        "role": role,
+        "exp": exp,
+    }
+    return {
+        "token": token,
+        "username": username,
+        "role": role,
+        "expires_at": datetime.utcfromtimestamp(exp).isoformat(),
+    }
+
+def _get_valid_session(token: str) -> Optional[Dict[str, object]]:
+    sess = SESSIONS.get(token)
+    if not sess:
+        return None
+    exp = float(sess.get("exp", 0) or 0)
+    if exp <= time.time():
+        SESSIONS.pop(token, None)
+        return None
+    return sess
+
+def _require_session_role(authorization: Optional[str], role: str) -> Dict[str, object]:
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
+    token = authorization.split(" ", 1)[1].strip()
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing session token")
+    sess = _get_valid_session(token)
+    if not sess:
+        raise HTTPException(status_code=401, detail="Session is invalid or expired")
+    if str(sess.get("role", "")).lower() != role.lower():
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
+    return sess
+
+def _safe_mean(values: List[float]) -> float:
+    return sum(values) / len(values) if values else 0.0
+
+def _read_csv_rows(csv_path: Path) -> List[Dict[str, str]]:
+    if not csv_path.exists():
+        return []
+    with open(csv_path, "r", encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+def _to_float(value: Optional[str]) -> Optional[float]:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if text == "":
+        return None
+    try:
+        return float(text)
+    except (TypeError, ValueError):
+        return None
+
+def _extract_notes(raw: str) -> str:
+    if not raw:
+        return ""
+    try:
+        parsed = json.loads(raw)
+        if isinstance(parsed, dict):
+            return str(parsed.get("notes", "") or "")
+    except Exception:
+        pass
+    return raw
+
+def _analyze_human_scores() -> Dict[str, Any]:
+    csv_path = OUTPUTS_DIR / "human_fairness_scores.csv"
+    rows = _read_csv_rows(csv_path)
+    parsed_rows: List[Dict[str, Any]] = []
+
+    for row in rows:
+        metric_values: Dict[str, float] = {}
+        for key in FAIRNESS_METRIC_KEYS:
+            value = _to_float(row.get(key))
+            if value is not None:
+                metric_values[key] = value
+        metric_list = list(metric_values.values())
+        avg_score = _safe_mean(metric_list)
+        timestamp = (row.get("timestamp") or "").strip()
+        parsed_rows.append({
+            "timestamp": timestamp,
+            "date": timestamp.split("T", 1)[0] if timestamp else "Unknown",
+            "language": (row.get("language") or "unknown").strip() or "unknown",
+            "evaluator_id": (row.get("evaluator_id") or "").strip() or "Anonymous",
+            "source_segment": (row.get("source_segment") or "").strip(),
+            "translated_segment": (row.get("translated_segment") or "").strip(),
+            "notes": _extract_notes((row.get("rationale") or "").strip()),
+            "metrics": metric_values,
+            "average_score": avg_score,
+            "average_score_pct": round((avg_score / 2) * 100, 1) if metric_list else 0.0,
+        })
+
+    metric_summary: List[Dict[str, Any]] = []
+    for key in FAIRNESS_METRIC_KEYS:
+        values = [float(r["metrics"][key]) for r in parsed_rows if key in r["metrics"]]
+        avg_value = _safe_mean(values)
+        metric_summary.append({
+            "key": key,
+            "label": FAIRNESS_METRIC_LABELS[key],
+            "average": round(avg_value, 2),
+            "average_pct": round((avg_value / 2) * 100, 1) if values else 0.0,
+        })
+
+    language_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    evaluator_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    day_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    for row in parsed_rows:
+        language_groups[row["language"]].append(row)
+        evaluator_groups[row["evaluator_id"]].append(row)
+        day_groups[row["date"]].append(row)
+
+    languages = [
+        {
+            "language": language,
+            "count": len(items),
+            "average_score": round(_safe_mean([float(i["average_score"]) for i in items]), 2),
+            "average_score_pct": round(_safe_mean([float(i["average_score_pct"]) for i in items]), 1),
+        }
+        for language, items in language_groups.items()
+    ]
+    languages.sort(key=lambda item: (-item["count"], item["language"]))
+
+    evaluators = [
+        {
+            "evaluator_id": evaluator,
+            "count": len(items),
+            "languages": sorted({str(i["language"]) for i in items}),
+            "average_score": round(_safe_mean([float(i["average_score"]) for i in items]), 2),
+            "average_score_pct": round(_safe_mean([float(i["average_score_pct"]) for i in items]), 1),
+        }
+        for evaluator, items in evaluator_groups.items()
+    ]
+    evaluators.sort(key=lambda item: (-item["count"], item["evaluator_id"]))
+
+    submissions_by_day = [
+        {
+            "date": day,
+            "count": len(items),
+            "average_score_pct": round(_safe_mean([float(i["average_score_pct"]) for i in items]), 1),
+        }
+        for day, items in day_groups.items()
+    ]
+    submissions_by_day.sort(key=lambda item: item["date"])
+
+    recent_submissions = [
+        {
+            "timestamp": row["timestamp"],
+            "evaluator_id": row["evaluator_id"],
+            "language": row["language"],
+            "average_score_pct": row["average_score_pct"],
+            "source_preview": row["source_segment"][:120],
+            "notes": row["notes"][:140],
+        }
+        for row in sorted(parsed_rows, key=lambda item: item["timestamp"], reverse=True)[:10]
+    ]
+
+    average_scores = [float(r["average_score"]) for r in parsed_rows]
+    return {
+        "path": str(csv_path),
+        "total_submissions": len(parsed_rows),
+        "unique_messages": len({str(r["source_segment"]) for r in parsed_rows if r.get("source_segment")}),
+        "named_evaluators": len({str(r["evaluator_id"]) for r in parsed_rows if r.get("evaluator_id") and r["evaluator_id"] != "Anonymous"}),
+        "average_score": round(_safe_mean(average_scores), 2),
+        "average_score_pct": round((_safe_mean(average_scores) / 2) * 100, 1) if average_scores else 0.0,
+        "languages": languages,
+        "metrics": metric_summary,
+        "evaluators": evaluators,
+        "submissions_by_day": submissions_by_day,
+        "recent_submissions": recent_submissions,
+    }
+
+def _analyze_composite_scores() -> Dict[str, Any]:
+    csv_path = OUTPUTS_DIR / "composite_scores.csv"
+    rows = _read_csv_rows(csv_path)
+    parsed_rows: List[Dict[str, Any]] = []
+
+    for row in rows:
+        pfi = _to_float(row.get("pfi"))
+        ifi = _to_float(row.get("ifi"))
+        ofs = _to_float(row.get("ofs"))
+        segments = _to_float(row.get("segments_count"))
+        parsed_rows.append({
+            "language": (row.get("language") or "unknown").strip() or "unknown",
+            "system": (row.get("system") or "unknown").strip() or "unknown",
+            "pfi": pfi if pfi is not None else 0.0,
+            "ifi": ifi if ifi is not None else 0.0,
+            "ofs": ofs if ofs is not None else 0.0,
+            "segments_count": segments if segments is not None else 0.0,
+        })
+
+    grouped: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    for row in parsed_rows:
+        grouped[f"{row['language']}::{row['system']}"] .append(row)
+
+    by_language_system: List[Dict[str, Any]] = []
+    for key, items in grouped.items():
+        language, system = key.split("::", 1)
+        by_language_system.append({
+            "language": language,
+            "system": system,
+            "count": len(items),
+            "avg_pfi": round(_safe_mean([float(i["pfi"]) for i in items]), 3),
+            "avg_ifi": round(_safe_mean([float(i["ifi"]) for i in items]), 3),
+            "avg_ofs": round(_safe_mean([float(i["ofs"]) for i in items]), 3),
+            "avg_segments": round(_safe_mean([float(i["segments_count"]) for i in items]), 1),
+        })
+    by_language_system.sort(key=lambda item: (item["language"], item["system"]))
+
+    by_language: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    for row in by_language_system:
+        by_language[str(row["language"])].append(row)
+
+    best_by_language = []
+    for language, items in by_language.items():
+        best = max(items, key=lambda item: float(item["avg_ofs"]))
+        best_by_language.append({
+            "language": language,
+            "system": best["system"],
+            "avg_ofs": best["avg_ofs"],
+            "avg_pfi": best["avg_pfi"],
+            "avg_ifi": best["avg_ifi"],
+        })
+    best_by_language.sort(key=lambda item: item["language"])
+
+    by_system: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    for row in parsed_rows:
+        by_system[str(row["system"])].append(row)
+
+    system_rankings = [
+        {
+            "system": system,
+            "count": len(items),
+            "avg_ofs": round(_safe_mean([float(i["ofs"]) for i in items]), 3),
+            "avg_pfi": round(_safe_mean([float(i["pfi"]) for i in items]), 3),
+            "avg_ifi": round(_safe_mean([float(i["ifi"]) for i in items]), 3),
+        }
+        for system, items in by_system.items()
+    ]
+    system_rankings.sort(key=lambda item: (-item["avg_ofs"], item["system"]))
+
+    return {
+        "path": str(csv_path),
+        "total_records": len(parsed_rows),
+        "by_language_system": by_language_system,
+        "best_by_language": best_by_language,
+        "system_rankings": system_rankings,
+    }
+
 @app.get("/health")
 async def health():
     return {"status": "ok", "time": datetime.utcnow().isoformat()}
@@ -125,6 +429,50 @@ async def config():
     return {
         "OFFLINE_MODE": os.getenv("OFFLINE_MODE", ""),
         "OPENAI_MODEL": os.getenv("OPENAI_MODEL", ""),
+    }
+
+@app.post("/auth/login", response_model=LoginResponse)
+async def auth_login(req: LoginRequest):
+    username = (req.username or "").strip()
+    if not username:
+        raise HTTPException(status_code=400, detail="Username is required")
+    expected_password = _password_for_role(req.role)
+    if not expected_password:
+        raise HTTPException(status_code=503, detail="Authentication is not configured on the server")
+    if not hmac.compare_digest(req.password, expected_password):
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+    session = _create_session(username=username, role=req.role)
+    return LoginResponse(**session)
+
+@app.get("/auth/session", response_model=SessionStatusResponse)
+async def auth_session(authorization: Optional[str] = Header(default=None)):
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
+    token = authorization.split(" ", 1)[1].strip()
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing session token")
+    sess = _get_valid_session(token)
+    if not sess:
+        raise HTTPException(status_code=401, detail="Session is invalid or expired")
+    exp = float(sess.get("exp", 0) or 0)
+    return SessionStatusResponse(
+        valid=True,
+        role=str(sess.get("role", "user")),
+        username=str(sess.get("username", "")),
+        expires_at=datetime.utcfromtimestamp(exp).isoformat(),
+    )
+
+@app.get("/admin/analysis")
+async def admin_analysis(authorization: Optional[str] = Header(default=None)):
+    sess = _require_session_role(authorization, "admin")
+    return {
+        "generated_at": datetime.utcnow().isoformat(),
+        "viewer": {
+            "username": str(sess.get("username", "")),
+            "role": str(sess.get("role", "admin")),
+        },
+        "human": _analyze_human_scores(),
+        "composite": _analyze_composite_scores(),
     }
 
 @app.get("/alerts", response_model=List[EmergencyAlert])
@@ -228,7 +576,7 @@ if FRONTEND_DIST.exists():
     @app.get("/{full_path:path}")
     async def spa_fallback(full_path: str):
         # Avoid intercepting API routes
-        api_prefixes = {"health", "config", "alerts", "segment", "translate", "evaluate", "templates", "pipeline"}
+        api_prefixes = {"health", "config", "auth", "admin", "alerts", "segment", "translate", "evaluate", "templates", "pipeline"}
         if any(full_path.split("/")[0] == p for p in api_prefixes):
             raise HTTPException(status_code=404, detail="Not Found")
         return FileResponse(str(FRONTEND_DIST / "index.html"))
@@ -272,20 +620,7 @@ async def evaluate(req: EvaluationRequest):
 
 @app.post("/evaluate/human", response_model=HumanEvaluationResponse)
 async def evaluate_human(req: HumanEvaluationRequest):
-    allowed_keys = [
-        "pf1_urgency_preservation",
-        "pf2_directive_clarity",
-        "pf3_risk_severity",
-        "pf4_authority_attribution",
-        "pf5_temporal_accuracy",
-        "pf6_procedural_completeness",
-        "if1_respectful_tone",
-        "if2_inclusion",
-        "if3_empathy_marker",
-        "if4_linguistic_clarity",
-        "if5_cultural_appropriateness",
-        "if6_trust_signal",
-    ]
+    allowed_keys = FAIRNESS_METRIC_KEYS
     # basic validation
     for k, v in req.scores.items():
         if k not in allowed_keys:
@@ -296,9 +631,8 @@ async def evaluate_human(req: HumanEvaluationRequest):
     from datetime import datetime
     from pathlib import Path
     import csv, json
-    out_dir = Path(__file__).resolve().parents[1] / "outputs"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = out_dir / "human_fairness_scores.csv"
+    OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+    csv_path = OUTPUTS_DIR / "human_fairness_scores.csv"
     fieldnames = [
         "timestamp",
         "evaluator_id",
