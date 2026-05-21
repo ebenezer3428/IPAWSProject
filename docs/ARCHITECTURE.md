@@ -6,8 +6,8 @@ This document describes the full architecture and runtime behavior of the IPAWS 
 
 The application has two primary layers:
 
-- **Backend API**: FastAPI service in `api/main.py`, exposing endpoints for alert retrieval, translation, segmentation, fairness evaluation, human scoring, template generation, and authentication.
-- **Frontend UI**: React SPA in `web/src/App.jsx`, providing workflows for Health, Alerts, Single Eval, Human Eval, Batch Eval, and Whole Eval.
+- **Backend API**: FastAPI service in `api/main.py`, exposing endpoints for alert retrieval, translation, segmentation, fairness evaluation, human scoring, template generation, authentication, and admin analytics.
+- **Frontend UI**: React SPA in `web/src/App.jsx`, providing workflows for Health, Alerts, Single Eval, Human Eval, Batch Eval, Whole Eval, and an admin-only analytics dashboard.
 
 Supporting layer:
 
@@ -22,6 +22,7 @@ Supporting layer:
   - CORS middleware
   - request/response models
   - authentication/session endpoints
+  - admin analytics aggregation endpoint
   - IPAWS functional endpoints
   - optional static frontend serving when `web/dist` exists
 
@@ -52,9 +53,10 @@ Supporting layer:
   - all major screens/components
   - login/session gate
   - role-based tab visibility
+  - admin analytics dashboard with charts and statistical summaries
   - translation/evaluation UX for batch + whole flows
 - `web/src/App.css`
-  - layout, nav, pane, spinner, sticky action styles
+  - full-width layout, left rail navigation, dashboard/table/chart styles
 
 ## 3) Backend Architecture
 
@@ -93,6 +95,7 @@ Supporting layer:
 
 - `GET /health` — service health and server time
 - `GET /config` — selected runtime config visibility
+- `GET /admin/analysis` — admin-only analytics summary for submitted human scores and composite exports
 - `GET /alerts` — stratified/sample retrieval from FEMA Open API with filters
 - `POST /translate` — translation by selected system (`gpt4o`, `google_nmt`, `nllb200`)
 - `POST /segment` — source segmentation
@@ -106,7 +109,39 @@ Supporting layer:
 - Main outputs in `/outputs`:
   - fairness/human scores, segment outputs, composite/statistical results
 - Human evaluation appends rows to `outputs/human_fairness_scores.csv`.
+- Admin analytics reads from `outputs/human_fairness_scores.csv` and `outputs/composite_scores.csv` to build dashboard summaries.
 - Session and current-state caches are in memory (non-persistent).
+
+## 3.5 Admin Analytics Model
+
+The admin analytics endpoint aggregates persisted evaluation data into BI-style summaries for the frontend dashboard.
+
+### Human evaluation analytics
+
+- Total submissions
+- Unique message count
+- Named evaluator count
+- Average human score across all 12 fairness dimensions
+- Language-level score and submission breakdowns
+- Metric-level averages for all `PF*` and `IF*` dimensions
+- Daily submission trend
+- Recent submissions preview table
+- Normal distribution overlay for average human score percentages
+
+### Composite export analytics
+
+- OFS / PFI / IFI averages by language and translation system
+- Best-performing system by language
+- System rankings across the full export set
+- Two-way ANOVA on `OFS` with factors:
+  - `language`
+  - `system`
+  - `language × system` interaction
+
+### Access control
+
+- `GET /admin/analysis` requires a valid bearer token for an `admin` session.
+- Non-admin sessions receive `403 Insufficient permissions`.
 
 ## 4) Frontend Architecture
 
@@ -114,8 +149,10 @@ Supporting layer:
 
 - SPA rendered by `App.jsx`.
 - Header contains theme toggle + logout.
+- Main shell now uses the full available canvas width.
+- Sidebar is rendered as a sticky left rail aligned to the far left of the app layout.
 - Left navigation tabs are role-aware:
-  - **Admin**: all tabs
+  - **Admin**: all tabs, including `Admin Analytics`
   - **User**: subset excluding admin-only page(s) (currently hides Human Eval tab)
 
 ## 4.2 Login Gate
@@ -144,10 +181,77 @@ Wrong password = login failure, app pages remain inaccessible.
   - side pane for metadata/load controls
   - main pane for translation/evaluation workflow
   - compare mode + loading indicators
+- **Admin Analytics**:
+  - KPI summary cards
+  - submission trend line chart
+  - human language coverage chart
+  - fairness metric performance chart
+  - composite OFS chart by language and system
+  - normal distribution curve for human average scores
+  - two-way ANOVA table and significance insights
+  - evaluator activity and recent submission tables
+
+## 4.3.1 Analytics Dashboard Reference
+
+The `Admin Analytics` page is intended for admin users who need a BI-style summary of submitted review data.
+
+### Access
+
+1. Sign in with role `Admin`.
+2. Open the `Admin Analytics` tab from the left navigation rail.
+3. The frontend calls `GET /admin/analysis` using the active bearer token.
+
+### Data sources
+
+- `outputs/human_fairness_scores.csv`
+  - source for human-evaluation submissions, fairness metrics, evaluator activity, and score distributions
+- `outputs/composite_scores.csv`
+  - source for composite score benchmarking, system comparisons, and ANOVA analysis
+
+### Dashboard sections
+
+- **Analytics Page Guide**
+  - embedded documentation explaining the purpose of each chart and the interpretation of the statistical outputs
+- **KPI cards**
+  - total submissions
+  - unique messages
+  - named evaluators
+  - composite record count
+- **Submission Trend**
+  - daily counts of submitted human evaluations
+- **Human Evaluation Coverage**
+  - language distribution of submitted evaluations
+- **Metric Performance**
+  - average score by the 12 fairness dimensions (`PF1–PF6`, `IF1–IF6`)
+- **Composite OFS by Language & System**
+  - average `OFS` comparison across translation systems for each language
+- **Normal Distribution Curve**
+  - observed distribution of average human scores compared against a fitted normal curve
+- **Two-Way ANOVA**
+  - significance testing for `OFS` by:
+    - `language`
+    - `system`
+    - `language × system`
+- **Evaluator Activity**
+  - evaluator participation counts and average scores
+- **Recent Human Submissions**
+  - latest saved rows with evaluator, language, score, and notes preview
+
+### Statistical interpretation
+
+- **Average human score** is normalized to a percentage for easier reading in the dashboard.
+- **Normal distribution curve** helps assess whether score patterns resemble a bell-shaped distribution or show skew/clustering.
+- **Two-way ANOVA** reports:
+  - `F` statistic
+  - `p-value`
+  - partial effect size
+  - percent variance explained
+- A `p-value < 0.05` is typically interpreted as statistically significant in this dashboard.
 
 ## 4.4 UX Behavior Patterns
 
 - Role-based access and nav filtering
+- Full-width dashboard presentation for analysis-heavy screens
 - Collapsible panes for space savings
 - Bottom navigation for message traversal
 - Auto-selection and synchronization between list selection and active item
@@ -163,6 +267,8 @@ Wrong password = login failure, app pages remain inaccessible.
 4. Frontend stores token in session storage.
 5. Frontend validates token on app load.
 
+Admin users use the same session token to call `GET /admin/analysis` from the analytics dashboard.
+
 ## 5.2 Translation/Evaluation Flow (Batch/Whole)
 
 1. User loads alerts (`/alerts`).
@@ -171,7 +277,16 @@ Wrong password = login failure, app pages remain inaccessible.
 4. Optional fairness scoring requested (`/evaluate`).
 5. Optional human scoring saved (`/evaluate/human`).
 
-## 5.3 Pipeline Flow
+## 5.3 Admin Analytics Flow
+
+1. Admin signs in via `POST /auth/login`.
+2. Frontend stores the bearer token in `sessionStorage`.
+3. Admin opens the `Admin Analytics` tab.
+4. Frontend requests `GET /admin/analysis` with the bearer token.
+5. Backend reads output CSVs, computes summaries/statistics, and returns a dashboard payload.
+6. Frontend renders charts, tables, normal-curve distribution, and ANOVA results.
+
+## 5.4 Pipeline Flow
 
 1. User/automation calls `/pipeline/run`.
 2. LangGraph executes agents in sequence.
@@ -185,6 +300,7 @@ Wrong password = login failure, app pages remain inaccessible.
 - Built by Vite (`web/dist`).
 - Deployed to Firebase Hosting.
 - Uses `VITE_API_BASE_URL` for backend target in production.
+- In local development, Vite proxies `/auth`, `/admin`, `/alerts`, `/translate`, `/evaluate`, `/templates`, `/pipeline`, `/health`, and `/config` to the backend.
 
 ## 6.2 Backend
 
@@ -213,6 +329,7 @@ Wrong password = login failure, app pages remain inaccessible.
 - Some state is process-local (sessions/current pipeline state).
 - A new backend revision invalidates existing in-memory sessions.
 - CORS currently allows all origins.
+- Admin analytics depends on local/exported CSV availability; missing files produce empty dashboard sections rather than historical warehouse-backed reporting.
 - UI is implemented in a single large `App.jsx` file; future maintainability can improve by component splitting.
 
 ## 9) Recommended Next Improvements
@@ -220,5 +337,5 @@ Wrong password = login failure, app pages remain inaccessible.
 - Split frontend into route-level/page-level components.
 - Move auth/session management to dedicated hooks/context.
 - Add backend session persistence and token revocation support.
-- Add role-based authorization on backend endpoints (not just frontend tab filtering).
+- Expand admin analytics with richer benchmarking, filtering, and export controls.
 - Add API integration tests for auth + translation/evaluation flows.

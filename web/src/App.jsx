@@ -352,6 +352,12 @@ function LoadingLabel({ text = 'Loading…' }) {
 
 const formatPercent = (value) => Number.isFinite(Number(value)) ? `${Number(value).toFixed(1)}%` : '—'
 const formatScore = (value) => Number.isFinite(Number(value)) ? Number(value).toFixed(2) : '—'
+const formatPValue = (value) => {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return '—'
+  if (numeric < 0.001) return '< 0.001'
+  return numeric.toFixed(4)
+}
 
 function DashboardStat({ label, value, subtext }) {
   return (
@@ -417,8 +423,11 @@ function AdminAnalytics({ auth }) {
   const submissionsByDay = human.submissions_by_day || []
   const evaluators = human.evaluators || []
   const recentSubmissions = human.recent_submissions || []
+  const distribution = human.normal_distribution || {}
   const systemRows = composite.by_language_system || []
   const bestSystems = composite.best_by_language || []
+  const anova = composite.two_way_anova || {}
+  const anovaRows = anova.rows || []
   const palette = ['rgba(79, 70, 229, 0.72)', 'rgba(14, 165, 233, 0.72)', 'rgba(16, 185, 129, 0.72)', 'rgba(245, 158, 11, 0.72)', 'rgba(244, 63, 94, 0.72)']
 
   const humanLanguageChart = {
@@ -468,6 +477,31 @@ function AdminAnalytics({ auth }) {
     })),
   }
 
+  const distributionBins = distribution.bins || []
+  const distributionChart = {
+    labels: distributionBins.map(item => item.label),
+    datasets: [
+      {
+        type: 'bar',
+        label: 'Observed submissions',
+        data: distributionBins.map(item => item.count || 0),
+        backgroundColor: 'rgba(79, 70, 229, 0.55)',
+        borderRadius: 6,
+      },
+      {
+        type: 'line',
+        label: 'Normal curve',
+        data: distributionBins.map(item => item.normal_count || 0),
+        borderColor: 'rgba(244, 63, 94, 0.95)',
+        backgroundColor: 'rgba(244, 63, 94, 0.15)',
+        tension: 0.32,
+        pointRadius: 3,
+        pointHoverRadius: 4,
+        yAxisID: 'y',
+      },
+    ],
+  }
+
   return (
     <>
       <div className="row" style={{ justifyContent: 'space-between', marginTop: 12, marginBottom: 12, flexWrap: 'wrap' }}>
@@ -476,6 +510,34 @@ function AdminAnalytics({ auth }) {
           <p style={{ margin: '6px 0 0 0', opacity: 0.8 }}>Analyze submitted human evaluations and model performance exports.</p>
         </div>
         <button className="primary" onClick={load}>Refresh</button>
+      </div>
+
+      <div className="card chart-card" style={{ marginBottom: 12 }}>
+        <h3 style={{ marginTop: 0 }}>Analytics Page Guide</h3>
+        <p style={{ opacity: 0.82 }}>
+          This page summarizes submitted human evaluations and exported composite fairness results from the files in the
+          <strong> outputs/</strong> folder.
+        </p>
+        <div className="two-col">
+          <div>
+            <h4 style={{ marginBottom: 6 }}>What each section shows</h4>
+            <ul style={{ marginTop: 0 }}>
+              <li><strong>KPI cards</strong>: total submissions, unique messages, evaluator coverage, and record counts.</li>
+              <li><strong>Trend and coverage charts</strong>: submission volume over time and the language mix of reviewed items.</li>
+              <li><strong>Metric performance</strong>: average human score by fairness dimension across the 12 rubric measures.</li>
+              <li><strong>Composite comparisons</strong>: benchmark OFS, PFI, and IFI values across language and system combinations.</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style={{ marginBottom: 6 }}>How to interpret the statistics</h4>
+            <ul style={{ marginTop: 0 }}>
+              <li><strong>Normal distribution curve</strong>: compares the observed spread of human average scores to a fitted bell curve.</li>
+              <li><strong>Two-way ANOVA</strong>: tests whether <strong>language</strong>, <strong>system</strong>, or their interaction materially affects OFS.</li>
+              <li><strong>p-value</strong>: values below <strong>0.05</strong> are typically treated as statistically significant.</li>
+              <li><strong>Effect size</strong>: shows how much variance a factor explains relative to residual noise.</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <div className="stat-grid">
@@ -526,6 +588,74 @@ function AdminAnalytics({ auth }) {
               <Bar data={compositeChart} options={{ responsive: true, maintainAspectRatio: false, scales: { y: { suggestedMin: 0 } } }} />
             </div>
           ) : <p style={{ opacity: 0.75 }}>No composite score exports were found.</p>}
+        </div>
+      </div>
+
+      <div className="two-col">
+        <div className="card chart-card">
+          <h3 style={{ marginTop: 0 }}>Normal Distribution Curve</h3>
+          <p style={{ marginTop: 0, opacity: 0.75 }}>Observed human average-score distribution versus a fitted normal curve.</p>
+          <div className="metric-inline-grid" style={{ marginBottom: 12 }}>
+            <div className="pill">Mean: {formatPercent(distribution.mean || 0)}</div>
+            <div className="pill">Std dev: {formatScore(distribution.stddev || 0)}</div>
+            <div className="pill">Sample size: {distribution.count || 0}</div>
+          </div>
+          {distributionBins.length > 0 ? (
+            <div style={{ height: 320 }}>
+              <Bar
+                data={distributionChart}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Submission count' } },
+                  },
+                }}
+              />
+            </div>
+          ) : <p style={{ opacity: 0.75 }}>Not enough human-score data to fit a distribution yet.</p>}
+        </div>
+
+        <div className="card chart-card">
+          <h3 style={{ marginTop: 0 }}>Two-Way ANOVA</h3>
+          <p style={{ marginTop: 0, opacity: 0.75 }}>Effect of language and translation system on overall fairness score (OFS).</p>
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Factor</th>
+                  <th>df</th>
+                  <th>F</th>
+                  <th>p-value</th>
+                  <th>Effect size</th>
+                  <th>Variance share</th>
+                </tr>
+              </thead>
+              <tbody>
+                {anovaRows.length > 0 ? anovaRows.map(item => (
+                  <tr key={item.source}>
+                    <td>{item.label}</td>
+                    <td>{item.df}</td>
+                    <td>{item.f_value ?? '—'}</td>
+                    <td>{formatPValue(item.p_value)}</td>
+                    <td>{item.effect_size ?? '—'}</td>
+                    <td>{formatPercent(item.variance_share)}</td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan={6} style={{ opacity: 0.75 }}>Not enough composite data is available to compute a two-way ANOVA.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          {!!(anova.insights || []).length && (
+            <div style={{ marginTop: 12 }}>
+              {(anova.insights || []).map((insight, idx) => (
+                <p key={idx} style={{ margin: '6px 0', opacity: 0.86 }}>{insight}</p>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

@@ -131,6 +131,12 @@
 	padding: 16px;
 }
 
+.metric-inline-grid {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
 .table-wrap {
 	overflow: auto;
 }

@@ -8,12 +8,16 @@ from datetime import datetime
 from collections import defaultdict
 import csv
 import json
+import math
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 import secrets
 import time
 import hmac
+import pandas as pd
+from statsmodels.formula.api import ols
+from statsmodels.stats.anova import anova_lm
 
 # Ensure .env variables (e.g., OPENAI_API_KEY) are loaded on startup
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
@@ -237,6 +241,137 @@ def _extract_notes(raw: str) -> str:
         pass
     return raw
 
+def _build_normal_distribution(values: List[float], bucket_count: int = 8) -> Dict[str, Any]:
+    if not values:
+        return {
+            "mean": 0.0,
+            "stddev": 0.0,
+            "count": 0,
+            "bins": [],
+        }
+
+    mean_value = _safe_mean(values)
+    if len(values) > 1:
+        variance = sum((value - mean_value) ** 2 for value in values) / (len(values) - 1)
+        stddev = math.sqrt(max(variance, 0.0))
+    else:
+        stddev = 0.0
+
+    data_min = min(values)
+    data_max = max(values)
+    if math.isclose(data_min, data_max):
+        data_min -= 1.0
+        data_max += 1.0
+
+    bucket_count = max(5, min(bucket_count, 12))
+    width = (data_max - data_min) / bucket_count if bucket_count else 1.0
+    bins: List[Dict[str, Any]] = []
+    counts = [0 for _ in range(bucket_count)]
+
+    for value in values:
+        if width <= 0:
+            idx = 0
+        else:
+            idx = int((value - data_min) / width)
+            if idx == bucket_count:
+                idx -= 1
+        counts[max(0, min(idx, bucket_count - 1))] += 1
+
+    for idx in range(bucket_count):
+        start = data_min + idx * width
+        end = start + width
+        midpoint = start + (width / 2)
+        if stddev > 0 and width > 0:
+            pdf = (1 / (stddev * math.sqrt(2 * math.pi))) * math.exp(-0.5 * ((midpoint - mean_value) / stddev) ** 2)
+            normal_count = pdf * len(values) * width
+        else:
+            normal_count = float(len(values)) if idx == bucket_count // 2 else 0.0
+        bins.append({
+            "label": f"{start:.1f}-{end:.1f}",
+            "start": round(start, 2),
+            "end": round(end, 2),
+            "midpoint": round(midpoint, 2),
+            "count": counts[idx],
+            "normal_count": round(normal_count, 2),
+        })
+
+    return {
+        "mean": round(mean_value, 2),
+        "stddev": round(stddev, 2),
+        "count": len(values),
+        "bins": bins,
+    }
+
+def _compute_two_way_anova(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    if len(rows) < 3:
+        return {
+            "dependent_variable": "ofs",
+            "factors": ["language", "system"],
+            "rows": [],
+            "insights": [],
+        }
+
+    df = pd.DataFrame(rows)
+    if df.empty or df["language"].nunique() < 2 or df["system"].nunique() < 2:
+        return {
+            "dependent_variable": "ofs",
+            "factors": ["language", "system"],
+            "rows": [],
+            "insights": ["Insufficient factor diversity for two-way ANOVA."],
+        }
+
+    model = ols("ofs ~ C(language) + C(system) + C(language):C(system)", data=df).fit()
+    anova_df = anova_lm(model, typ=2).reset_index().rename(columns={"index": "source"})
+    total_sum_sq = float(anova_df["sum_sq"].sum()) if "sum_sq" in anova_df else 0.0
+    residual_sum_sq = float(anova_df.loc[anova_df["source"] == "Residual", "sum_sq"].iloc[0]) if (anova_df["source"] == "Residual").any() else 0.0
+
+    label_map = {
+        "C(language)": "Language",
+        "C(system)": "System",
+        "C(language):C(system)": "Language × System",
+        "Residual": "Residual",
+    }
+
+    results: List[Dict[str, Any]] = []
+    insights: List[str] = []
+    for _, row in anova_df.iterrows():
+        source = str(row.get("source", ""))
+        sum_sq = float(row.get("sum_sq", 0.0) or 0.0)
+        df_value = float(row.get("df", 0.0) or 0.0)
+        f_value = row.get("F")
+        p_value = row.get("PR(>F)")
+        mean_sq = (sum_sq / df_value) if df_value and source != "Residual" else None
+        partial_eta_sq = None
+        if source != "Residual" and (sum_sq + residual_sum_sq) > 0:
+            partial_eta_sq = sum_sq / (sum_sq + residual_sum_sq)
+
+        is_significant = source != "Residual" and p_value is not None and not pd.isna(p_value) and float(p_value) < 0.05
+        if is_significant:
+            insights.append(f"{label_map.get(source, source)} has a statistically significant effect on OFS (p={float(p_value):.4f}).")
+
+        results.append({
+            "source": source,
+            "label": label_map.get(source, source),
+            "df": round(df_value, 2),
+            "sum_sq": round(sum_sq, 4),
+            "mean_sq": round(mean_sq, 4) if mean_sq is not None else None,
+            "f_value": round(float(f_value), 4) if f_value is not None and not pd.isna(f_value) else None,
+            "p_value": round(float(p_value), 6) if p_value is not None and not pd.isna(p_value) else None,
+            "significant": bool(is_significant),
+            "effect_size": round(float(partial_eta_sq), 4) if partial_eta_sq is not None else None,
+            "variance_share": round((sum_sq / total_sum_sq) * 100, 2) if total_sum_sq > 0 else 0.0,
+        })
+
+    if not insights:
+        insights.append("No ANOVA factor crossed the 0.05 significance threshold with the current composite dataset.")
+
+    return {
+        "dependent_variable": "ofs",
+        "factors": ["language", "system"],
+        "rows": results,
+        "insights": insights,
+    }
+
 def _analyze_human_scores() -> Dict[str, Any]:
     csv_path = OUTPUTS_DIR / "human_fairness_scores.csv"
     rows = _read_csv_rows(csv_path)
@@ -341,6 +476,7 @@ def _analyze_human_scores() -> Dict[str, Any]:
         "evaluators": evaluators,
         "submissions_by_day": submissions_by_day,
         "recent_submissions": recent_submissions,
+        "normal_distribution": _build_normal_distribution([float(r["average_score_pct"]) for r in parsed_rows]),
     }
 
 def _analyze_composite_scores() -> Dict[str, Any]:
@@ -418,6 +554,7 @@ def _analyze_composite_scores() -> Dict[str, Any]:
         "by_language_system": by_language_system,
         "best_by_language": best_by_language,
         "system_rankings": system_rankings,
+        "two_way_anova": _compute_two_way_anova(parsed_rows),
     }
 
 @app.get("/health")

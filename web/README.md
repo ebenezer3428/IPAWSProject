@@ -20,7 +20,7 @@ Push-Location C:\Users\miniv\IPAWSProject\web
 "C:\Program Files\nodejs\npm.cmd" run dev
 ```
 
-Vite proxy in `vite.config.js` forwards `/health`, `/alerts`, `/segment`, `/translate`, `/evaluate`, `/templates`, `/config` to `http://localhost:8000`.
+Vite proxy in `vite.config.js` forwards `/health`, `/config`, `/auth`, `/admin`, `/alerts`, `/segment`, `/translate`, `/evaluate`, `/templates`, and `/pipeline` to `http://localhost:8000`.
 
 Authentication routes used by the UI:
 
@@ -30,6 +30,7 @@ Authentication routes used by the UI:
 ## Features
 
 - Login: Role-based login (`User` / `Admin`) with backend session validation
+- Admin Analytics: Admin-only BI dashboard for submitted human scores and composite export analysis
 - Health: Calls `/health` and displays server status
 - Alerts: Lists recent CA alerts via `/alerts?daysBack=7&state=CA`
 - Translate: Form to POST `/translate` (choose language and system)
@@ -37,6 +38,28 @@ Authentication routes used by the UI:
 - Human Eval: Manual scoring form that POSTs `/evaluate/human` and saves to outputs/human_fairness_scores.csv
 - Batch Eval: Message navigation with `Back`/`Next`, auto-translation on selection change, compare mode toggle, loading indicators, collapsible alerts pane
 - Whole Eval: Sidebar control pane (metadata + load controls), message navigation with `Back`/`Next`, compare mode toggle, loading indicators, collapsible alerts pane
+
+The admin dashboard currently includes:
+
+- KPI cards and evaluator activity tables
+- submission trend and language coverage charts
+- fairness metric performance summaries
+- composite OFS comparison by language and system
+- normal distribution curve for submitted average scores
+- two-way ANOVA results for OFS by `language × system`
+
+## Using Admin Analytics
+
+1. Sign in with role `Admin`.
+2. Open the `Admin Analytics` tab from the left sidebar.
+3. Use `Refresh` to reload the latest aggregated data from the backend.
+
+The page includes an embedded guide that explains:
+
+- what each chart and table represents
+- which output files supply the data
+- how to interpret the normal distribution curve
+- how to read the ANOVA table, `p-value`, and effect size
 
 ## Notes
 
@@ -46,6 +69,7 @@ Authentication routes used by the UI:
 	- `APP_ADMIN_PASSWORD` (required)
 	- `APP_USER_PASSWORD` (optional)
 	- `SESSION_TTL_SECONDS` (optional)
+- The app shell now uses the full available width, with a sticky left navigation rail for the analysis-heavy views.
 
 ## Deploy live with Firebase Hosting
 
