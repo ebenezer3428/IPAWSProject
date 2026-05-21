@@ -9,7 +9,7 @@ const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Ev
 const USER_TABS = ['Health', 'Alerts', 'Single Eval', 'Batch Eval', 'Whole Eval']
 
 function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TABS }) {
-  const icons = { 'Health': '🏠', 'Alerts': '📡', 'Single Eval': '🧪', 'Human Eval': '👤', 'Batch Eval': '📚', 'Whole Eval': '🧾', 'Admin Analytics': '📊' }
+  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Whole Eval': '▥', 'Admin Analytics': '◈' }
   return (
     <aside className="sidebar">
       <div className="sidebar-tools">
@@ -373,6 +373,8 @@ function AdminAnalytics({ auth }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [downloadError, setDownloadError] = useState('')
+  const [downloadingKey, setDownloadingKey] = useState('')
 
   const load = async () => {
     setLoading(true)
@@ -397,6 +399,34 @@ function AdminAnalytics({ auth }) {
     load()
   }, [auth?.token])
 
+  const handleDownload = async (download) => {
+    if (!download?.url) return
+    setDownloadError('')
+    setDownloadingKey(download.key || download.filename || '')
+    try {
+      const r = await fetch(apiUrl(download.url), {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      })
+      if (!r.ok) {
+        const payload = await r.json().catch(() => null)
+        throw new Error(payload?.detail || `Download failed (${r.status})`)
+      }
+      const blob = await r.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = download.filename || `${download.key || 'analytics'}.csv`
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (e) {
+      setDownloadError(e?.message || String(e))
+    } finally {
+      setDownloadingKey('')
+    }
+  }
+
   if (loading) {
     return (
       <div className="card chart-card">
@@ -418,6 +448,7 @@ function AdminAnalytics({ auth }) {
 
   const human = data?.human || {}
   const composite = data?.composite || {}
+  const downloads = data?.downloads || []
   const humanLanguages = human.languages || []
   const humanMetrics = human.metrics || []
   const submissionsByDay = human.submissions_by_day || []
@@ -509,8 +540,21 @@ function AdminAnalytics({ auth }) {
           <h2 style={{ margin: 0 }}>Admin Analytics</h2>
           <p style={{ margin: '6px 0 0 0', opacity: 0.8 }}>Analyze submitted human evaluations and model performance exports.</p>
         </div>
-        <button className="primary" onClick={load}>Refresh</button>
+        <div className="row" style={{ flexWrap: 'wrap' }}>
+          {downloads.map(download => (
+            <button
+              key={download.key}
+              className="outline"
+              onClick={() => handleDownload(download)}
+              disabled={downloadingKey === download.key}
+            >
+              {downloadingKey === download.key ? `Downloading ${download.label}…` : `Download ${download.label}`}
+            </button>
+          ))}
+          <button className="primary" onClick={load}>Refresh</button>
+        </div>
       </div>
+      {downloadError && <p className="error" style={{ marginTop: 0 }}>{downloadError}</p>}
 
       <div className="card chart-card" style={{ marginBottom: 12 }}>
         <h3 style={{ marginTop: 0 }}>Analytics Page Guide</h3>

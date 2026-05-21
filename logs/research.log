@@ -1809,3 +1809,11 @@
 2026-02-21 10:02:16,459 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
 2026-02-21 10:02:17,067 | INFO | ipaws_research | Returning 286 alerts after processing
 2026-02-21 10:02:41,130 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-20 22:31:46,380 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:32:10,190 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:32:10,199 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:32:10,730 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:32:10,743 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:32:11,249 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-05-20 22:32:11,253 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-05-20 22:32:11,985 | INFO | ipaws_research | Returning 296 alerts after processing

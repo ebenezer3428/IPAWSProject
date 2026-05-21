@@ -58,6 +58,28 @@ FAIRNESS_METRIC_LABELS: Dict[str, str] = {
     "if6_trust_signal": "Trust signal",
 }
 FAIRNESS_METRIC_KEYS = list(FAIRNESS_METRIC_LABELS.keys())
+DOWNLOADABLE_OUTPUTS: Dict[str, Dict[str, str]] = {
+    "human_fairness_scores": {
+        "label": "Human Fairness Scores",
+        "filename": "human_fairness_scores.csv",
+    },
+    "composite_scores": {
+        "label": "Composite Scores",
+        "filename": "composite_scores.csv",
+    },
+    "translations": {
+        "label": "Translations",
+        "filename": "translations.csv",
+    },
+    "segments": {
+        "label": "Segments",
+        "filename": "segments.csv",
+    },
+    "statistical_results": {
+        "label": "Statistical Results",
+        "filename": "statistical_results.csv",
+    },
+}
 
 class TranslationRequest(BaseModel):
     source_text: str
@@ -372,6 +394,20 @@ def _compute_two_way_anova(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         "insights": insights,
     }
 
+def _available_downloads() -> List[Dict[str, str]]:
+    downloads: List[Dict[str, str]] = []
+    for key, meta in DOWNLOADABLE_OUTPUTS.items():
+        filename = meta["filename"]
+        csv_path = OUTPUTS_DIR / filename
+        if csv_path.exists():
+            downloads.append({
+                "key": key,
+                "label": meta["label"],
+                "filename": filename,
+                "url": f"/admin/download/{key}",
+            })
+    return downloads
+
 def _analyze_human_scores() -> Dict[str, Any]:
     csv_path = OUTPUTS_DIR / "human_fairness_scores.csv"
     rows = _read_csv_rows(csv_path)
@@ -608,9 +644,21 @@ async def admin_analysis(authorization: Optional[str] = Header(default=None)):
             "username": str(sess.get("username", "")),
             "role": str(sess.get("role", "admin")),
         },
+        "downloads": _available_downloads(),
         "human": _analyze_human_scores(),
         "composite": _analyze_composite_scores(),
     }
+
+@app.get("/admin/download/{dataset_key}")
+async def admin_download_csv(dataset_key: str, authorization: Optional[str] = Header(default=None)):
+    _require_session_role(authorization, "admin")
+    meta = DOWNLOADABLE_OUTPUTS.get(dataset_key)
+    if not meta:
+        raise HTTPException(status_code=404, detail="Requested dataset is not available")
+    csv_path = OUTPUTS_DIR / meta["filename"]
+    if not csv_path.exists():
+        raise HTTPException(status_code=404, detail="Requested CSV file does not exist")
+    return FileResponse(str(csv_path), media_type="text/csv", filename=meta["filename"])
 
 @app.get("/alerts", response_model=List[EmergencyAlert])
 async def alerts(
