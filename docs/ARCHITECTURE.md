@@ -259,6 +259,19 @@ The `Admin Analytics` page is intended for admin users who need a BI-style summa
 
 ## 5) End-to-End Flows
 
+```mermaid
+flowchart TD
+  A[User Login in Frontend] --> B[Session Validation via Auth API]
+  B --> C[Health Check]
+  C --> D[Load Alert Corpus]
+  D --> E[Translation Step Optional]
+  E --> F[Segmentation]
+  F --> G[Evaluation Batch or Whole]
+  G --> H[Fairness and Statistical Analysis]
+  H --> I[Results Rendered in UI]
+  I --> J[Export CSV JSON Artifacts]
+```
+
 ## 5.1 Authentication Flow
 
 1. User submits role + username + password.
@@ -292,6 +305,78 @@ Admin users use the same session token to call `GET /admin/analysis` from the an
 2. LangGraph executes agents in sequence.
 3. Scores/composites/stats/charts generated.
 4. Results exported to `/outputs`.
+
+## 5.5 How Each Step Works
+
+### A) Login and token issuance
+- **Trigger**: user submits credentials from frontend login form.
+- **Endpoint**: `POST /auth/login`.
+- **Processing**: backend validates role-specific password from environment variables and creates an expiring session token.
+- **Output**: bearer token, role, username, expiry.
+- **Failure behavior**: invalid credentials return `401`.
+
+### B) Session validation on app load
+- **Trigger**: app startup/refresh.
+- **Endpoint**: `GET /auth/session`.
+- **Processing**: backend checks token existence and TTL in in-memory session store.
+- **Output**: session validity + identity.
+- **Failure behavior**: expired/invalid token forces relogin.
+
+### C) System readiness check
+- **Trigger**: user opens Health page.
+- **Endpoint**: `GET /health`.
+- **Processing**: lightweight service liveness/status check.
+- **Output**: status + server timestamp.
+- **Failure behavior**: UI should block/avoid analytical runs until healthy.
+
+### D) Alert retrieval
+- **Trigger**: user requests a sample or filtered corpus.
+- **Endpoint**: `GET /alerts`.
+- **Processing**: retrieves alert records from FEMA API and normalizes fields for UI and downstream modules.
+- **Output**: alert list for navigation and selection.
+- **Failure behavior**: empty or failed upstream fetch yields no corpus for analysis.
+
+### E) Translation execution
+- **Trigger**: user requests translation for active alert/message.
+- **Endpoint**: `POST /translate`.
+- **Processing**: dispatches to selected translation backend (`gpt4o`, `google_nmt`, `nllb200`) with configured credentials/model.
+- **Output**: translated text payload.
+- **Failure behavior**: provider/auth/model issues return translation errors.
+
+### F) Segmentation
+- **Trigger**: user requests segmentation.
+- **Endpoint**: `POST /segment`.
+- **Processing**: segmentation module partitions text into smaller units and labels communicative function where applicable.
+- **Output**: ordered segment list for evaluation.
+- **Failure behavior**: low-quality/empty input can yield weak or empty segmentation.
+
+### G) Automated scoring
+- **Trigger**: user runs model-based evaluation.
+- **Endpoint**: `POST /evaluate`.
+- **Processing**: fairness/quality scoring logic computes metric values from source/translation context.
+- **Output**: structured metric scores used by UI and analytics.
+- **Failure behavior**: incomplete payload/context returns validation or processing errors.
+
+### H) Human scoring persistence
+- **Trigger**: evaluator submits manual rubric scores.
+- **Endpoint**: `POST /evaluate/human`.
+- **Processing**: server validates and appends submission row to persisted CSV.
+- **Output**: stored human-evaluation record.
+- **Failure behavior**: malformed values or file-write issues prevent persistence.
+
+### I) Analytics aggregation
+- **Trigger**: admin opens dashboard or full pipeline run is requested.
+- **Endpoints**: `GET /admin/analysis` and `POST /pipeline/run`.
+- **Processing**: aggregates persisted files, computes distributions/system comparisons, and statistical tests (including ANOVA where applicable).
+- **Output**: dashboard-ready analytics payload and derived artifacts.
+- **Failure behavior**: missing source files or sparse data can produce partial/empty sections.
+
+### J) Export
+- **Trigger**: pipeline/reporting stage completion.
+- **Module path**: export/statistics/visualization utilities in `ipaws_research/*`.
+- **Processing**: writes CSV/JSON/chart artifacts to `outputs/`.
+- **Output**: reproducible files for external notebooks, papers, and appendices.
+- **Failure behavior**: interrupted runs can leave partial output sets.
 
 ## 6) Deployment Architecture
 

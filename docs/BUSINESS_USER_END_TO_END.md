@@ -20,6 +20,19 @@ For each run, the flow is:
 
 This means the UI is the control surface, while the backend and pipeline are the computation engine. Health checks confirm the engine is available before you start collecting results.
 
+```mermaid
+flowchart TD
+	A[User Login in Frontend] --> B[Session Validation via Auth API]
+	B --> C[Health Check]
+	C --> D[Load Alert Corpus]
+	D --> E[Translation Step Optional]
+	E --> F[Segmentation]
+	F --> G[Evaluation Batch or Whole]
+	G --> H[Fairness and Statistical Analysis]
+	H --> I[Results Rendered in UI]
+	I --> J[Export CSV JSON Artifacts]
+```
+
 ## Intended audience
 - PhD students and postdoctoral researchers
 - Computational social science and NLP researchers
@@ -82,6 +95,78 @@ Research output: defensible interpretation of quality/fairness metrics.
 - Version outputs by experiment ID or timestamp.
 
 Research output: reproducible artifact set for manuscripts and appendices.
+
+## How each step works (technical walkthrough)
+
+### Step 1: Authentication
+- **User action:** submit username, password, and role.
+- **Backend action:** `POST /auth/login` validates role password from environment variables and creates a token with TTL.
+- **System state change:** session token is cached server-side; token and expiry are returned.
+- **Success output:** authenticated session available for protected routes.
+- **Failure modes:** invalid credentials (`401`), expired/invalid token on later calls (`401`).
+
+### Step 2: Session validation and readiness
+- **User action:** app loads or refreshes.
+- **Backend action:** `GET /auth/session` verifies bearer token and expiry.
+- **System state change:** expired sessions are dropped from in-memory session store.
+- **Success output:** user remains in app and can access role-allowed pages.
+- **Failure modes:** token missing/expired leads to login gate.
+
+### Step 3: Health verification
+- **User action:** open health view before running experiments.
+- **Backend action:** `GET /health` returns service status and timestamp.
+- **System state change:** none (read-only check).
+- **Success output:** confirms API is reachable and responsive.
+- **Failure modes:** unavailable service means results should not be collected.
+
+### Step 4: Alert ingestion
+- **User action:** load a sample or batch in Alerts.
+- **Backend action:** `GET /alerts` retrieves and normalizes alert records with selected filters.
+- **System state change:** selected alerts are held in frontend state for iteration.
+- **Success output:** curated corpus ready for translation/evaluation.
+- **Failure modes:** upstream data unavailability or empty filtered sample.
+
+### Step 5: Translation
+- **User action:** run translation for active message(s).
+- **Backend action:** `POST /translate` dispatches to configured translation system (`gpt4o`, `google_nmt`, `nllb200`).
+- **System state change:** translated text is attached to the active analysis context.
+- **Success output:** translated content available for downstream scoring.
+- **Failure modes:** credential/provider/model errors; partial translation outputs.
+
+### Step 6: Segmentation
+- **User action:** request segmentation for source or translated text.
+- **Backend action:** `POST /segment` generates segment boundaries and labels.
+- **System state change:** segmented units replace or augment full-text review state.
+- **Success output:** analyzable units for consistent comparison.
+- **Failure modes:** malformed/empty text yields low-quality or empty segments.
+
+### Step 7: Automated evaluation
+- **User action:** run scoring in Single/Batch/Whole workflows.
+- **Backend action:** `POST /evaluate` computes fairness/quality-related scores.
+- **System state change:** score payload is stored in current UI run state.
+- **Success output:** structured metrics for aggregate analysis and interpretation.
+- **Failure modes:** missing source/translation context or incompatible payload fields.
+
+### Step 8: Human evaluation capture
+- **User action:** submit manual scores and rationale.
+- **Backend action:** `POST /evaluate/human` appends submission rows to persisted CSV.
+- **System state change:** `outputs/human_fairness_scores.csv` gains new records.
+- **Success output:** auditable human-judgment dataset for triangulation.
+- **Failure modes:** invalid form values or write failures.
+
+### Step 9: Statistical/fairness aggregation
+- **User action:** open analytics views or run full pipeline.
+- **Backend action:** `GET /admin/analysis` and/or `POST /pipeline/run` aggregates scores, computes summary statistics, and prepares analysis artifacts.
+- **System state change:** dashboard-ready data and derived results are produced.
+- **Success output:** trends, distributions, comparisons, and inferential results.
+- **Failure modes:** missing source files or insufficient sample size for specific tests.
+
+### Step 10: Export and reproducibility packaging
+- **User action:** export outputs for offline analysis/reporting.
+- **Backend action:** pipeline/export utilities write CSV/JSON artifacts to `outputs/`.
+- **System state change:** versioned result files become available for downstream notebooks or manuscripts.
+- **Success output:** portable dataset + analysis artifacts.
+- **Failure modes:** partial run artifacts if upstream steps were skipped or failed.
 
 ## Recommended research rigor checklist
 - **Pre-registration discipline:** hypotheses and metrics defined before analysis.
