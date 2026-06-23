@@ -5,22 +5,11 @@ import './App.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const apiUrl = (path) => `${API_BASE_URL}${path}`
-const DEFAULT_TABS = ['Whole Eval', 'Health', 'Alerts', 'Single Eval', 'Human Eval', 'Admin Analytics']
-const USER_TABS = ['Whole Eval', 'Health', 'Alerts', 'Single Eval']
-const WORKING_TRANSLATION_SYSTEM_OPTIONS = [
-  { value: 'gpt4o', label: 'GPT-4o' },
-  { value: 'gpt5.5', label: 'GPT-5.5' },
-  { value: 'llama3', label: 'Llama 3 (Replicate)' },
-]
-const DEFAULT_TRANSLATION_SYSTEM = WORKING_TRANSLATION_SYSTEM_OPTIONS[0].value
-const normalizeSystem = (value) => (
-  WORKING_TRANSLATION_SYSTEM_OPTIONS.some(option => option.value === value)
-    ? value
-    : DEFAULT_TRANSLATION_SYSTEM
-)
+const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval', 'Admin Analytics']
+const USER_TABS = ['Health', 'Alerts', 'Single Eval', 'Batch Eval', 'Whole Eval']
 
 function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TABS }) {
-  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Whole Eval': '▥', 'Admin Analytics': '◈' }
+  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Whole Eval': '▥', 'Admin Analytics': '◈' }
   return (
     <aside className="sidebar">
       <div className="sidebar-tools">
@@ -164,6 +153,7 @@ function Health({ onNavigate }) {
         <div className="menu-grid" style={{ marginTop: 12 }}>
           <MenuCard icon="📡" title="Alerts" desc="Browse and filter recent alerts." to="Alerts" />
           <MenuCard icon="🧪" title="Single Eval" desc="Translate and evaluate a single message." to="Single Eval" />
+          <MenuCard icon="📚" title="Batch Eval" desc="Segmented batch translation and evaluation." to="Batch Eval" />
           <MenuCard icon="🧾" title="Whole Eval" desc="Whole-message translation and evaluation." to="Whole Eval" />
           <MenuCard icon="👤" title="Human Eval" desc="Manually score translations across factors." to="Human Eval" />
         </div>
@@ -840,6 +830,10 @@ function Alerts() {
     acc[k] = (acc[k] || 0) + 1
     return acc
   }, {})
+  const [byCategory, setByCategory] = useState({})
+  const [byCertainty, setByCertainty] = useState({})
+  const [byUrgency, setByUrgency] = useState({})
+  const [bySeverity, setBySeverity] = useState({})
   // Interactive filters
   const [filters, setFilters] = useState({
     category: [],
@@ -860,10 +854,15 @@ function Alerts() {
   const load = async () => {
     setLoading(true); setError(null)
     try {
-      const r = await fetch(apiUrl('/alerts'))
+      const params = new URLSearchParams({ daysBack: '7', state: 'CA' })
+      const r = await fetch(apiUrl('/alerts?' + params.toString()))
       const data = await r.json()
-      const normalizedAlerts = Array.isArray(data) ? data : []
-      setAlerts(normalizedAlerts)
+      setAlerts(data)
+      // Initial charts from full dataset; filtered charts recompute below in render
+      setByCategory(counts(data, 'category'))
+      setByCertainty(counts(data, 'certainty_level'))
+      setByUrgency(counts(data, 'urgency_level'))
+      setBySeverity(counts(data, 'severity_level'))
     } catch (e) {
       setError(String(e))
     } finally {
@@ -871,10 +870,6 @@ function Alerts() {
     }
   }
   useEffect(() => { load() }, [])
-  const byCategory = counts(alerts, 'category')
-  const byCertainty = counts(alerts, 'certainty_level')
-  const byUrgency = counts(alerts, 'urgency_level')
-  const bySeverity = counts(alerts, 'severity_level')
   const maxVal = (obj) => Object.values(obj).reduce((m, v) => Math.max(m, v || 0), 0)
   const BarChart = ({ data, title, field, selected = [], onToggle }) => {
     const labels = Object.keys(data || {})
@@ -922,10 +917,7 @@ function Alerts() {
     return <Bar data={chartData} options={options} />
   }
   // Derive filtered alerts and recompute distributions from filtered set
-  const dateKey = (iso) => {
-    const parsed = new Date(iso)
-    return Number.isNaN(parsed.getTime()) ? '' : parsed.toISOString().slice(0,10)
-  }
+  const dateKey = (iso) => { try { return new Date(iso).toISOString().slice(0,10) } catch { return '' } }
   const filteredAlerts = alerts.filter(a => (
     (filters.category.length === 0 || filters.category.includes(a.category)) &&
     (filters.certainty_level.length === 0 || filters.certainty_level.includes(a.certainty_level || '')) &&
@@ -939,16 +931,16 @@ function Alerts() {
   const urgDist = counts(filteredAlerts, 'urgency_level')
   const sevDist = counts(filteredAlerts, 'severity_level')
   // Advanced visuals (moved from Analytics)
-  const byDate = filteredAlerts.reduce((acc, a) => { const d = dateKey(a.timestamp); if (!d) return acc; acc[d] = (acc[d] || 0) + 1; return acc }, {})
+  const byDate = alerts.reduce((acc, a) => { const d = dateKey(a.timestamp); if (!d) return acc; acc[d] = (acc[d] || 0) + 1; return acc }, {})
   const dates = Object.keys(byDate).sort()
   const totalTrend = {
     labels: dates,
     datasets: [{ label: 'Alerts per day', data: dates.map(d => byDate[d] || 0), borderColor: 'rgba(70, 100, 255, 1)', backgroundColor: 'rgba(70, 100, 255, 0.25)', fill: true, tension: 0.2 }]
   }
-  const categories = Array.from(new Set(filteredAlerts.map(a => a.category))).filter(Boolean)
+  const categories = Array.from(new Set(alerts.map(a => a.category))).filter(Boolean)
   const colors = ['#4664ff','#00b894','#e17055','#fdcb6e','#6c5ce7','#00cec9','#0984e3','#d63031']
   const byDateCat = {}
-  filteredAlerts.forEach(a => { const d = dateKey(a.timestamp); if (!d) return; const c = a.category || 'unknown'; byDateCat[d] = byDateCat[d] || {}; byDateCat[d][c] = (byDateCat[d][c] || 0) + 1 })
+  alerts.forEach(a => { const d = dateKey(a.timestamp); if (!d) return; const c = a.category || 'unknown'; byDateCat[d] = byDateCat[d] || {}; byDateCat[d][c] = (byDateCat[d][c] || 0) + 1 })
   const stackedData = {
     labels: dates,
     datasets: categories.map((c, i) => ({
@@ -960,7 +952,7 @@ function Alerts() {
       stack: 'cat',
     }))
   }
-  // CSV export helpers
+  // CSV export (Batch Eval charts)
   const exportCsv = (name, header, rows) => {
     try {
       const lines = [header.join(','), ...rows.map(r => header.map(h => '"' + String(r[h] ?? '').replace(/"/g, '""') + '"').join(','))]
@@ -1017,7 +1009,7 @@ function Alerts() {
           </div>
           <div className="card" style={{ padding: 12 }}>
             <h4>Filter by Severity</h4>
-            {Object.keys(bySeverity).map(k => (
+            {Object.keys(sevDist).map(k => (
               <label key={'sev-cb-'+k} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <input type="checkbox" checked={filters.severity_level.includes(k)} onChange={() => toggleFilter('severity_level', k)} />
                 {k || 'unknown'}
@@ -1026,7 +1018,7 @@ function Alerts() {
           </div>
         </div>
       </details>
-      {(filters.category.length || filters.certainty_level.length || filters.urgency_level.length || filters.severity_level.length || filters.area.length || filters.date.length) ? (
+      {(filters.category.length || filters.certainty_level.length || filters.urgency_level.length || filters.severity_level.length) ? (
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 8 }}>
           <strong>Filters:</strong>
           {filters.category.map(v => (
@@ -1050,14 +1042,6 @@ function Alerts() {
           <button style={{ marginLeft: 'auto' }} onClick={clearFilters}>Reset Filters</button>
         </div>
       ) : null}
-      {!loading && !error && (
-        <p style={{ opacity: 0.8 }}>
-          Showing {filteredAlerts.length} of {alerts.length} alerts
-        </p>
-      )}
-      {!loading && !error && alerts.length > 0 && filteredAlerts.length === 0 && (
-        <p className="error">No alerts match the current filters. Use "Reset Filters" to view all alerts.</p>
-      )}
       <div className="card" style={{ padding: 12, marginBottom: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <h3 style={{ margin: 0, flex: 1 }}>Alert Visualizations</h3>
@@ -1068,7 +1052,16 @@ function Alerts() {
             <div className="card" style={{ padding: 12, marginTop: 12, marginBottom: 12 }}>
               <h3>Alerts Per Day</h3>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <button onClick={exportTrend} disabled={!dates.length}>Export CSV</button>
+        <div className="two-col" style={{ marginTop: 8 }}>
+          <div>
+            <h4 style={{ margin: 0 }}>Source</h4>
+            <div className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap' }}>{currentText}</div>
+          </div>
+          <div>
+            <h4 style={{ margin: 0 }}>Translation</h4>
+            <textarea ref={translationRef} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, overflow: 'hidden', resize: 'none' }} placeholder="Translated message" />
+          </div>
+        </div>
               </div>
               {dates.length ? <Line data={totalTrend} options={{ responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }, onClick: (evt, elements, chart) => { const el = elements && elements[0]; if (!el) return; const idx = el.index; const label = chart.data.labels[idx]; if (!label) return; toggleFilter('date', label) } }} /> : <p>No data.</p>}
             </div>
@@ -1113,7 +1106,7 @@ function Alerts() {
 function Translate() {
   const [source, setSource] = useState('Evacuate immediately due to wildfire.')
   const [target, setTarget] = useState('es')
-  const [system, setSystem] = useState(DEFAULT_TRANSLATION_SYSTEM)
+  const [system, setSystem] = useState('gpt4o')
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const copy = async (text) => {
@@ -1148,9 +1141,9 @@ function Translate() {
         </label>
         <label>System
           <select value={system} onChange={e => setSystem(e.target.value)}>
-            {WORKING_TRANSLATION_SYSTEM_OPTIONS.map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
+            <option value="gpt4o">GPT-4o</option>
+            <option value="google_nmt">Google NMT</option>
+            <option value="nllb200">NLLB-200</option>
           </select>
         </label>
         <button onClick={run} disabled={loading}>{loading ? 'Translating…' : 'Translate'}</button>
@@ -1275,7 +1268,7 @@ function Evaluate() {
 function SingleEval() {
   const [source, setSource] = useState('Evacuate immediately due to wildfire.')
   const [target, setTarget] = useState('es')
-  const [system, setSystem] = useState(DEFAULT_TRANSLATION_SYSTEM)
+  const [system, setSystem] = useState('gpt4o')
   const [translation, setTranslation] = useState('')
   const [evalRes, setEvalRes] = useState(null)
   const [loadingT, setLoadingT] = useState(false)
@@ -1342,9 +1335,9 @@ function SingleEval() {
         </label>
         <label>System
           <select value={system} onChange={e => setSystem(e.target.value)}>
-            {WORKING_TRANSLATION_SYSTEM_OPTIONS.map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
+            <option value="gpt4o">GPT-4o</option>
+            <option value="google_nmt">Google NMT</option>
+            <option value="nllb200">NLLB-200</option>
           </select>
         </label>
         <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -1506,6 +1499,7 @@ export default function App() {
             {tab === 'Alerts' && <Alerts />}
             {tab === 'Single Eval' && <SingleEval />}
             {tab === 'Human Eval' && <HumanEval />}
+            {tab === 'Batch Eval' && <BatchEval />}
             {tab === 'Whole Eval' && <WholeEval />}
             {tab === 'Admin Analytics' && auth?.role === 'admin' && <AdminAnalytics auth={auth} />}
           </main>
@@ -1626,18 +1620,506 @@ function HumanEval() {
   )
 }
 
+function BatchEval() {
+  const [daysBack, setDaysBack] = useState('7')
+  const [stateCode, setStateCode] = useState('CA')
+  const [targetLanguage, setTargetLanguage] = useState(() => sessionStorage.getItem('batch_language') || 'es')
+  const [useWholeMessage, setUseWholeMessage] = useState(() => {
+    try { return sessionStorage.getItem('batch_use_whole') === '1' } catch { return true }
+  })
+  const [alerts, setAlerts] = useState([])
+  const [loadingAlerts, setLoadingAlerts] = useState(false)
+  const [alertError, setAlertError] = useState(null)
+  const [idx, setIdx] = useState(0)
+  const [segments, setSegments] = useState([])
+  const [segIdx, setSegIdx] = useState(0)
+  const [loadingSegs, setLoadingSegs] = useState(false)
+  const [segmentError, setSegmentError] = useState(null)
+  const [translation, setTranslation] = useState(() => sessionStorage.getItem('batch_translation') || '')
+  const [autoEval, setAutoEval] = useState(null)
+  const [humanSaved, setHumanSaved] = useState(null)
+  const [autoLoading, setAutoLoading] = useState(false)
+  const [translationError, setTranslationError] = useState('')
+  const KEYS = [
+    ['pf1_urgency_preservation', 'Urgency preservation'],
+    ['pf2_directive_clarity', 'Directive clarity'],
+    ['pf3_risk_severity', 'Risk severity'],
+    ['pf4_authority_attribution', 'Authority attribution'],
+    ['pf5_temporal_accuracy', 'Temporal accuracy'],
+    ['pf6_procedural_completeness', 'Procedural completeness'],
+    ['if1_respectful_tone', 'Respectful tone'],
+    ['if2_inclusion', 'Inclusion'],
+    ['if3_empathy_marker', 'Empathy marker'],
+    ['if4_linguistic_clarity', 'Linguistic clarity'],
+    ['if5_cultural_appropriateness', 'Cultural appropriateness'],
+    ['if6_trust_signal', 'Trust signal'],
+  ]
+  const [scores, setScores] = useState(Object.fromEntries(KEYS.map(([k]) => [k, 1])))
+  const [notes, setNotes] = useState('')
+  const KEY_NAMES = Object.fromEntries(KEYS)
+  const half = Math.ceil(KEYS.length / 2)
+  const LEFT_KEYS = KEYS.slice(0, half)
+  const RIGHT_KEYS = KEYS.slice(half)
+  const [showViz, setShowViz] = useState(false)
+  const [compare, setCompare] = useState(true)
+  const translationRef = useRef(null)
+  const sourcePaneRef = useRef(null)
+  const autoTranslateKeyRef = useRef('')
+  const syncingRef = useRef(false)
+  const syncScroll = (fromEl, toEl) => {
+    if (!fromEl || !toEl) return
+    const maxFrom = fromEl.scrollHeight - fromEl.clientHeight
+    const maxTo = toEl.scrollHeight - toEl.clientHeight
+    const ratio = maxFrom > 0 ? (fromEl.scrollTop / maxFrom) : 0
+    toEl.scrollTop = ratio * maxTo
+  }
+  const onSourceScroll = () => {
+    const a = sourcePaneRef.current
+    const b = translationRef.current
+    if (!a || !b || syncingRef.current) return
+    syncingRef.current = true
+    syncScroll(a, b)
+    setTimeout(() => { syncingRef.current = false }, 0)
+  }
+  const onTransScroll = () => {
+    const a = translationRef.current
+    const b = sourcePaneRef.current
+    if (!a || !b || syncingRef.current) return
+    syncingRef.current = true
+    syncScroll(a, b)
+    setTimeout(() => { syncingRef.current = false }, 0)
+  }
+
+  useEffect(() => {
+    const el = translationRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    const maxH = 300
+    const h = el.scrollHeight
+    el.style.height = Math.min(h, maxH) + 'px'
+    el.style.overflow = h > maxH ? 'auto' : 'hidden'
+  }, [translation, compare])
+  useEffect(() => { try { sessionStorage.setItem('batch_language', targetLanguage) } catch {} }, [targetLanguage])
+  useEffect(() => { try { sessionStorage.setItem('batch_translation', translation) } catch {} }, [translation])
+  useEffect(() => { try { sessionStorage.setItem('batch_use_whole', useWholeMessage ? '1' : '0') } catch {} }, [useWholeMessage])
+
+  const loadBatch = async () => {
+    setLoadingAlerts(true); setAlertError(null)
+    try {
+      const params = new URLSearchParams({ daysBack, state: stateCode })
+      const r = await fetch(apiUrl('/alerts?' + params.toString()))
+      const data = await r.json()
+      const normalizedAlerts = (Array.isArray(data) ? data : []).slice().sort((a, b) => {
+        const ta = a?.timestamp ? new Date(a.timestamp).getTime() : 0
+        const tb = b?.timestamp ? new Date(b.timestamp).getTime() : 0
+        return tb - ta
+      })
+      setAlerts(normalizedAlerts)
+      setIdx(0)
+      setSegments([])
+      setSegIdx(0)
+      setTranslation('')
+      setTranslationError('')
+      setAutoEval(null)
+    } catch (e) {
+      setAlertError(String(e))
+    } finally {
+      setLoadingAlerts(false)
+    }
+  }
+
+  const currentAlert = alerts[idx]
+  const currentSegment = segments[segIdx]?.segment_text || ''
+  const currentFunction = segments[segIdx]?.communicative_function || ''
+  const currentText = useWholeMessage ? (currentAlert?.source_text || '') : currentSegment
+
+  const selectAlertIndex = (nextIdx) => {
+    const safeIdx = Math.max(0, Math.min(alerts.length - 1, nextIdx))
+    setIdx(safeIdx)
+    setSegments([])
+    setSegIdx(0)
+    setAutoEval(null)
+    setTranslation('')
+    setTranslationError('')
+  }
+
+  useEffect(() => {
+    const alertId = currentAlert?.alert_id || ''
+    const sourceKey = useWholeMessage ? `whole:${alertId}` : `segment:${alertId}:${segIdx}`
+    const key = `${targetLanguage}|${sourceKey}|${currentText}`
+    if (!currentText || autoLoading) return
+    if (autoTranslateKeyRef.current === key) return
+    autoTranslateKeyRef.current = key
+    autoTranslate()
+  }, [currentText, currentAlert, segIdx, useWholeMessage, targetLanguage])
+
+  const loadSegments = async () => {
+    if (!currentAlert) return
+    setLoadingSegs(true); setSegmentError(null)
+    try {
+      const r = await fetch(apiUrl('/segment'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: currentAlert.source_text || '', language: 'en' })
+      })
+      const data = await r.json()
+      setSegments(data.segments || [])
+      setSegIdx(0)
+      setTranslation('')
+      setAutoEval(null)
+    } catch (e) {
+      setSegmentError(String(e))
+    } finally {
+      setLoadingSegs(false)
+    }
+  }
+
+  const autoTranslate = async () => {
+    if (!currentText) return
+    setAutoLoading(true)
+    setTranslationError('')
+    try {
+      const r = await fetch(apiUrl('/translate'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gpt4o' })
+      })
+      const data = await r.json()
+      if (!r.ok) {
+        setTranslation('')
+        setTranslationError(data?.detail || 'Unable to translate right now.')
+        return
+      }
+      setTranslation(data.translation || '')
+      if (!data.translation) setTranslationError('No translation was returned for this message.')
+    } catch (e) {
+      setTranslation('')
+      setTranslationError(String(e))
+    } finally {
+      setAutoLoading(false)
+    }
+  }
+
+  const runAutoEval = async () => {
+    if (!currentText || !translation) return
+    setAutoLoading(true)
+    try {
+      const r = await fetch(apiUrl('/evaluate'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source_segment: currentText, translated_segment: translation, language: targetLanguage, context: '' })
+      })
+      const data = await r.json()
+      setAutoEval(data)
+    } finally {
+      setAutoLoading(false)
+    }
+  }
+
+  const saveHuman = async () => {
+    if (!currentText || !translation) return
+    setAutoLoading(true)
+    try {
+      const r = await fetch(apiUrl('/evaluate/human'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source_segment: currentText, translated_segment: translation, language: targetLanguage, evaluator_id: '', scores, rationale: notes ? { notes } : {} })
+      })
+      const data = await r.json()
+      // Show minimal confirmation without overwriting automated scores
+      setHumanSaved({ saved: data.saved, path: data.path })
+    } finally {
+      setAutoLoading(false)
+    }
+  }
+
+  const changeScore = (k, v) => setScores(s => ({ ...s, [k]: Number(v) }))
+
+  // Visuals based on loaded alerts (moved from Analytics)
+  const dateKey = (iso) => { try { return new Date(iso).toISOString().slice(0,10) } catch { return '' } }
+  const byDate = alerts.reduce((acc, a) => { const d = dateKey(a.timestamp); if (!d) return acc; acc[d] = (acc[d] || 0) + 1; return acc }, {})
+  const dates = Object.keys(byDate).sort()
+  const totalTrend = {
+    labels: dates,
+    datasets: [{ label: 'Alerts per day', data: dates.map(d => byDate[d] || 0), borderColor: 'rgba(70, 100, 255, 1)', backgroundColor: 'rgba(70, 100, 255, 0.25)', fill: true, tension: 0.2 }]
+  }
+  const categories = Array.from(new Set(alerts.map(a => a.category))).filter(Boolean)
+  const colors = ['#4664ff','#00b894','#e17055','#fdcb6e','#6c5ce7','#00cec9','#0984e3','#d63031']
+  const byDateCat = {}
+  alerts.forEach(a => { const d = dateKey(a.timestamp); if (!d) return; const c = a.category || 'unknown'; byDateCat[d] = byDateCat[d] || {}; byDateCat[d][c] = (byDateCat[d][c] || 0) + 1 })
+  const stackedData = {
+    labels: dates,
+    datasets: categories.map((c, i) => ({
+      label: c,
+      data: dates.map(d => (byDateCat[d]?.[c] || 0)),
+      backgroundColor: colors[i % colors.length] + 'cc',
+      borderColor: colors[i % colors.length],
+      borderWidth: 1,
+      stack: 'cat',
+    }))
+  }
+  // CSV export helpers for Batch Eval charts
+  const exportCsv = (name, header, rows) => {
+    try {
+      const lines = [header.join(','), ...rows.map(r => header.map(h => '"' + String(r[h] ?? '').replace(/"/g, '""') + '"').join(','))]
+      const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${name}_${new Date().toISOString().slice(0,19)}.csv`
+      document.body.appendChild(a)
+      a.click(); document.body.removeChild(a); URL.revokeObjectURL(url)
+    } catch {}
+  }
+  const exportTrend = () => exportCsv('batch_alerts_trend', ['date','count'], dates.map(d => ({ date: d, count: byDate[d] || 0 })))
+  const exportStacked = () => {
+    const rows = []
+    dates.forEach(d => { categories.forEach(c => rows.push({ date: d, category: c, count: (byDateCat[d]?.[c] || 0) })) })
+    exportCsv('batch_alerts_by_category_daily', ['date','category','count'], rows)
+  }
+
+
+  const steps = [
+    { key: 'load', label: 'Load Alerts', done: alerts.length > 0 },
+    { key: 'select', label: 'Select Alert', done: !!currentAlert },
+    { key: 'translate', label: 'Translate', done: !!translation },
+    { key: 'evaluate', label: 'Evaluate', done: !!autoEval },
+  ]
+  return (
+    <div className="card">
+      <h2>Batch Evaluation</h2>
+      <p style={{ opacity: 0.8, marginTop: 4 }}>Use this page for alert-by-alert review with automatic translation and manual scoring.</p>
+      <EvalContextStrip
+        mode={useWholeMessage ? 'Whole Message' : 'Segmented'}
+        language={targetLanguage}
+        currentIndex={idx}
+        total={alerts.length}
+        alertId={currentAlert?.alert_id}
+        loading={autoLoading || loadingAlerts || loadingSegs}
+        error={translationError}
+      />
+      <div className="card" style={{ padding: 8, marginTop: 8 }}>
+        <div className="row" style={{ flexWrap: 'wrap' }}>
+          {steps.map(s => (
+            <span key={s.key} className="pill" style={{ opacity: s.done ? 1 : 0.6 }}>{s.label}</span>
+          ))}
+        </div>
+      </div>
+      <div className="card" style={{ padding: 12, marginTop: 12 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <label>Days Back
+            <input value={daysBack} onChange={e => setDaysBack(e.target.value)} style={{ width: 80 }} />
+          </label>
+          <label>State
+            <input value={stateCode} onChange={e => setStateCode(e.target.value)} style={{ width: 80 }} />
+          </label>
+          <label>Language
+            <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
+              <option value="es">Spanish</option>
+              <option value="hi">Hindi</option>
+            </select>
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <input type="checkbox" checked={useWholeMessage} onChange={e => setUseWholeMessage(e.target.checked)} />
+            Use whole message (no segmentation)
+          </label>
+          <button className="primary" onClick={loadBatch} disabled={loadingAlerts}>{loadingAlerts ? <LoadingLabel text="Loading Alerts…" /> : 'Load Alerts'}</button>
+        </div>
+        {alertError && <p className="error" style={{ marginTop: 8 }}>{alertError}</p>}
+      </div>
+
+      <details className="collapse card" style={{ padding: 12, marginTop: 12 }}>
+        <summary>Alerts</summary>
+        <div style={{ marginTop: 8 }}>
+          <AlertSummary alert={currentAlert} />
+          <AlertsTable alerts={alerts} selectedId={alerts[idx]?.alert_id} pageSizeOptions={[1,10,25,50,100]} initialPageSize={1} showPager={false} onSelect={(a) => {
+            const i = alerts.findIndex(x => x.alert_id === a.alert_id)
+            selectAlertIndex(i >= 0 ? i : 0)
+          }} />
+          {!useWholeMessage && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+              <button onClick={loadSegments} disabled={!currentAlert || loadingSegs}>{loadingSegs ? <LoadingLabel text="Segmenting…" /> : 'Segment Selected'}</button>
+            </div>
+          )}
+        </div>
+      </details>
+
+      <div className="card" style={{ padding: 12, marginTop: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h3 style={{ margin: 0, flex: 1 }}>Alert Visualizations</h3>
+          <button onClick={() => setShowViz(v => !v)}>{showViz ? 'Hide' : 'Show'}</button>
+        </div>
+        {showViz && (
+          <>
+            <div className="card" style={{ padding: 12, marginTop: 12, marginBottom: 12 }}>
+              <h4>Alerts Per Day</h4>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <button onClick={exportTrend} disabled={!dates.length}>Export CSV</button>
+              </div>
+              {dates.length ? <Line data={totalTrend} options={{ responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }} /> : <p>No data.</p>}
+            </div>
+            <div className="card" style={{ padding: 12 }}>
+              <h4>Stacked by Category</h4>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <button onClick={exportStacked} disabled={!(dates.length && categories.length)}>Export CSV</button>
+              </div>
+              {dates.length && categories.length ? (
+                <Bar data={stackedData} options={{ responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } } }} />
+              ) : <p>No data.</p>}
+            </div>
+          </>
+        )}
+      </div>
+
+      {alerts.length === 0 && (
+        <div className="card" style={{ padding: 12, marginTop: 12 }}>
+          <p style={{ margin: 0 }}>No alerts loaded yet. Click <strong>Load Alerts</strong> to begin.</p>
+        </div>
+      )}
+
+      {!useWholeMessage && alerts.length > 0 && (
+        <div className="card" style={{ padding: 12, marginTop: 12 }}>
+          <h3>Segments</h3>
+          {segments.length === 0 && <p>No segments loaded yet.</p>}
+          {segments.length > 0 && (
+            <>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <button onClick={() => setSegIdx(i => Math.max(0, i - 1))} disabled={segIdx === 0}>Prev</button>
+                <span>{segIdx + 1} / {segments.length}</span>
+                <button onClick={() => setSegIdx(i => Math.min(segments.length - 1, i + 1))} disabled={segIdx >= segments.length - 1}>Next</button>
+              </div>
+              <p style={{ marginTop: 8 }}><strong>Source:</strong> {currentSegment}</p>
+              {currentFunction && <p><em>Function:</em> {currentFunction}</p>}
+            </>
+          )}
+        </div>
+      )}
+
+      <div className="card" style={{ padding: 12, marginTop: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h3 style={{ margin: 0, flex: 1 }}>Translation</h3>
+          {autoLoading && <LoadingLabel text="Translating…" />}
+          <label>Language
+            <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
+              <option value="es">Spanish</option>
+              <option value="hi">Hindi</option>
+            </select>
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <input type="checkbox" checked={compare} onChange={e => setCompare(e.target.checked)} /> Compare mode
+          </label>
+        </div>
+        {compare ? (
+          <div className="two-col" style={{ marginTop: 8 }}>
+            <div>
+              <h4 style={{ margin: 0 }}>Source</h4>
+              <div ref={sourcePaneRef} onScroll={onSourceScroll} className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap', maxHeight: 300 }}>{currentText}</div>
+            </div>
+            <div>
+              <h4 style={{ margin: 0 }}>Translation</h4>
+              <textarea ref={translationRef} onScroll={onTransScroll} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Translated segment" />
+            </div>
+          </div>
+        ) : (
+          <div style={{ marginTop: 8 }}>
+            <h4 style={{ margin: 0 }}>Source</h4>
+            <div className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap', maxHeight: 300 }}>{currentText}</div>
+            <h4 style={{ margin: '10px 0 0 0' }}>Translation</h4>
+            <textarea ref={translationRef} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Translated segment" />
+          </div>
+        )}
+        <div className="sticky-actions">
+          <button onClick={saveHuman} disabled={autoLoading || !translation}>Save Human</button>
+        </div>
+      </div>
+
+      {autoEval && (
+        <div className="card" style={{ padding: 12, marginTop: 12 }}>
+          <h3>Automated Evaluation</h3>
+          {autoEval.scores ? (
+            <>
+              <ScoreGrid scores={autoEval.scores} />
+              {autoEval.rationale && (
+                <div style={{ marginTop: 8 }}>
+                  <h4>Rationale</h4>
+                  <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(autoEval.rationale, null, 2)}</pre>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="card" style={{ marginTop: 8, padding: 8 }}>
+              {autoEval.error ? (
+                <span style={{ color: 'var(--danger, #b00)' }}>Error: {String(autoEval.error)}</span>
+              ) : (
+                <span style={{ opacity: 0.8 }}>No scores available.</span>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="card" style={{ padding: 12, marginTop: 12 }}>
+        <h3>Human Evaluation</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 8 }}>
+          <div>
+            <h4 style={{ margin: '0 0 6px 0' }}>Performance Factors</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: 8 }}>
+              {LEFT_KEYS.map(([k, label]) => (
+                <>
+                  <label key={k + '-lbl'}>{label}</label>
+                  <select key={k} value={scores[k]} onChange={e => changeScore(k, e.target.value)}>
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                  </select>
+                </>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 style={{ margin: '0 0 6px 0' }}>Inclusivity Factors</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: 8 }}>
+              {RIGHT_KEYS.map(([k, label]) => (
+                <>
+                  <label key={k + '-lbl'}>{label}</label>
+                  <select key={k} value={scores[k]} onChange={e => changeScore(k, e.target.value)}>
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                  </select>
+                </>
+              ))}
+            </div>
+          </div>
+        </div>
+        <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} style={{ width: '100%', marginTop: 12 }} placeholder="Notes / rationale (optional)" />
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          <button onClick={saveHuman} disabled={autoLoading || !translation}>Save Human Evaluation</button>
+        </div>
+        {humanSaved && humanSaved.saved && (
+          <div className="card" style={{ marginTop: 8, padding: 8 }}>
+            <strong>Human score saved.</strong> Appended to: <span style={{ opacity: 0.8 }}>{humanSaved.path}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="bottom-nav" style={{ marginTop: 12 }}>
+        <button className="primary" onClick={() => selectAlertIndex(idx - 1)} disabled={idx <= 0}>Back</button>
+        <button className="primary" onClick={() => selectAlertIndex(idx + 1)} disabled={idx >= alerts.length - 1 || alerts.length === 0}>Next</button>
+      </div>
+    </div>
+  )
+}
+
 function Analytics() {
   return (
     <div className="card">
       <h2>Analytics</h2>
-      <p style={{ opacity: 0.8 }}>Visualizations moved to Alerts and Whole Eval. Empty for now.</p>
+      <p style={{ opacity: 0.8 }}>Visualizations moved to Alerts and Batch Eval. Empty for now.</p>
     </div>
   )
 }
 
 function WholeEval() {
+  const [daysBack, setDaysBack] = useState('7')
+  const [stateCode, setStateCode] = useState('CA')
   const [targetLanguage, setTargetLanguage] = useState(() => sessionStorage.getItem('whole_language') || 'es')
-  const [system, setSystem] = useState(() => normalizeSystem(sessionStorage.getItem('whole_system') || DEFAULT_TRANSLATION_SYSTEM))
   const [alerts, setAlerts] = useState([])
   const [loadingAlerts, setLoadingAlerts] = useState(false)
   const [alertError, setAlertError] = useState(null)
@@ -1653,14 +2135,7 @@ function WholeEval() {
   const autoTranslateKeyRef = useRef('')
 
   useEffect(() => { try { sessionStorage.setItem('whole_language', targetLanguage) } catch {} }, [targetLanguage])
-  useEffect(() => { try { sessionStorage.setItem('whole_system', system) } catch {} }, [system])
   useEffect(() => { try { sessionStorage.setItem('whole_translation', translation) } catch {} }, [translation])
-  
-  // On mount, load the 48 research alerts automatically
-  useEffect(() => {
-    loadBatch()
-  }, [])
-
   useEffect(() => {
     const el = translationRef.current
     if (!el) return
@@ -1690,9 +2165,14 @@ function WholeEval() {
   const loadBatch = async () => {
     setLoadingAlerts(true); setAlertError(null)
     try {
-      const r = await fetch(apiUrl('/alerts'))
+      const params = new URLSearchParams({ daysBack, state: stateCode })
+      const r = await fetch(apiUrl('/alerts?' + params.toString()))
       const data = await r.json()
-      const normalizedAlerts = (Array.isArray(data) ? data : [])
+      const normalizedAlerts = (Array.isArray(data) ? data : []).slice().sort((a, b) => {
+        const ta = a?.timestamp ? new Date(a.timestamp).getTime() : 0
+        const tb = b?.timestamp ? new Date(b.timestamp).getTime() : 0
+        return tb - ta
+      })
       setAlerts(normalizedAlerts)
       setIdx(0)
       setTranslation('')
@@ -1720,12 +2200,12 @@ function WholeEval() {
 
   useEffect(() => {
     const alertId = currentAlert?.alert_id || ''
-    const key = `${targetLanguage}|${system}|${alertId}|${currentText}`
+    const key = `${targetLanguage}|${alertId}|${currentText}`
     if (!currentText || autoLoading) return
     if (autoTranslateKeyRef.current === key) return
     autoTranslateKeyRef.current = key
     autoTranslate()
-  }, [currentAlert, currentText, targetLanguage, system])
+  }, [currentAlert, currentText, targetLanguage])
 
   const autoTranslate = async () => {
     if (!currentText) return
@@ -1734,7 +2214,7 @@ function WholeEval() {
     try {
       const r = await fetch(apiUrl('/translate'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system })
+        body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gpt4o' })
       })
       const data = await r.json()
       if (!r.ok) {
@@ -1803,7 +2283,7 @@ function WholeEval() {
     }
   }
 
-  // Visuals based on loaded alerts
+  // Visuals based on loaded alerts (optional, same as Batch Eval)
   const dateKey = (iso) => { try { return new Date(iso).toISOString().slice(0,10) } catch { return '' } }
   const byDate = alerts.reduce((acc, a) => { const d = dateKey(a.timestamp); if (!d) return acc; acc[d] = (acc[d] || 0) + 1; return acc }, {})
   const dates = Object.keys(byDate).sort()
@@ -1859,20 +2339,20 @@ function WholeEval() {
         error={translationError}
       />
       <div className="card" style={{ padding: 12, marginTop: 12 }}>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <label>Target Language
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <label>Days Back
+            <input value={daysBack} onChange={e => setDaysBack(e.target.value)} style={{ width: 80 }} />
+          </label>
+          <label>State
+            <input value={stateCode} onChange={e => setStateCode(e.target.value)} style={{ width: 80 }} />
+          </label>
+          <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
               <option value="es">Spanish</option>
               <option value="hi">Hindi</option>
             </select>
           </label>
-          <label>System
-            <select value={system} onChange={e => setSystem(e.target.value)}>
-              {WORKING_TRANSLATION_SYSTEM_OPTIONS.map(option => (
-                <option key={option.value} value={option.value}>{option.label}</option>
-              ))}
-            </select>
-          </label>
+          <button onClick={loadBatch} disabled={loadingAlerts}>{loadingAlerts ? <LoadingLabel text="Loading Alerts…" /> : 'Load Alerts'}</button>
         </div>
         {alertError && <p className="error" style={{ marginTop: 8 }}>{alertError}</p>}
       </div>
@@ -1887,9 +2367,9 @@ function WholeEval() {
         </div>
       </details>
 
-      {alerts.length === 0 && !loadingAlerts && (
+      {alerts.length === 0 && (
         <div className="card" style={{ padding: 12, marginTop: 12 }}>
-          <p style={{ margin: 0 }}>No alerts loaded yet. Make sure the backend is running and research dataset exists.</p>
+          <p style={{ margin: 0 }}>No alerts loaded yet. Click <strong>Load Alerts</strong> to begin.</p>
         </div>
       )}
 

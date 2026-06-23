@@ -3,19 +3,13 @@ from datetime import datetime
 from typing import Dict
 from ipaws_research.utils import logger
 
-# GPT-4o
+# GPT-4o / GPT-5.5
 from openai import AsyncOpenAI
 import os
+import replicate
 
 # Google NMT
 from typing import Optional
-
-# Meta NLLB-200
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-import torch
-
-# Cache for NLLB models
-_NLLB_CACHE = {}
 
 def _offline_translate(source_text: str, target_language: str) -> Dict[str, Dict]:
     es_map = {
@@ -53,23 +47,26 @@ def _offline_translate(source_text: str, target_language: str) -> Dict[str, Dict
 async def translate_with_gpt4o(
     source_text: str,
     target_language: str,
-    preserve_urgency: bool = True
+    preserve_urgency: bool = True,
+    model: str = "gpt-4o"
 ) -> Dict[str, Dict]:
     """
-    Translate emergency alert using GPT-4o with fairness-preserving prompt.
+    Translate emergency alert using OpenAI models with fairness-preserving prompt.
     """
     assert target_language in {"es", "hi"}, "target_language must be 'es' or 'hi'"
-    client = AsyncOpenAI()
-
     if os.getenv("OFFLINE_MODE", "").lower() in ("1","true","yes"):
         return _offline_translate(source_text, target_language)
 
-    lang_name = "Spanish" if target_language == "es" else "Hindi"
-    cultural_notes = (
-        "Use clear public service style common in Spanish-language public safety communications in the U.S."
-        if target_language == "es"
-        else "Use formal Hindi appropriate for public advisories in India; avoid slang; ensure comprehension across dialects."
-    )
+    client = AsyncOpenAI()
+
+    lang_names = {"es": "Spanish", "hi": "Hindi"}
+    lang_name = lang_names.get(target_language, "Spanish")
+
+    cultural_notes_map = {
+        "es": "Use clear public service style common in Spanish-language public safety communications in the U.S.",
+        "hi": "Use formal Hindi appropriate for public advisories in India; avoid slang; ensure comprehension across dialects.",
+    }
+    cultural_notes = cultural_notes_map.get(target_language, "")
 
     system_prompt = (
         f"You are translating an emergency alert from English to {lang_name}. "
@@ -87,47 +84,74 @@ async def translate_with_gpt4o(
     retries = 3
     delay = 1.5
     last_err: Optional[Exception] = None
+    # Map friendly names to actual model strings
+    model_map = {
+        "gpt4o": "gpt-4o",
+        "gpt5.5": os.getenv("OPENAI_GPT55_MODEL", "gpt-5.5"),
+    }
+    target_model = model_map.get(model, model)
+    use_responses_api = target_model.startswith("gpt-5")
+    
     for attempt in range(1, retries + 1):
         try:
-            model_name = os.environ.get("OPENAI_MODEL", "gpt-4o")
-            # Prefer Chat Completions for broader SDK compatibility
-            resp = await client.chat.completions.create(
-                model=model_name,
-                temperature=0.3,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt},
-                ],
-            )
-            text = resp.choices[0].message.content or ""
-            usage_tokens = None
-            try:
-                usage = getattr(resp, "usage", None)
-                if usage:
-                    usage_tokens = getattr(usage, "total_tokens", None) or (
-                        getattr(usage, "prompt_tokens", 0) + getattr(usage, "completion_tokens", 0)
-                    )
-            except Exception:
+            if use_responses_api:
+                resp = await client.responses.create(
+                    model=target_model,
+                    instructions=system_prompt,
+                    input=user_prompt,
+                    reasoning={"effort": "low"},
+                    text={"verbosity": "low"},
+                    store=False,
+                )
+                text = (getattr(resp, "output_text", None) or "").strip()
                 usage_tokens = None
+                try:
+                    usage = getattr(resp, "usage", None)
+                    if usage:
+                        usage_tokens = getattr(usage, "total_tokens", None) or (
+                            (getattr(usage, "input_tokens", 0) or 0)
+                            + (getattr(usage, "output_tokens", 0) or 0)
+                        )
+                except Exception:
+                    usage_tokens = None
+            else:
+                resp = await client.chat.completions.create(
+                    model=target_model,
+                    temperature=0.3,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt},
+                    ],
+                )
+                text = (resp.choices[0].message.content or "").strip()
+                usage_tokens = None
+                try:
+                    usage = getattr(resp, "usage", None)
+                    if usage:
+                        usage_tokens = getattr(usage, "total_tokens", None) or (
+                            getattr(usage, "prompt_tokens", 0) + getattr(usage, "completion_tokens", 0)
+                        )
+                except Exception:
+                    usage_tokens = None
 
             metadata = {
-                "model": model_name,
+                "model": target_model,
                 "timestamp": datetime.utcnow().isoformat(),
                 "tokens": str(usage_tokens) if usage_tokens is not None else ""
             }
-            return {"translation": text.strip(), "metadata": metadata}
+            return {"translation": text, "metadata": metadata}
         except Exception as e:
             last_err = e
-            logger.warning(f"GPT-4o translation attempt {attempt} failed: {e}")
+            logger.warning(f"OpenAI translation attempt {attempt} failed: {e}")
             await asyncio.sleep(delay)
             delay *= 2
 
-    raise RuntimeError(f"translate_with_gpt4o failed after retries: {last_err}")
+    raise RuntimeError(f"OpenAI translation failed after retries: {last_err}")
 
 async def translate_with_google_nmt(
     source_text: str,
     target_language: str,
-    project_id: str = "your-project-id"
+    project_id: Optional[str] = None
 ) -> Dict[str, Dict]:
     """
     Translate using Google Cloud Translation API (NMT v3). Wrap sync client in thread to maintain async.
@@ -137,10 +161,24 @@ async def translate_with_google_nmt(
     if os.getenv("OFFLINE_MODE", "").lower() in ("1","true","yes"):
         return _offline_translate(source_text, target_language)
 
-    async def _do_translate():
+    def _resolve_project_id() -> Optional[str]:
+        explicit_project_id = project_id or os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT_ID")
+        if explicit_project_id:
+            return explicit_project_id
+        try:
+            import google.auth
+            _, detected_project_id = google.auth.default()
+            return detected_project_id
+        except Exception:
+            return None
+
+    def _do_translate():
         from google.cloud import translate_v3
+        effective_project_id = _resolve_project_id()
+        if not effective_project_id:
+            raise RuntimeError("GOOGLE_CLOUD_PROJECT or GCP_PROJECT_ID must be set, or Google ADC must expose a default project, for Google NMT")
         client = translate_v3.TranslationServiceClient()
-        parent = f"projects/{project_id}/locations/global"
+        parent = f"projects/{effective_project_id}/locations/global"
         lang_map = {"es": "es-ES", "hi": "hi-IN"}
         target_code = lang_map[target_language]
         request = translate_v3.TranslateTextRequest(
@@ -163,56 +201,62 @@ async def translate_with_google_nmt(
 
     return await asyncio.to_thread(_do_translate)
 
-async def translate_with_nllb200(
+async def translate_with_llama3(
     source_text: str,
-    target_language: str,
-    model_size: str = "distilled-600M"
+    target_language: str
 ) -> Dict[str, Dict]:
     """
-    Translate using Meta's NLLB-200 with caching and beam search.
+    Translate using a Replicate-hosted Llama 3 instruct model.
     """
     assert target_language in {"es", "hi"}, "target_language must be 'es' or 'hi'"
 
     if os.getenv("OFFLINE_MODE", "").lower() in ("1","true","yes"):
         return _offline_translate(source_text, target_language)
-    repo_map = {
-        "distilled-600M": "facebook/nllb-200-distilled-600M",
-        "1.3B": "facebook/nllb-200-1.3B",
-        "3.3B": "facebook/nllb-200-3.3B",
-    }
-    repo = repo_map.get(model_size, repo_map["distilled-600M"])
 
-    def _load_model():
-        if repo not in _NLLB_CACHE:
-            tokenizer = AutoTokenizer.from_pretrained(repo)
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-            model = AutoModelForSeq2SeqLM.from_pretrained(repo)
-            model.to(device)
-            _NLLB_CACHE[repo] = {"tokenizer": tokenizer, "model": model, "device": device}
-        return _NLLB_CACHE[repo]
+    api_token = os.getenv("REPLICATE_API_TOKEN")
+    if not api_token:
+        raise RuntimeError("REPLICATE_API_TOKEN not set for Llama 3 translation")
 
-    def _translate_sync():
-        bundle = _load_model()
-        tokenizer = bundle["tokenizer"]
-        model = bundle["model"]
-        device = bundle["device"]
-        # Language codes
-        src = "eng_Latn"
-        tgt = "spa_Latn" if target_language == "es" else "hin_Deva"
-        inputs = tokenizer(source_text, return_tensors="pt")
-        inputs = {k: v.to(device) for k, v in inputs.items()}
-        generated_tokens = model.generate(
-            **inputs,
-            forced_bos_token_id=tokenizer.convert_tokens_to_ids(tgt),
-            num_beams=5,
-            max_length=512,
+    model_name = os.getenv("REPLICATE_LLAMA3_MODEL", "meta/meta-llama-3-8b-instruct")
+    lang_name = "Spanish" if target_language == "es" else "Hindi"
+    system_prompt = (
+        f"You translate emergency alerts from English to {lang_name}. "
+        "Preserve urgency, directives, hazard severity, timelines, and official tone. "
+        "Return only the translated alert text with no explanation."
+    )
+    prompt = f"Translate this emergency alert into {lang_name}:\n\n{source_text}"
+
+    def _coerce_output(value) -> str:
+        if isinstance(value, str):
+            return value.strip()
+        if isinstance(value, list):
+            return "".join(str(item) for item in value).strip()
+        return str(value).strip()
+
+    def _run_replicate():
+        return replicate.run(
+            model_name,
+            input={
+                "prompt": prompt,
+                "temperature": 0.2,
+                "max_tokens": 256,
+                "min_tokens": 0,
+                "top_p": 0.95,
+                "prompt_template": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n" + system_prompt + "<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+                "presence_penalty": 1.0,
+                "frequency_penalty": 0.1,
+            }
         )
-        result = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+
+    try:
+        result = await asyncio.to_thread(_run_replicate)
+        translation = _coerce_output(result)
         metadata = {
-            "model": repo,
+            "model": model_name,
             "timestamp": datetime.utcnow().isoformat(),
             "tokens": "",
         }
-        return {"translation": result.strip(), "metadata": metadata}
-
-    return await asyncio.to_thread(_translate_sync)
+        return {"translation": translation, "metadata": metadata}
+    except Exception as e:
+        logger.error(f"Replicate Llama 3 translation failed: {e}")
+        raise RuntimeError(f"Replicate Llama 3 translation failed: {e}")
