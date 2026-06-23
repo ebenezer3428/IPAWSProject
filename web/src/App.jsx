@@ -5,11 +5,11 @@ import './App.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const apiUrl = (path) => `${API_BASE_URL}${path}`
-const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval', 'Admin Analytics']
+const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval', 'Alert Pool', 'Admin Analytics']
 const USER_TABS = ['Health', 'Alerts', 'Single Eval', 'Batch Eval', 'Whole Eval']
 
 function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TABS }) {
-  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Whole Eval': '▥', 'Admin Analytics': '◈' }
+  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Whole Eval': '▥', 'Alert Pool': '⬚', 'Admin Analytics': '◈' }
   return (
     <aside className="sidebar">
       <div className="sidebar-tools">
@@ -1375,6 +1375,170 @@ function SingleEval() {
   )
 }
 
+function AlertPool({ auth }) {
+  const [alerts, setAlerts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [selected, setSelected] = useState(new Set())
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
+  const [saveSuccess, setSaveSuccess] = useState(false)
+
+  const load = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const r = await fetch(apiUrl('/admin/alert-pool'), {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) {
+        throw new Error(payload?.detail || `Unable to load alert pool (${r.status})`)
+      }
+      setAlerts(payload.alerts || [])
+      setSelected(new Set(payload.alerts.filter(a => a.selected).map(a => a.id)))
+    } catch (e) {
+      setError(e?.message || String(e))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    load()
+  }, [auth?.token])
+
+  const toggleAlert = (id) => {
+    const newSelected = new Set(selected)
+    if (newSelected.has(id)) {
+      newSelected.delete(id)
+    } else {
+      newSelected.add(id)
+    }
+    setSelected(newSelected)
+  }
+
+  const saveSelection = async () => {
+    if (selected.size !== 48) {
+      setSaveError(`Please select exactly 48 alerts (currently ${selected.size} selected)`)
+      return
+    }
+    setSaving(true)
+    setSaveError('')
+    setSaveSuccess(false)
+    try {
+      const r = await fetch(apiUrl('/admin/alert-pool/select'), {
+        method: 'POST',
+        headers: { 
+          'Authorization': `Bearer ${auth.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ selected_ids: Array.from(selected) })
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) {
+        throw new Error(payload?.detail || `Save failed (${r.status})`)
+      }
+      setSaveSuccess(true)
+      setTimeout(() => setSaveSuccess(false), 3000)
+    } catch (e) {
+      setSaveError(e?.message || String(e))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="card chart-card">
+        <h2 style={{ marginTop: 0 }}>Alert Pool Selection</h2>
+        <LoadingLabel text="Loading alert pool…" />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="card chart-card">
+        <h2 style={{ marginTop: 0 }}>Alert Pool Selection</h2>
+        <p className="error">{error}</p>
+        <button className="primary" onClick={load}>Retry</button>
+      </div>
+    )
+  }
+
+  // Group alerts by category
+  const grouped = {}
+  alerts.forEach(alert => {
+    if (!grouped[alert.category]) grouped[alert.category] = []
+    grouped[alert.category].push(alert)
+  })
+
+  const categories = ['weather', 'evacuation', 'public_safety', 'health']
+  const categoryLabels = {
+    'weather': 'Weather',
+    'evacuation': 'Evacuation',
+    'public_safety': 'Public Safety',
+    'health': 'Health'
+  }
+
+  return (
+    <div className="card chart-card" style={{ maxHeight: '90vh', overflow: 'auto' }}>
+      <h2 style={{ marginTop: 0 }}>Alert Pool Selection</h2>
+      <div style={{ marginBottom: 16 }}>
+        <p style={{ marginBottom: 8 }}>
+          <strong>Selected: {selected.size} / 70 alerts</strong>
+        </p>
+        {selected.size !== 48 && (
+          <p style={{ color: 'var(--color-warn)', marginBottom: 8, fontSize: '0.9em' }}>
+            ⚠ Select exactly 48 alerts to enable save
+          </p>
+        )}
+      </div>
+
+      {categories.map(cat => (
+        grouped[cat]?.length > 0 && (
+          <div key={cat} style={{ marginBottom: 24 }}>
+            <h3 style={{ marginTop: 0, marginBottom: 12 }}>
+              {categoryLabels[cat]} ({grouped[cat].length})
+            </h3>
+            <div style={{ display: 'grid', gap: 8 }}>
+              {grouped[cat].map(alert => (
+                <label key={alert.id} style={{ display: 'flex', gap: 8, cursor: 'pointer', padding: '8px', borderRadius: '4px', background: 'var(--bg-secondary)', alignItems: 'flex-start' }}>
+                  <input
+                    type="checkbox"
+                    checked={selected.has(alert.id)}
+                    onChange={() => toggleAlert(alert.id)}
+                    style={{ marginTop: '2px', cursor: 'pointer' }}
+                  />
+                  <span style={{ fontSize: '0.9em', flex: 1, lineHeight: 1.4 }}>
+                    {alert.text.substring(0, 120)}...
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )
+      ))}
+
+      <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--bg-secondary)', display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'space-between' }}>
+        <div>
+          {saveSuccess && <p style={{ color: 'var(--color-success)', margin: 0 }}>✓ Selection saved successfully</p>}
+          {saveError && <p className="error" style={{ margin: 0 }}>{saveError}</p>}
+        </div>
+        <button
+          className="primary"
+          onClick={saveSelection}
+          disabled={saving || selected.size !== 48}
+          style={{ opacity: selected.size !== 48 ? 0.5 : 1 }}
+        >
+          {saving ? 'Saving…' : 'Save Selection'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function App() {
   const [tab, setTab] = useState('Health')
   const [light, setLight] = useState(() => {
@@ -1501,6 +1665,7 @@ export default function App() {
             {tab === 'Human Eval' && <HumanEval />}
             {tab === 'Batch Eval' && <BatchEval />}
             {tab === 'Whole Eval' && <WholeEval />}
+            {tab === 'Alert Pool' && auth?.role === 'admin' && <AlertPool auth={auth} />}
             {tab === 'Admin Analytics' && auth?.role === 'admin' && <AdminAnalytics auth={auth} />}
           </main>
         </div>

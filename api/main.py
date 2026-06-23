@@ -81,6 +81,76 @@ DOWNLOADABLE_OUTPUTS: Dict[str, Dict[str, str]] = {
     },
 }
 
+# Alert pool: admin selects which alerts are used in evaluation
+ALERT_POOL_FILE = OUTPUTS_DIR / ".alert_pool_selected.json"
+ALERT_POOL_SELECTED: set = set()  # in-memory cache of selected alert IDs
+
+
+def _load_alert_pool():
+    """Load selected alert IDs from disk into memory."""
+    global ALERT_POOL_SELECTED
+    if ALERT_POOL_FILE.exists():
+        try:
+            with open(ALERT_POOL_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                ALERT_POOL_SELECTED = set(data.get("selected_ids", []))
+        except Exception:
+            pass
+
+
+def _save_alert_pool():
+    """Persist selected alert IDs to disk."""
+    try:
+        with open(ALERT_POOL_FILE, "w", encoding="utf-8") as f:
+            json.dump({"selected_ids": list(ALERT_POOL_SELECTED)}, f)
+    except Exception as e:
+        print(f"Failed to save alert pool: {e}")
+
+
+# Load on startup
+_load_alert_pool()
+
+
+def _load_all_alert_templates() -> Dict[str, List[str]]:
+    """Load alert templates from templates.json."""
+    templates_file = Path(__file__).resolve().parents[1] / "ipaws_research" / "resources" / "templates.json"
+    if templates_file.exists():
+        try:
+            with open(templates_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Failed to load templates: {e}")
+    return {}
+
+
+def _build_alert_pool_response() -> AlertPoolResponse:
+    """Build the full alert pool response with 70 alerts and selection status."""
+    templates = _load_all_alert_templates()
+    alerts: List[AlertPoolItem] = []
+    alert_id = 0
+    
+    # Iterate through all categories
+    for category in ["weather", "evacuation", "public_safety", "health"]:
+        items = templates.get(category, [])
+        for text in items:
+            alert_id_str = str(alert_id)
+            alert = AlertPoolItem(
+                id=alert_id_str,
+                text=text,
+                category=category,
+                selected=alert_id_str in ALERT_POOL_SELECTED
+            )
+            alerts.append(alert)
+            alert_id += 1
+    
+    return AlertPoolResponse(
+        total=len(alerts),
+        selected=len(ALERT_POOL_SELECTED),
+        alerts=alerts
+    )
+
+
+
 class TranslationRequest(BaseModel):
     source_text: str
     target_language: str = Field(pattern="^(es|hi)$")
@@ -163,6 +233,20 @@ class SessionStatusResponse(BaseModel):
     role: str
     username: str
     expires_at: str
+
+class AlertPoolItem(BaseModel):
+    id: str
+    text: str
+    category: str
+    selected: bool
+
+class AlertPoolResponse(BaseModel):
+    total: int
+    selected: int
+    alerts: List[AlertPoolItem]
+
+class AlertPoolSelectionRequest(BaseModel):
+    selected_ids: List[str]
 
 # Simple dedupe by normalized source_text
 def _normalize_text(text: str) -> str:
@@ -663,6 +747,34 @@ async def admin_download_csv(dataset_key: str, authorization: Optional[str] = He
         raise HTTPException(status_code=404, detail="Requested CSV file does not exist")
     return FileResponse(str(csv_path), media_type="text/csv", filename=meta["filename"])
 
+@app.get("/admin/alert-pool", response_model=AlertPoolResponse)
+async def admin_alert_pool(authorization: Optional[str] = Header(default=None)):
+    """Return all 70 alert pool items with selection status (admin only)."""
+    _require_session_role(authorization, "admin")
+    return _build_alert_pool_response()
+
+@app.post("/admin/alert-pool/select")
+async def admin_alert_pool_select(
+    request: AlertPoolSelectionRequest,
+    authorization: Optional[str] = Header(default=None)
+):
+    """Admin selects which alerts appear in evaluation (admin only)."""
+    _require_session_role(authorization, "admin")
+    global ALERT_POOL_SELECTED
+    
+    # Validate: should select exactly 48 alerts
+    if len(request.selected_ids) != 48:
+        raise HTTPException(status_code=400, detail=f"Must select exactly 48 alerts, got {len(request.selected_ids)}")
+    
+    ALERT_POOL_SELECTED = set(request.selected_ids)
+    _save_alert_pool()
+    
+    return {
+        "success": True,
+        "total_selected": len(ALERT_POOL_SELECTED),
+        "message": "Alert pool selection updated successfully"
+    }
+
 @app.get("/alerts", response_model=List[dict])
 async def alerts(
     category: Optional[str] = None,
@@ -677,47 +789,45 @@ async def alerts(
     wkt: Optional[str] = None,
     bbox: Optional[str] = None,  # minLon,minLat,maxLon,maxLat
 ):
-    """Return alerts. Default returns the fixed 48 CA alerts across hazards."""
+    """Return alerts. Default returns the selected 48 alerts from admin pool."""
     
     # Check if we should return the research dataset (default)
     is_default = (not category and not startDate and not endDate and not daysBack)
     
     if is_default or source == "research":
-        research_file = OUTPUTS_DIR / "ca_alerts.json"
-        if research_file.exists():
-            with open(research_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                # Map to frontend expected format
-                results = []
-                amber_count = 0
-                for item in data:
-                    src_text = item.get("source_text", "")
-                    # Filter out short or empty alerts
-                    if not src_text or len(src_text) < 50:
-                        continue
-                        
-                    # Limit Amber alerts to at most 3
-                    is_amber = "AMBER Alert" in src_text
-                    if is_amber:
-                        if amber_count >= 3:
-                            continue
-                        amber_count += 1
-                        
-                    results.append({
-                        "alert_id": item.get("id"),
-                        "source_text": src_text,
-                        "category": item.get("hazard_type"),
-                        "event": item.get("event_type"),
-                        "timestamp": item.get("date"),
-                        "agency": item.get("agency")
-                    })
-                return results[:48]
+        # Load alert templates
+        templates = _load_all_alert_templates()
+        
+        # Build all alerts with their IDs
+        all_alerts = []
+        alert_id = 0
+        for cat in ["weather", "evacuation", "public_safety", "health"]:
+            for text in templates.get(cat, []):
+                all_alerts.append({
+                    "alert_id": str(alert_id),
+                    "source_text": text,
+                    "category": cat,
+                    "hazard_type": cat.replace("_", " ").title(),
+                    "event_type": cat.replace("_", " ").title(),
+                    "timestamp": "2020-2026",
+                    "agency": "FEMA/IPAWS"
+                })
+                alert_id += 1
+        
+        # If selection pool exists and has alerts, use it; otherwise default to first 48
+        if ALERT_POOL_SELECTED and len(ALERT_POOL_SELECTED) == 48:
+            selected_indices = set(int(idx) for idx in ALERT_POOL_SELECTED)
+            results = [a for a in all_alerts if int(a["alert_id"]) in selected_indices]
+        else:
+            results = all_alerts[:48]
+        
+        return results
 
     if source == "latest" and CURRENT_STATE.get("alerts"):
-        alerts = CURRENT_STATE["alerts"]  # type: ignore
+        alerts_list = CURRENT_STATE["alerts"]  # type: ignore
         # Coerce to models if necessary
         out: List[EmergencyAlert] = []
-        for a in alerts:  # type: ignore
+        for a in alerts_list:  # type: ignore
             if isinstance(a, EmergencyAlert):
                 out.append(a)
             else:
