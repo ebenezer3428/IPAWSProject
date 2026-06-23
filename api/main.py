@@ -22,7 +22,7 @@ from statsmodels.stats.anova import anova_lm
 # Ensure .env variables (e.g., OPENAI_API_KEY) are loaded on startup
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
-from ipaws_research.translations import translate_with_gpt4o, translate_with_google_nmt, translate_with_llama3
+from ipaws_research.translations import translate_with_gemini, translate_with_gpt4o, translate_with_llama3
 from ipaws_research.segmentation import segment_alert
 from ipaws_research.evaluation import evaluate_segment_fairness
 from ipaws_research.workflow import create_research_workflow
@@ -84,7 +84,7 @@ DOWNLOADABLE_OUTPUTS: Dict[str, Dict[str, str]] = {
 class TranslationRequest(BaseModel):
     source_text: str
     target_language: str = Field(pattern="^(es|hi)$")
-    system: str = Field(default="gpt4o", pattern="^(gpt4o|gpt5.5|google_nmt|llama3)$")
+    system: str = Field(default="gemini", pattern="^(gemini|gpt5.5|llama3)$")
 
 class TranslationResponse(BaseModel):
     translation: str
@@ -126,7 +126,7 @@ class HumanEvaluationResponse(BaseModel):
 class PipelineRequest(BaseModel):
     sample_size: int = 3
     target_languages: List[str] = ["es"]
-    translation_systems: List[str] = ["gpt4o"]
+    translation_systems: List[str] = ["gemini"]
     offline: bool = True
 
 class PipelineResponse(BaseModel):
@@ -822,10 +822,10 @@ if FRONTEND_DIST.exists():
 @app.post("/translate", response_model=TranslationResponse)
 async def translate(req: TranslationRequest):
     try:
-        if req.system in ("gpt4o", "gpt5.5"):
-            res = await translate_with_gpt4o(req.source_text, req.target_language, model=req.system)
-        elif req.system == "google_nmt":
-            res = await translate_with_google_nmt(req.source_text, req.target_language)
+        if req.system == "gemini":
+            res = await translate_with_gemini(req.source_text, req.target_language)
+        elif req.system == "gpt5.5":
+            res = await translate_with_gpt4o(req.source_text, req.target_language, model="gpt5.5")
         else:
             res = await translate_with_llama3(req.source_text, req.target_language)
         return TranslationResponse(translation=res["translation"], metadata=res["metadata"])

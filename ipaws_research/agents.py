@@ -2,7 +2,7 @@ import asyncio
 from typing import Dict, List
 from ipaws_research.models import EmergencyAlert, TranslatedAlert, AlertSegment, FairnessScore, CompositeScores, StatisticalResults
 from ipaws_research.alert_retrieval import fetch_ipaws_alerts
-from ipaws_research.translations import translate_with_gpt4o, translate_with_google_nmt, translate_with_llama3
+from ipaws_research.translations import translate_with_gemini, translate_with_gpt4o, translate_with_llama3
 from ipaws_research.segmentation import segment_alert
 from ipaws_research.evaluation import evaluate_segment_fairness
 from ipaws_research.stats import test_hypothesis_h1, test_hypothesis_h2, test_hypothesis_h3
@@ -28,15 +28,15 @@ async def retrieve_alerts_agent(state: Dict) -> Dict:
 async def translation_agent(state: Dict) -> Dict:
     logger.info("Translating alerts across systems and languages...")
     alerts: List[EmergencyAlert] = state.get("alerts", [])
-    systems = state.get("translation_systems", ["gpt4o","google_nmt","nllb200"])
+    systems = state.get("translation_systems", ["gemini","gpt5.5","llama3"])
     langs = state.get("target_languages", ["es","hi"])  
     translations: List[TranslatedAlert] = []
 
     async def translate_one(alert: EmergencyAlert, system: str, lang: str) -> TranslatedAlert:
-        if system == "gpt4o":
-            res = await translate_with_gpt4o(alert.source_text, lang)
-        elif system == "google_nmt":
-            res = await translate_with_google_nmt(alert.source_text, lang)
+        if system == "gemini":
+            res = await translate_with_gemini(alert.source_text, lang)
+        elif system == "gpt5.5":
+            res = await translate_with_gpt4o(alert.source_text, lang, model="gpt5.5")
         else:
             res = await translate_with_llama3(alert.source_text, lang)
         return TranslatedAlert(

@@ -1106,7 +1106,7 @@ function Alerts() {
 function Translate() {
   const [source, setSource] = useState('Evacuate immediately due to wildfire.')
   const [target, setTarget] = useState('es')
-  const [system, setSystem] = useState('gpt4o')
+  const [system, setSystem] = useState('gemini')
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const copy = async (text) => {
@@ -1141,9 +1141,9 @@ function Translate() {
         </label>
         <label>System
           <select value={system} onChange={e => setSystem(e.target.value)}>
-            <option value="gpt4o">GPT-4o</option>
-            <option value="google_nmt">Google NMT</option>
-            <option value="nllb200">NLLB-200</option>
+            <option value="gemini">Gemini 2.0 Flash</option>
+            <option value="gpt5.5">GPT-5.5</option>
+            <option value="llama3">Llama 3 (Replicate)</option>
           </select>
         </label>
         <button onClick={run} disabled={loading}>{loading ? 'Translating…' : 'Translate'}</button>
@@ -1268,7 +1268,7 @@ function Evaluate() {
 function SingleEval() {
   const [source, setSource] = useState('Evacuate immediately due to wildfire.')
   const [target, setTarget] = useState('es')
-  const [system, setSystem] = useState('gpt4o')
+  const [system, setSystem] = useState('gemini')
   const [translation, setTranslation] = useState('')
   const [evalRes, setEvalRes] = useState(null)
   const [loadingT, setLoadingT] = useState(false)
@@ -1335,9 +1335,9 @@ function SingleEval() {
         </label>
         <label>System
           <select value={system} onChange={e => setSystem(e.target.value)}>
-            <option value="gpt4o">GPT-4o</option>
-            <option value="google_nmt">Google NMT</option>
-            <option value="nllb200">NLLB-200</option>
+            <option value="gemini">Gemini 2.0 Flash</option>
+            <option value="gpt5.5">GPT-5.5</option>
+            <option value="llama3">Llama 3 (Replicate)</option>
           </select>
         </label>
         <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -1780,7 +1780,7 @@ function BatchEval() {
     try {
       const r = await fetch(apiUrl('/translate'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gpt4o' })
+        body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gemini' })
       })
       const data = await r.json()
       if (!r.ok) {
@@ -2214,7 +2214,7 @@ function WholeEval() {
     try {
       const r = await fetch(apiUrl('/translate'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gpt4o' })
+        body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gemini' })
       })
       const data = await r.json()
       if (!r.ok) {

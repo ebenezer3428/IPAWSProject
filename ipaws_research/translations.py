@@ -3,10 +3,14 @@ from datetime import datetime
 from typing import Dict
 from ipaws_research.utils import logger
 
-# GPT-4o / GPT-5.5
+# GPT-5.5
 from openai import AsyncOpenAI
 import os
 import replicate
+
+# Gemini
+from google import genai as google_genai
+from google.genai import types as genai_types
 
 # Google NMT
 from typing import Optional
@@ -260,3 +264,64 @@ async def translate_with_llama3(
     except Exception as e:
         logger.error(f"Replicate Llama 3 translation failed: {e}")
         raise RuntimeError(f"Replicate Llama 3 translation failed: {e}")
+
+async def translate_with_gemini(
+    source_text: str,
+    target_language: str,
+) -> Dict[str, Dict]:
+    """
+    Translate using Google Gemini (gemini-2.0-flash by default).
+    Requires GEMINI_API_KEY in environment.
+    """
+    assert target_language in {"es", "hi"}, "target_language must be 'es' or 'hi'"
+
+    if os.getenv("OFFLINE_MODE", "").lower() in ("1", "true", "yes"):
+        return _offline_translate(source_text, target_language)
+
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY not set for Gemini translation")
+
+    model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    lang_name = "Spanish" if target_language == "es" else "Hindi"
+    cultural_notes = (
+        "Use clear public service style common in Spanish-language public safety communications in the U.S."
+        if target_language == "es"
+        else "Use formal Hindi appropriate for public advisories; avoid slang; ensure comprehension across dialects."
+    )
+    prompt = (
+        f"You are translating an emergency alert from English to {lang_name}. "
+        "CRITICAL: Preserve urgency markers (immediately, now, life-threatening), directive clarity (evacuate, shelter), "
+        "risk severity language, and institutional authority. Adapt culturally while maintaining an authoritative emergency tone. "
+        f"{cultural_notes} Keep information complete and timelines accurate.\n\n"
+        f"Translate faithfully and clearly:\n\n{source_text}"
+    )
+
+    def _run_gemini():
+        client = google_genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+            config=genai_types.GenerateContentConfig(
+                temperature=0.3,
+                max_output_tokens=512,
+            ),
+        )
+        text = (response.text or "").strip()
+        usage = getattr(response, "usage_metadata", None)
+        tokens = None
+        if usage:
+            tokens = getattr(usage, "total_token_count", None)
+        return text, model_name, tokens
+
+    try:
+        text, model_used, tokens = await asyncio.to_thread(_run_gemini)
+        metadata = {
+            "model": model_used,
+            "timestamp": datetime.utcnow().isoformat(),
+            "tokens": str(tokens) if tokens is not None else "",
+        }
+        return {"translation": text, "metadata": metadata}
+    except Exception as e:
+        logger.error(f"Gemini translation failed: {e}")
+        raise RuntimeError(f"Gemini translation failed: {e}")
