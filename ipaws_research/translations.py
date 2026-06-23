@@ -8,10 +8,6 @@ from openai import AsyncOpenAI
 import os
 import replicate
 
-# Gemini
-from google import genai as google_genai
-from google.genai import types as genai_types
-
 # Google NMT
 from typing import Optional
 
@@ -270,19 +266,19 @@ async def translate_with_gemini(
     target_language: str,
 ) -> Dict[str, Dict]:
     """
-    Translate using Google Gemini (gemini-2.0-flash by default).
-    Requires GEMINI_API_KEY in environment.
+    Translate using Google Gemini via Replicate.
+    Requires REPLICATE_API_TOKEN in environment.
     """
     assert target_language in {"es", "hi"}, "target_language must be 'es' or 'hi'"
 
     if os.getenv("OFFLINE_MODE", "").lower() in ("1", "true", "yes"):
         return _offline_translate(source_text, target_language)
 
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY not set for Gemini translation")
+    api_token = os.getenv("REPLICATE_API_TOKEN")
+    if not api_token:
+        raise RuntimeError("REPLICATE_API_TOKEN not set for Gemini translation")
 
-    model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    model_name = os.getenv("REPLICATE_GEMINI_MODEL", "google/gemini-3.1-pro")
     lang_name = "Spanish" if target_language == "es" else "Hindi"
     cultural_notes = (
         "Use clear public service style common in Spanish-language public safety communications in the U.S."
@@ -298,30 +294,20 @@ async def translate_with_gemini(
     )
 
     def _run_gemini():
-        client = google_genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model=model_name,
-            contents=prompt,
-            config=genai_types.GenerateContentConfig(
-                temperature=0.3,
-                max_output_tokens=512,
-            ),
+        output = replicate.stream(
+            model_name,
+            input={"prompt": prompt},
         )
-        text = (response.text or "").strip()
-        usage = getattr(response, "usage_metadata", None)
-        tokens = None
-        if usage:
-            tokens = getattr(usage, "total_token_count", None)
-        return text, model_name, tokens
+        return "".join(str(event) for event in output).strip()
 
     try:
-        text, model_used, tokens = await asyncio.to_thread(_run_gemini)
+        text = await asyncio.to_thread(_run_gemini)
         metadata = {
-            "model": model_used,
+            "model": model_name,
             "timestamp": datetime.utcnow().isoformat(),
-            "tokens": str(tokens) if tokens is not None else "",
+            "tokens": "",
         }
         return {"translation": text, "metadata": metadata}
     except Exception as e:
-        logger.error(f"Gemini translation failed: {e}")
-        raise RuntimeError(f"Gemini translation failed: {e}")
+        logger.error(f"Gemini (Replicate) translation failed: {e}")
+        raise RuntimeError(f"Gemini (Replicate) translation failed: {e}")
