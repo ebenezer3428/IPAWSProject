@@ -2,7 +2,7 @@ import asyncio
 from typing import Dict, List
 from ipaws_research.models import EmergencyAlert, TranslatedAlert, AlertSegment, FairnessScore, CompositeScores, StatisticalResults
 from ipaws_research.alert_retrieval import fetch_ipaws_alerts
-from ipaws_research.translations import translate_with_gpt4o, translate_with_google_nmt, translate_with_nllb200
+from ipaws_research.translations import translate_with_gpt4o, translate_with_google_nmt, translate_with_llama3
 from ipaws_research.segmentation import segment_alert
 from ipaws_research.evaluation import evaluate_segment_fairness
 from ipaws_research.stats import test_hypothesis_h1, test_hypothesis_h2, test_hypothesis_h3
@@ -38,7 +38,7 @@ async def translation_agent(state: Dict) -> Dict:
         elif system == "google_nmt":
             res = await translate_with_google_nmt(alert.source_text, lang)
         else:
-            res = await translate_with_nllb200(alert.source_text, lang)
+            res = await translate_with_llama3(alert.source_text, lang)
         return TranslatedAlert(
             alert_id=alert.alert_id,
             system=system,
