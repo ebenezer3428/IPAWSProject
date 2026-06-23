@@ -8,7 +8,7 @@ async def main():
     state = {
         "sample_size": 45,
         "target_languages": ["es","hi"],
-        "translation_systems": ["gpt4o","google_nmt","nllb200"],
+        "translation_systems": ["gpt4o","google_nmt","llama3"],
         "alerts": [],
         "translations": [],
         "segments": [],

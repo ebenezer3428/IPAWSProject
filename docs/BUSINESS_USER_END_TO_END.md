@@ -128,7 +128,7 @@ Research output: reproducible artifact set for manuscripts and appendices.
 
 ### Step 5: Translation
 - **User action:** run translation for active message(s).
-- **Backend action:** `POST /translate` dispatches to configured translation system (`gpt4o`, `google_nmt`, `nllb200`).
+- **Backend action:** `POST /translate` dispatches to configured translation system (`gpt4o`, `gpt5.5`, `google_nmt`, `llama3`).
 - **System state change:** translated text is attached to the active analysis context.
 - **Success output:** translated content available for downstream scoring.
 - **Failure modes:** credential/provider/model errors; partial translation outputs.

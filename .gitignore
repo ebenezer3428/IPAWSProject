@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables (contain secrets)
+.env
+
+# Logs
+logs/*.log
+logs/*.err.log
+logs/*.out.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Node / web
+web/node_modules/
+web/dist/
+web/.firebase/
+
+# Outputs (generated files — commit selectively)
+outputs/

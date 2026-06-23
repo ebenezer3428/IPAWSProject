@@ -35,7 +35,7 @@ Supporting layer:
 - `ipaws_research/alert_retrieval.py`
   - FEMA Open API retrieval and normalization
 - `ipaws_research/translations.py`
-  - GPT-4o, Google NMT, NLLB-200, offline fallback
+  - GPT-4o, GPT-5.5, Google NMT, Replicate Llama 3, offline fallback
 - `ipaws_research/segmentation.py`
   - segment extraction + communicative function labeling
 - `ipaws_research/evaluation.py`
@@ -97,7 +97,7 @@ Supporting layer:
 - `GET /config` — selected runtime config visibility
 - `GET /admin/analysis` — admin-only analytics summary for submitted human scores and composite exports
 - `GET /alerts` — stratified/sample retrieval from FEMA Open API with filters
-- `POST /translate` — translation by selected system (`gpt4o`, `google_nmt`, `nllb200`)
+- `POST /translate` — translation by selected system (`gpt4o`, `gpt5.5`, `google_nmt`, `llama3`)
 - `POST /segment` — source segmentation
 - `POST /evaluate` — automated fairness scoring
 - `POST /evaluate/human` — persists human scores to CSV
@@ -339,7 +339,7 @@ Admin users use the same session token to call `GET /admin/analysis` from the an
 ### E) Translation execution
 - **Trigger**: user requests translation for active alert/message.
 - **Endpoint**: `POST /translate`.
-- **Processing**: dispatches to selected translation backend (`gpt4o`, `google_nmt`, `nllb200`) with configured credentials/model.
+- **Processing**: dispatches to selected translation backend (`gpt4o`, `gpt5.5`, `google_nmt`, `llama3`) with configured credentials/model.
 - **Output**: translated text payload.
 - **Failure behavior**: provider/auth/model issues return translation errors.
 

@@ -1,1 +1,451 @@
+id,date,hazard_type,event_type,agency,source_text
+92791bd1-98e6-4e46-808b-fb793b5210cb,2025-09-03T03:12:02.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+2-Sep. Butte Co Sheriff: Evacuation Order due to FIRE. Southern portion of Zone BUT-FORB-682. Includes area from Old Forbestown Rd Cemetary Ln east to the Forbestown Store. This will include all residences located on School St, and Cloverleaf. LEAVE NOW. Do not call 911 for info. https://bit.ly/bcsofbk for more info."
+777f55f3-c5a0-47c2-8157-96f0947b51e4,2025-07-04T20:15:12.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+Butte County Sheriff's Office is issuing Evacuation Warnings for zones 826, 832 and 835 in South East Oroville due to fire. Plan to Evacuate."
+8809db37-3d98-49bd-9e33-8fbdfb3fd1ef,2025-01-22T19:50:02.000Z,wildfire,Fire Warning,"200155,CA California Governor's Office of Emergency Services,","Fire Warning
+LA COUNTY FIRE 1/22/25 11:48 AM: FAST MOVING WILDFIRE. AN EVACUATION ORDER HAS BEEN ISSUED FOR West of I-5 . LEAVE NOW. Follow instructions from emergency personnel. Dial 9-1-1 for emergency help. Visit alertla.org for more information."
+84be45dd-a463-4ef4-93f6-20e4db76efc9,2025-01-22T19:37:08.000Z,wildfire,Fire Warning,"200155,CA California Governor's Office of Emergency Services,","Fire Warning
+LA COUNTY FIRE 1/22/2025 11:35 AM: FAST MOVING WILDFIRE. AN EVACUATION ORDER HAS BEEN ISSUED FOR Castaic Lake. LEAVE NOW. Follow instructions from emergency personnel. Dial 9-1-1 for emergency help. Visit alertla.org for more information."
+af0f8b70-e1cc-452f-9f78-2ac0bca2cde8,2024-09-12T21:01:31.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+BCSO-evacuation WARNING-Zones 831, 685 and 686 in Forbestown-Fire-Info BCSO website or 833-512-5378"
+e141b868-9d55-4f1d-894c-883a9b38b421,2024-08-16T23:50:41.000Z,wildfire,Fire Warning,"201365,CA Nevada County Office of Emergency Services,","Fire Warning
+This is the Grass Valley Police Department
+issuing an Evacuation ORDER for a Wildfire
+located in the area of Gates Place and Brunswick burning north, affecting zone GRS-E-242, GRS-E-246, GRS-E-271 and Nevada County NCO-E251; 
+EVACUATE IMMEDIATELY. 
+Check Protect.Genasys.com for updates"
+9fa60fd5-5528-467f-b38a-7e5ba977aeca,2024-07-27T05:05:54.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+The Town of Paradise has issued an EVACUATION WARNING for the entire Town of Paradise in response to the Park Fire. All zones are under an EVACUATION WARNING. Fire behavior and predicted winds require all residents in Paradise to prepare to evacuate and await further information."
+49375968-0e16-4590-a258-2629f64fe06d,2024-07-27T04:29:16.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+BCSO-evacuation WARNING-Zones 291, 292, 288, 289, 290, 287, and 284 in Magalia-Fire-Info BCSO website or 833-512-5378"
+e345b8bb-d75d-4dde-9f9a-6a9b174f97b6,2024-07-27T02:51:08.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+BCSO-evacuation ORDER-Zones Zones 240, 241-Fire-Info BCSO website 833-512-5378"
+1f8b4bd1-0e22-4a30-9015-3760a2d0dccf,2024-07-26T23:18:15.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+BCSO-evacuation WARNING-zone 246 Inskip due to fire-Fire-Info BCSO website 833-512-5378"
+e1468860-ac29-4df9-ba80-2945dafd34e7,2024-07-26T22:14:49.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+BCSO-evacuation WARNING-Zone 245 and the remaining area of Zone 241 in the Inskip area-Fire-Info BCSO website 833-512-5378"
+2ba3bfef-fed7-4893-8266-acf75436bee9,2024-07-25T22:21:40.000Z,wildfire,Fire Warning,"200450,CA Butte County,","Fire Warning
+BCSO is Re-issuing an evacuation ORDER for Zones 260, 261, 262, 265, 266, 268, 269, 271, 272 in Forest Ranch due to fire. For more information visit buttecounty.net/sheriff"
+873d8528-3ebc-43f9-a184-5754305a187f,2025-12-25T20:53:00.000Z,flood,Flash Flood Warning,NWS Hanford CA,"Flash Flood Warning issued December 25 at 12:53PM PST until December 25 at 6:00PM PST by NWS Hanford CA
+FFWHNX
 
+The National Weather Service in Hanford has extended the
+
+* Flash Flood Warning for...
+The Basin and Garnet burn scar in...
+Northeastern Fresno County in central California...
+
+* Until 600 PM PST.
+
+* At 1253 PM PST, Doppler radar indicated heavy rain over the Basin
+and Garnet Burn Scar. Flash flooding is ongoing or expected to
+begin shortly.
+
+Excessive rainfall over the warning area will cause mud slides near
+steep terrain. The mud slide can consist of rock, mud, vegetation
+and other loose materials.
+
+HAZARD...Life threatening flash flooding. Heavy rain producing
+flash flooding in and around the Basin and Garnet Burn
+Scar.
+
+SOURCE...Radar.
+
+IMPACT...Life threatening flash flooding of areas in and around
+the Basin and Garnet Burn Scar.
+
+* Some locations that will experience flash flooding include...
+Balch Power House and Fence Meadow."
+c28c67a4-b214-4e5a-80e0-90a4a0f36d75,2025-12-25T19:04:00.000Z,flood,Flash Flood Warning,NWS Los Angeles/Oxnard CA,"Flash Flood Warning issued December 25 at 11:04AM PST until December 25 at 6:00PM PST by NWS Los Angeles/Oxnard CA
+FFWLOX
+
+The National Weather Service in Los Angeles/Oxnard has issued a
+
+* Flash Flood Warning for...
+Southern and Central Santa Barbara County in southwestern
+California...
+Northwest and West-Central Ventura County in southwestern
+California...
+
+* Until 600 PM PST Thursday.
+
+* At 1104 AM PST, Doppler radar indicated moderate to heavy rain
+intensifying across the warned area. Flash flooding is ongoing or
+expected to re-develop shortly. Rock slides, mud slides, and
+debris flows are expected to occur.
+
+HAZARD...Life threatening flash flooding. Heavy rain producing
+flash flooding. Rock slides and mud slides, along with
+debris flows.
+
+SOURCE...Radar and rain gauge reports.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+Ojai, Santa Ynez, Solvang, Highway 101 through Gaviota State Park,
+Rose Valley, Buellton, Highway 154 over San Marcos Pass, Big Pine
+Mountain, Lake Cachuma, Old Man Mountain, Reyes Peak, Highway 33
+between Wheeler Springs and Rose Valley Road and Meiners Oaks.
+
+It will take little additional rainfall for dangerous flash
+flooding, along with rock slides and mud slides, to re-develop."
+30130378-f291-4c97-9a99-6abd9d4a4855,2025-12-25T17:29:00.000Z,flood,Flash Flood Warning,NWS Hanford CA,"Flash Flood Warning issued December 25 at 9:29AM PST until December 25 at 3:30PM PST by NWS Hanford CA
+FFWHNX
+
+The National Weather Service in Hanford has issued a
+
+* Flash Flood Warning for...
+The Basin and Garnet burn scar in...
+Northeastern Fresno County in central California...
+
+* Until 330 PM PST Thursday.
+
+* At 929 AM PST, Doppler radar indicated heavy rain over the Basin
+and Garnet Burn Scar. The expected rainfall rate is 0.5 to 1 inch
+in 1 hour. Flash flooding is ongoing or expected to begin shortly.
+
+Excessive rainfall over the warning area will cause mud slides near
+steep terrain. The mud slide can consist of rock, mud, vegetation
+and other loose materials.
+
+HAZARD...Life threatening flash flooding. Heavy rain producing
+flash flooding in and around the Basin and Garnet Burn
+Scar.
+
+SOURCE...Radar.
+
+IMPACT...Life threatening flash flooding of areas in and around
+the Basin and Garnet Burn Scar.
+
+* Some locations that will experience flash flooding include...
+Balch Power House and Fence Meadow."
+07b49c75-0aac-495e-9505-18695908940c,2025-12-25T11:11:00.000Z,flood,Flash Flood Warning,NWS San Francisco CA,"Flash Flood Warning issued December 25 at 3:11AM PST until December 25 at 6:15AM PST by NWS San Francisco CA
+FFWMTR
+
+The National Weather Service in San Francisco has issued a
+
+* Flash Flood Warning for...
+East Central San Mateo County in northern California...
+Northwestern Santa Clara County in northern California...
+
+* Until 615 AM PST.
+
+* At 311 AM PST, Doppler radar indicated thunderstorms producing
+heavy rain across the warned area. Between 0.2 and 1 inch of rain
+has fallen. Flash flooding is ongoing or expected to begin shortly.
+
+HAZARD...Life threatening flash flooding. Thunderstorms producing
+flash flooding.
+
+SOURCE...Radar indicated.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+San Jose, Fremont, Sunnyvale, Santa Clara, Mountain View, Milpitas,
+Palo Alto, Cupertino, Campbell, Menlo Park, Saratoga, Los Gatos,
+Los Altos, East Palo Alto, Los Altos Hills, Woodside, Fruitdale,
+Buena Vista, Sunol-Midtown and Rancho Rinconada Cdp."
+dcc1d7d5-f8b9-488d-928a-6d2653684759,2025-12-25T10:56:00.000Z,flood,Flash Flood Warning,NWS San Francisco CA,"Flash Flood Warning issued December 25 at 2:56AM PST until December 25 at 6:00AM PST by NWS San Francisco CA
+FFWMTR
+
+The National Weather Service in San Francisco has issued a
+
+* Flash Flood Warning for...
+San Francisco County in northern California...
+Northwestern San Mateo County in northern California...
+
+* Until 600 AM PST.
+
+* At 256 AM PST, The public reported heavy rain and flooding across
+the warned area. Between 0.5 and 1 inch of rain has fallen. Flash
+flooding is already occurring.
+
+HAZARD...Life threatening flash flooding. Heavy rain producing
+flash flooding.
+
+SOURCE...Public reported.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+San Francisco, Daly City, South San Francisco, San Bruno, Pacifica,
+Millbrae, Brisbane, Colma and Broadmoor."
+af666c13-1926-4010-ad59-360dfac6fc56,2025-12-25T10:01:00.000Z,flood,Flash Flood Warning,NWS San Francisco CA,"Flash Flood Warning issued December 25 at 2:01AM PST until December 25 at 5:15AM PST by NWS San Francisco CA
+FFWMTR
+
+The National Weather Service in San Francisco has issued a
+
+* Flash Flood Warning for...
+Northern San Mateo County in northern California...
+
+* Until 515 AM PST.
+
+* At 201 AM PST, Doppler radar indicated heavy rain across the warned
+area. Up to 0.7 inches of rain have fallen. Flash flooding is
+ongoing or expected to begin shortly.
+
+HAZARD...Life threatening flash flooding. Heavy rain producing
+flash flooding.
+
+SOURCE...Radar indicated.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+San Mateo, Redwood City, Palo Alto, Menlo Park, Foster City,
+Burlingame, San Carlos, East Palo Alto, Belmont, Millbrae,
+Hillsborough, Atherton, Woodside, Highlands-Baywood Park, North
+Fair Oaks, Stanford, Portola Valley, Emerald Lake Hills, Highlands
+and West Menlo Park."
+b2218453-ef13-4c82-9ca3-b29693849141,2025-12-25T02:41:00.000Z,flood,Flash Flood Warning,NWS Las Vegas NV,"Flash Flood Warning issued December 24 at 6:41PM PST until December 24 at 9:45PM PST by NWS Las Vegas NV
+FFWVEF
+
+The National Weather Service in Las Vegas has issued a
+
+* Flash Flood Warning for...
+San Bernardino County in southern California...
+
+* Until 945 PM PST.
+
+* At 641 PM PST, Doppler radar indicated rain continuing over rural
+San Bernardino County, including Goffs Road. The California
+Highway Patrol reported flooding on Goffs Road at Mountain Springs
+Road, and flooding could also occur farther east on Goffs Road
+where there are many low water crossings.
+
+HAZARD...Life-threatening flash flooding. Rain producing flash
+flooding.
+
+SOURCE...Radar.
+
+IMPACT...Life-threatening flash flooding of low-water
+crossings, creeks, normally dry washes and roads.
+
+* Some locations that will experience flash flooding include...
+Goffs Road"
+8aa364c9-fc85-447e-a215-17c1add0d7c8,2025-12-25T00:24:00.000Z,flood,Flash Flood Warning,NWS San Diego CA,"Flash Flood Warning issued December 24 at 4:24PM PST until December 24 at 8:00PM PST by NWS San Diego CA
+FFWSGX
+
+The National Weather Service in San Diego has extended the
+
+* Flash Flood Warning for...
+San Bernardino County in southern California...
+
+* Until 800 PM PST.
+
+* At 424 PM PST, Doppler radar indicated heavy rain across the
+warned area. Between 2 and 5 inches of rain have fallen. The
+expected rainfall rate is 0.5 to 0.75 inches in 1 hour. Additional
+rainfall amounts of 1 to 2.5 inches are possible in the warned
+area. Flash flooding is ongoing or expected to begin shortly.
+
+HAZARD...Life threatening flash flooding. Heavy rain producing
+flash flooding.
+
+SOURCE...Radar.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+San Bernardino, Apple Valley, Redlands, Yucaipa, Forest Falls,
+Lake Arrowhead, Highland, Loma Linda, Big Bear Lake and Running
+Springs."
+1b7c63aa-36d6-4373-9247-4676130cb221,2025-12-25T00:22:00.000Z,flood,Flash Flood Warning,NWS San Diego CA,"Flash Flood Warning issued December 24 at 4:22PM PST until December 24 at 7:00PM PST by NWS San Diego CA
+FFWSGX
+
+The National Weather Service in San Diego has extended the
+
+* Flash Flood Warning for...
+San Bernardino County in southern California...
+
+* Until 700 PM PST.
+
+* At 422 PM PST, Doppler radar indicated thunderstorms producing
+heavy rain across the warned area. Between 5 and 8 inches of rain
+have fallen. The expected rainfall rate is 0.25 to 0.75 inches in
+1 hour. Additional rainfall amounts of 0.75 to 1.5 inches are
+possible in the warned area. Flash flooding is ongoing or expected
+to begin shortly.
+
+HAZARD...Life threatening flash flooding. Thunderstorms
+producing flash flooding.
+
+SOURCE...Radar.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+San Bernardino, Hesperia, Apple Valley, Lake Arrowhead, Hwy 173
+Between Lake Arrowhead And Hesperia, Crestline, Rimforest,
+Skyforest, Hwy 18 Between San Bernardino And Crestline and
+Silverwood Lake Rec Area."
+989d1358-ff12-4c08-b8a9-0450606bd6d5,2025-12-25T00:06:00.000Z,flood,Flash Flood Warning,NWS San Diego CA,"Flash Flood Warning issued December 24 at 4:06PM PST until December 24 at 7:00PM PST by NWS San Diego CA
+FFWSGX
+
+The National Weather Service in San Diego has extended the
+
+* Flash Flood Warning for...
+San Bernardino County in southern California...
+
+* Until 700 PM PST.
+
+* At 406 PM PST, Doppler radar indicated heavy rain across the
+warned area. Between 6 and 8 inches of rain have fallen. The
+expected rainfall rate is 0.25 to 0.5 inches in 1 hour. Additional
+rainfall amounts of 0.5 to 1.5 inches are possible in the warned
+area. Flash flooding is ongoing or expected to begin shortly.
+
+HAZARD...Life threatening flash flooding. Heavy rain producing
+flash flooding.
+
+SOURCE...Radar.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+San Bernardino, Fontana, Rialto, Hesperia, I-15 Through The Cajon
+Pass, northern Rancho Cucamonga, Devore, Silverwood Lake Rec Area,
+Hwy 18 Between San Bernardino And Crestline and Muscoy."
+9db20176-7650-485b-81a9-e5d8a7128873,2025-12-24T23:31:00.000Z,flood,Flash Flood Warning,NWS San Diego CA,"Flash Flood Warning issued December 24 at 3:31PM PST until December 24 at 6:00PM PST by NWS San Diego CA
+FFWSGX
+
+The National Weather Service in San Diego has extended the
+
+* Flash Flood Warning for...
+San Bernardino County in southern California...
+
+* Until 600 PM PST.
+
+* At 331 PM PST, emergency management reported heavy rain across the
+warned area. Between 8 and 11 inches of rain have fallen. The
+expected rainfall rate is 0.5 to 1 inch in 1 hour. Additional
+rainfall amounts of 1 to 2 inches are possible in the warned area.
+Flash flooding is ongoing or expected to begin shortly.
+
+HAZARD...Life threatening flash flooding. Heavy rain producing
+flash flooding.
+
+SOURCE...Emergency management reported.
+
+IMPACT...Life threatening flash flooding of creeks and streams,
+urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+Wrightwood, Hwy 2 Between Phelan And Wrightwood, northern Rancho
+Cucamonga, Hwy 138 Between I-15 And Hwy 2, Pinon Hills, Phelan and
+San Antonio Heights."
+1558b4cd-11ae-463a-9892-0764ad3b97ce,2025-12-24T23:26:00.000Z,flood,Flash Flood Warning,NWS Las Vegas NV,"Flash Flood Warning issued December 24 at 3:26PM PST until December 24 at 5:30PM PST by NWS Las Vegas NV
+FFWVEF
+
+The National Weather Service in Las Vegas has extended the
+
+* Flash Flood Warning for...
+Southeastern Inyo County in south central California...
+
+* Until 530 PM PST.
+
+* At 326 PM PST, emergency management reported heavy rain and flash
+flooding in the Death Valley area.
+
+HAZARD...Life-threatening flash flooding. Heavy rain producing
+flash flooding.
+
+SOURCE...Emergency management reported.
+
+IMPACT...Life-threatening flash flooding of low-water
+crossings, creeks, normally dry washes and roads.
+
+* Some locations that will experience flash flooding include...
+Furnace Creek, Stovepipe Wells, Shoshone, Texas Springs
+Campground, Panamint Springs, Death Valley Junction, Homewood
+Canyon-Valley Wells and Tecopa.
+
+This includes the following streams and drainages...
+Blackwater Wash, Amargosa River, Salt Creek, Confidence Wash,
+Rainbow Canyon, Willow Creek, Rhodes Wash, Emigrant Wash, Furnace
+Creek Wash, Lee Wash, Darwin Wash, Wet Fork Blackwater Wash, White
+Sage Wash, Wingate Wash, Deadman Pass, Death Valley Wash and
+Bradbury Wash.
+
+CA-190 is closed between Stovepipe Wells and Panamint Valley Road
+due to flooding and debris flows."
+4dbb953b-41b1-43b2-a1b4-8c806b8f07c7,2025-07-18T04:48:09.000Z,evacuation,"SCSO Evacuation Order Zones 1710, 1808",CA_Siskiyou_County,"SCSO Evacuation Order SIS-1710 and SIS-1808 near Forks of Salmon due to the Butler Fire.
+Siskiyou County Sheriffs Office has issued an EVACUATION ORDER for Zones SIS-1710 and SIS-1808 Near Forks of Salmon due to growth of the Butler Fire. Anyone in this area is ordered to leave now. 
+
+For the latest information regarding this or any other emergency impacting Siskiyou County go to the ReadySiskiyou Website at www.readysiskiyou.gov"
+b8e166be-3984-4a88-baeb-399dafcd8bc9,2024-07-27T02:52:48.000Z,evacuation,Evacuation Immediate,"200450,CA Butte County,","Evacuation Immediate
+BCSO is upgrading the Evacuation Warning to an Evacuation order for the area of Philbrook Lake in Zone 241, from the south shore of Philbrook Lake to the north boarder of the zone, to include all cabins and structures surrounding the lake, due to Fire. Residents should evacuate south on the Skyway. For more information visit www.buttecounty.net/sheriff or call 833-512-5378."
+3a6d133d-a3bf-4fee-9386-52eb03571683,2024-07-26T17:24:33.000Z,evacuation,Evacuation Immediate,"200450,CA Butte County,","Evacuation Immediate
+BCSO-Evacuation ORDER-Forest Ranch Zones 260, 261,262,263,264,265,266,267,268,269,270,271,272,and 273.-Fire-Info BCSO website 833-512-5378"
+db378f68-8396-4476-b5bb-ce6aea208f3b,2024-06-16T23:07:36.000Z,evacuation,Evacuation Immediate,"201017,CA Sonoma County Fire and Emergency Services Department,Sonoma County Sheriff","Evacuation Immediate
+This is a Sonoma County emergency message. The Sonoma County Sheriffs Office has issued the following for residents and businesses due to a Fire:
+
+Evacuation Order for Zone SON-2E2
+Evacuation Warning for Zone SON-2E3
+Repeating, Evacuation Order: Zone SON-2E2
+Evacuation Warning: Zone SON-2E3
+If you are in an Evacuation Order zone, quickly and calmly evacuate. 
+If you are in an Evacuation Warning zone, prepare to leave. Be ready to leave if an evacuation order is issued. Gather essential items now to be ready to go. If you feel unsafe, do not wait for an evacuation order, leave immediately. 
+Check with your neighbors to ensure they have been made aware of this alert. Monitor local media and social media and Nixle alerts for updates. Do not call 9-1-1 for information. Call 9-1-1 only if you have a life-threatening emergency. You may also go to www.socopsa.org for more information."
+0bba2fc7-df34-4283-aaff-6e51a98a94b0,2024-06-16T00:47:46.000Z,evacuation,Evacuation Immediate,"200450,CA Butte County,","Evacuation Immediate
+BCSO-Evacuation ORDER-zones 672, 671, 665 and 673 in Feather Falls-Fire-Info BCSO website 833-512-5378"
+9e4753e9-3004-46b1-9201-a4f30d6ae8d4,2024-06-15T23:30:38.000Z,evacuation,Evacuation Immediate,"200450,CA Butte County,","Evacuation Immediate
+BCSO-Evacuation ORDER-zones 906 and 905 in Honcut area-Fire-Info BCSO website 833-512-5378"
+69dd041d-dcc7-4e43-a6e5-13c7e88dd9c9,2024-04-04T15:48:29.000Z,evacuation,Evacuation Immediate,"201366,CA Inyo County,","Evacuation Immediate
+An Evacuation order is in effect for the eastside of car taygo from highway one ninety to Ashcreek for an active fire  Please evacuate immediately"
+1c000c10-6507-4dd7-8a19-5fe9450da41f,2023-10-07T19:42:53.000Z,evacuation,Evacuation Immediate,"201043,CA Shasta Area Safety Communications Agency (SHASCOM),Shasta County Sheriffs Office","Evacuation Immediate
+The Shasta County Sheriff's office is ordering mandatory evacuations on Shasta St in Burney due to a vegetation fire. Please evacuate the area. Thank you."
+403f7b24-94b8-419c-829a-e4e4ab9a49b4,2023-09-14T21:56:47.000Z,evacuation,Evacuation Immediate,"201043,CA Shasta Area Safety Communications Agency (SHASCOM),SCSO","Evacuation Immediate
+MANDATORY EVACUATION DUE TO FIRE ACTIVITY IN THE AREA OF DUVAL DRIVE, SHASTA LAKE CITY PER THE SHASTA COUNTY SHERIFF'S  OFFICE. EVAC CENTER IS CSL COMMUNITY CENTER ON MAIN ST."
+4c707489-0983-41cc-aace-e9d3e18c6a1e,2023-09-14T21:15:39.000Z,evacuation,Evacuation Immediate,"201043,CA Shasta Area Safety Communications Agency (SHASCOM),SCSO","Evacuation Immediate
+SHASTA COUNTY SHERIFF'S DEPARTMENT IS ADVISING MANDATORY EVACUATIONS FOR RESIDENTS OF DUVAL DRIVE DUE TO A VEGETATION FIRE IN THE AREA."
+8aa147db-7843-480d-9e01-c61fd46f0c83,2023-09-02T02:03:47.000Z,evacuation,Evacuation Immediate Warning,Imperial County,"EVACUATION WARNING NILAND,CA
+IMMINENT THREAT NILAND, CA - FAST FLOODING **UPDATE: ALL SUBJECTS IN FLOODED NILAND AREA DO NOT ATTEMPT TO CROSS WASHES**"
+02d24b58-323d-43c3-ac5b-fa93e89dc34f,2023-09-01T23:32:39.000Z,evacuation,Evacuation Immediate Warning,Imperial County,"EVACUATION WARNING NILAND,CA
+IMMINENT THREAT FOR TOWNSHIP OF NILAND, CA - FAST FLOODING"
+c34a3b44-92d2-4384-b9d4-a23736d6cff4,2025-12-18T22:18:46.000Z,amber,Child Abduction Emergency,MO Missouri Highway Patrol,"COLUMBIA I-70 WESTBOUND BLUE 2005 LINCOLN AVIATOR MO PLATE GL7B2S   http://bit.ly/MoAlerts
+COLUMBIA I-70 WESTBOUND BLUE 2005 LINCOLN AVIATOR MO PLATE GL7B2S   http://bit.ly/MoAlerts"
+fc439bdc-73bd-4bcc-a080-b2950ed044b7,2025-09-20T07:17:07.000Z,amber,Child Abduction Emergency,MO Missouri Highway Patrol,"ROCKPORT MO- SUSPECT WHITE MALE NAMED EITHER ALEX OR ALEC FROM CA http://bit.ly/MoAlerts
+ROCKPORT MO- SUSPECT WHITE MALE NAMED EITHER ALEX OR ALEC FROM CA http://bit.ly/MoAlerts"
+1ce003f5-6a39-4e38-8c66-7f2234348541,2025-09-07T23:30:45.000Z,amber,Child Abduction Emergency,"200230,California Highway Patrol,CA California Highway Patrol","AMBER Alert
+AN AMBER ALERT IS BEING ISSUED BY THE CALIFORNIA HIGHWAY PATROL ON BEHALF OF THE LOS ANGELES SHERIFFS DEPARTMENT.
+
+ON SEPTEMBER 07 2025 AT 1200 PM ENZO ANTONESCU WAS ABDUCTED FROM CITY OF INDUSTRY, CALIFORNIA.  ENZO ANTONESCU IS A 1 YEAR OLD WHITE MALE 1 FOOT 8 INCHES TALL WEIGHING 22 POUNDS WITH BROWN HAIR AND GREEN EYES. ENZO ANTONESCU HAS AN UNKNOWN CLOTHING DESCRIPTION.
+
+THE SUSPECT DRAGAN ANTONESCO IS A 20 YEAR OLD WHITE MALE STANDING 5 FEET 9 INCHES TALL WEIGHING 160 POUNDS WITH BLACK HAIR AND BROWN EYES. DRAGAN ANTONESCO IS BELIEVED TO BE WEARING A BLACK SHIRT AND BLACK PANTS.
+
+THE SUSPECT IS BELIEVED TO BE DRIVING A 2011 BLACK TOYOTA SIENNA WITH CALIFORNIA LICENSE PLATE 9SLF463
+
+IF SEEN CALL 9 1 1"
+78ff8f69-b429-4b4f-b383-855f41c11221,2025-08-25T06:23:13.000Z,emergency,Local Area Emergency,"200645, WY Carbon County, WY Carbon County","CARBON COUNTY WYOMING - POWER OUTAGE
+Carbon County Office of Emergency Management. Carbon County Wyoming is experiencing a wide-spread power outage. If you are in the affected area and you are on Oxygen and/or use Medical Equipment requiring Power please call 307.328.7777. Thank you. CC-OEM."
+6a77662f-fb3d-4e76-a44a-c18d26302998,2023-09-02T04:31:18.000Z,emergency,Local Area Emergency Warning,Imperial County,"EVACUATION WARNING NILAND,CA
+FLOODING REGARDING TOWNSHIP OF NILAND, CA - FAST FLOODING **UPDATE: ***ONLY LOCAL TRAFFIC ALLOWED INTO THE CITY OF NILAND***"
+b494c017-f2f9-4979-a405-eef4110e3e7f,2023-08-21T07:46:46.000Z,emergency,Law Enforcement Warning,"201366,CA Inyo County,","Law Enforcement Warning
+Evacuation Order in place for Oak Creek area  For your safety please leave immediately"
+627a04db-a4e8-427f-8069-2ef7c3f400a5,2023-08-20T21:59:41.000Z,emergency,Law Enforcement Warning,"201366,CA Inyo County,","Law Enforcement Warning
+Evacuation Warning oak creek area for mudslide concerns, Evac recommended, avoid the area"
+7e963e62-ce14-4880-b489-fca683dad5e9,2023-08-20T03:29:58.000Z,emergency,Local Area Emergency,"200039,CA San Diego County Office of Emergency Services,COUNTY OF SAN DIEGO","County OES: Tropical Storm Warning
+County OES: Tropical Storm Warning-Dangerous flash flooding and strong winds are expected. Do not travel unless you must, avoid flooded roads, avoid downed power lines, and stay away from waterways and low-lying areas. Follow guidance from your local public safety officials. More information at www.AlertSanDiego.org"
+e41aa3c2-ffd7-4db4-af73-03a28552a813,2023-04-01T19:21:18.000Z,emergency,Local Area Emergency,"200231,CA Mono County Sheriff's Office,MLPD / MLFD","Local Area Emergency
+DANGER! Propane explosion risk! Lines must be cleared of snow where propane enters home."
+9a33fc11-a1ef-498e-89d9-f8bbea3d4e4d,2023-03-14T21:51:19.000Z,emergency,Law Enforcement Warning,"201366,CA Inyo County,","Law Enforcement Warning
+Evac warning Oak Creek and Fort Indy Reservation in Independence due to flooding Avoid area"
+5b36a4a7-c7ab-47c0-8b6e-2e2c1f1e78a4,2023-03-14T07:13:07.000Z,emergency,Local Area Emergency,"201688,CA Plumas County Sheriff's Office,","Local Area Emergency
+Heavy rains and run off have increased the levels of the middle fork of the Feather River. Residents along the river and low lying areas near the river should be prepared to evacuate and move to higher ground. If possible, consider moving prior to conditions worsening. The Sheriffs Office is issuing an EVACUATION WARNING for the low lying areas along the river from A 23 to Sloat.
+
+These areas have been identified as the highest threat to flood, however flooding could take place in areas outside of these identified zones. The Sheriffs Office recommends residents remain mindful of their surroundings and their proximity to potentially flooded areas.
+
+Residents may look up their evacuation zones community.zonehaven.com"
+1cc6cdea-6b38-462f-a3e6-a5ec40291e6f,2023-03-13T02:40:18.000Z,emergency,Law Enforcement Warning,MO Missouri Highway Patrol,"HERMANN MO POSSIBLE BLACK 2021 JEEP WRANGER MO RF5A0P WHITE MALE http://bit.ly/MoAlerts
+HERMANN MO POSSIBLE BLACK 2021 JEEP WRANGER MO RF5A0P WHITE MALE http://bit.ly/MoAlerts"

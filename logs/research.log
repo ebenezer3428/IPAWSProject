@@ -1914,3 +1914,200 @@
 2026-05-20 22:56:42,893 | INFO | ipaws_research | Returning 296 alerts after processing
 2026-05-20 22:56:42,920 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
 2026-05-20 22:56:43,596 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:03:19,880 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:03:23,185 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:03:29,495 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:08:39,844 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:08:41,815 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:08:46,951 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:09:22,930 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:09:23,353 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:09:24,555 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:47:56,622 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:48:15,021 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:48:57,718 | WARNING | ipaws_research | FEMA Open API fetch failed: 
+2026-06-15 22:48:57,725 | INFO | ipaws_research | Returning 0 alerts after processing
+2026-06-15 22:48:57,731 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:48:59,512 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:48:59,538 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:49:43,605 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:49:43,627 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:49:43,631 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:49:43,660 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:49:45,377 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:49:45,397 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:49:45,717 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:49:45,752 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-15 22:49:46,852 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:49:47,817 | INFO | ipaws_research | Returning 296 alerts after processing
+2026-06-15 22:50:43,294 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:50:54,446 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:51:05,011 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:51:15,513 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:51:25,989 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:51:36,547 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:51:47,077 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:51:57,711 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:52:08,235 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:52:18,777 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:52:29,284 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:52:39,788 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:52:50,304 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:53:00,805 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:53:11,323 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:53:21,838 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:53:32,408 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:53:42,939 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:53:53,452 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:54:08,153 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:54:18,727 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:54:29,258 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:54:39,730 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:54:50,224 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:55:00,764 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:55:11,291 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:55:21,768 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:55:32,424 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:55:42,901 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:56:26,003 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:56:37,078 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:56:47,588 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:56:58,230 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:57:08,861 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:57:19,404 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:57:30,020 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:57:40,518 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:57:51,052 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:58:01,609 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:58:12,160 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:58:22,679 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:58:33,178 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:58:43,690 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:58:54,208 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:59:04,807 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:59:15,291 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:59:25,843 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:59:36,430 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:59:46,961 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 22:59:57,542 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:00:08,142 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:00:18,710 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:00:29,257 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:00:39,809 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:00:50,339 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:01:00,830 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:01:11,411 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:01:21,966 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:01:32,516 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:01:43,064 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:01:53,547 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:02:04,248 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:03:09,718 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:03:20,511 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:03:31,082 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:03:41,587 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:03:52,172 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:04:02,670 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:04:13,103 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:04:23,667 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:04:34,184 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:04:44,626 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:04:55,157 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:05:05,685 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:05:16,142 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:05:26,688 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:05:37,211 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:05:47,761 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-15 23:32:46,949 | INFO | httpx | HTTP Request: POST https://api.replicate.com/v1/predictions "HTTP/1.1 422 Unprocessable Entity"
+2026-06-15 23:32:46,954 | ERROR | ipaws_research | Replicate NLLB translation failed: ReplicateError Details:
+title: Invalid version or not permitted
+status: 422
+detail: The specified version does not exist (or perhaps you don't have permission to use it?)
+2026-06-15 23:42:21,817 | INFO | httpx | HTTP Request: POST https://api.replicate.com/v1/models/meta/meta-llama-3-8b-instruct/predictions "HTTP/1.1 201 Created"
+2026-06-15 23:46:55,696 | INFO | httpx | HTTP Request: POST https://api.replicate.com/v1/models/meta/meta-llama-3-8b-instruct/predictions "HTTP/1.1 201 Created"
+2026-06-15 23:50:53,872 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:50:53,874 | INFO | openai._base_client | Retrying request to /chat/completions in 0.391500 seconds
+2026-06-15 23:50:54,315 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:50:54,317 | INFO | openai._base_client | Retrying request to /chat/completions in 0.849890 seconds
+2026-06-15 23:50:55,386 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:50:55,408 | WARNING | ipaws_research | OpenAI translation attempt 1 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:50:57,111 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:50:57,111 | INFO | openai._base_client | Retrying request to /chat/completions in 0.410494 seconds
+2026-06-15 23:50:57,766 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:50:57,767 | INFO | openai._base_client | Retrying request to /chat/completions in 0.869579 seconds
+2026-06-15 23:50:58,925 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:50:58,927 | WARNING | ipaws_research | OpenAI translation attempt 2 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:51:02,000 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:51:02,001 | INFO | openai._base_client | Retrying request to /chat/completions in 0.375954 seconds
+2026-06-15 23:51:02,442 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:51:02,444 | INFO | openai._base_client | Retrying request to /chat/completions in 0.784558 seconds
+2026-06-15 23:51:03,302 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:51:03,303 | WARNING | ipaws_research | OpenAI translation attempt 3 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:51:09,976 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:51:09,977 | WARNING | ipaws_research | OpenAI translation attempt 1 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:51:11,584 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:51:11,587 | WARNING | ipaws_research | OpenAI translation attempt 2 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:51:14,657 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:51:14,659 | WARNING | ipaws_research | OpenAI translation attempt 3 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:54:52,101 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:54:52,103 | INFO | openai._base_client | Retrying request to /chat/completions in 0.398890 seconds
+2026-06-15 23:54:52,558 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:54:52,560 | INFO | openai._base_client | Retrying request to /chat/completions in 0.930325 seconds
+2026-06-15 23:54:53,537 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:54:53,552 | WARNING | ipaws_research | OpenAI translation attempt 1 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:54:55,112 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:54:55,113 | INFO | openai._base_client | Retrying request to /chat/completions in 0.497496 seconds
+2026-06-15 23:54:55,675 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:54:55,677 | INFO | openai._base_client | Retrying request to /chat/completions in 0.823004 seconds
+2026-06-15 23:54:56,558 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:54:56,560 | WARNING | ipaws_research | OpenAI translation attempt 2 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:54:59,620 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:54:59,621 | INFO | openai._base_client | Retrying request to /chat/completions in 0.403001 seconds
+2026-06-15 23:55:00,058 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:55:00,060 | INFO | openai._base_client | Retrying request to /chat/completions in 0.848258 seconds
+2026-06-15 23:55:00,940 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:55:00,942 | WARNING | ipaws_research | OpenAI translation attempt 3 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:55:07,443 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:55:07,446 | WARNING | ipaws_research | OpenAI translation attempt 1 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:55:09,008 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:55:09,009 | WARNING | ipaws_research | OpenAI translation attempt 2 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:55:12,115 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:55:12,116 | WARNING | ipaws_research | OpenAI translation attempt 3 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:55:59,550 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:55:59,552 | INFO | openai._base_client | Retrying request to /chat/completions in 0.408352 seconds
+2026-06-15 23:56:00,022 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:56:00,023 | INFO | openai._base_client | Retrying request to /chat/completions in 0.887276 seconds
+2026-06-15 23:56:00,958 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:56:00,960 | WARNING | ipaws_research | OpenAI translation attempt 1 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:56:02,521 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:56:02,523 | INFO | openai._base_client | Retrying request to /chat/completions in 0.454091 seconds
+2026-06-15 23:56:03,030 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:56:03,032 | INFO | openai._base_client | Retrying request to /chat/completions in 0.945741 seconds
+2026-06-15 23:56:04,031 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:56:04,032 | WARNING | ipaws_research | OpenAI translation attempt 2 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:56:07,083 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:56:07,084 | INFO | openai._base_client | Retrying request to /chat/completions in 0.398080 seconds
+2026-06-15 23:56:07,523 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:56:07,523 | INFO | openai._base_client | Retrying request to /chat/completions in 0.870951 seconds
+2026-06-15 23:56:08,436 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-15 23:56:08,437 | WARNING | ipaws_research | OpenAI translation attempt 3 failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-06-15 23:56:14,875 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:56:14,878 | WARNING | ipaws_research | OpenAI translation attempt 1 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:56:16,426 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:56:16,426 | WARNING | ipaws_research | OpenAI translation attempt 2 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:56:19,479 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:56:19,481 | WARNING | ipaws_research | OpenAI translation attempt 3 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:56:45,836 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-15 23:56:46,617 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:56:46,618 | WARNING | ipaws_research | OpenAI translation attempt 1 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:56:48,485 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:56:48,486 | WARNING | ipaws_research | OpenAI translation attempt 2 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-15 23:56:51,547 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 404 Not Found"
+2026-06-15 23:56:51,548 | WARNING | ipaws_research | OpenAI translation attempt 3 failed: Error code: 404 - {'error': {'message': 'The model `gpt-5-5-preview` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+2026-06-16 00:05:29,495 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-06-16 00:11:48,629 | WARNING | ipaws_research | spaCy model load failed for en: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.; using blank model with sentencizer
+2026-06-16 00:11:51,598 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-16 00:11:56,440 | INFO | httpx | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-16 00:11:56,976 | INFO | ipaws_research | OpenFEMA filter: contains(info/area/areaDesc, 'CA')
+2026-06-16 00:12:57,892 | WARNING | ipaws_research | FEMA Open API fetch failed: 
+2026-06-16 00:12:57,906 | INFO | ipaws_research | Returning 0 alerts after processing
