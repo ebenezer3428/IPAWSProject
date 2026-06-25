@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from fastapi import FastAPI, HTTPException, Query, Header
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -14,7 +16,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 import secrets
 import time
-import hmac
 import pandas as pd
 from statsmodels.formula.api import ols
 from statsmodels.stats.anova import anova_lm
@@ -217,21 +218,23 @@ class TemplatesBuildResponse(BaseModel):
     counts: Dict[str, int]
     saved: bool
 
-class LoginRequest(BaseModel):
-    username: str
-    password: str
-    role: str = Field(default="user", pattern="^(user|admin)$")
+class GoogleLoginRequest(BaseModel):
+    id_token: str
 
 class LoginResponse(BaseModel):
     token: str
     role: str
     username: str
+    email: str
+    language: Optional[str] = None
     expires_at: str
 
 class SessionStatusResponse(BaseModel):
     valid: bool
     role: str
     username: str
+    email: str
+    language: Optional[str] = None
     expires_at: str
 
 class AlertPoolItem(BaseModel):
@@ -267,29 +270,90 @@ def _dedupe_by_text(alerts: List[EmergencyAlert]) -> List[EmergencyAlert]:
         out.append(a)
     return out
 
-def _password_for_role(role: str) -> str:
-    if role == "admin":
-        return os.getenv("APP_ADMIN_PASSWORD") or os.getenv("ADMIN_PASSWORD") or ""
-    return (
-        os.getenv("APP_USER_PASSWORD")
-        or os.getenv("USER_PASSWORD")
-        or os.getenv("APP_ADMIN_PASSWORD")
-        or os.getenv("ADMIN_PASSWORD")
-        or ""
-    )
 
-def _create_session(username: str, role: str) -> Dict[str, object]:
+# --- Google (Firebase) authentication allowlist ----------------------------
+# Maps an authorized Google account email to its role and, for evaluators,
+# the single language they are allowed to score in.
+#   role:     "admin" | "user"
+#   language: "es" | "hi" | None (None = no restriction, e.g. admins)
+ACCESS_ALLOWLIST: Dict[str, Dict[str, Optional[str]]] = {
+    "mishra@rmu.edu": {"role": "user", "language": "hi"},
+    "njgst201@mail.rmu.edu": {"role": "user", "language": "es"},
+    "sxnst181@mail.rmu.edu": {"role": "admin", "language": None},
+    "efynnaikins2014@gmail.com": {"role": "admin", "language": None},
+}
+
+_firebase_app = None
+_firebase_init_error: Optional[str] = None
+
+
+def _ensure_firebase():
+    """Lazily initialize the Firebase Admin SDK.
+
+    Uses GOOGLE_APPLICATION_CREDENTIALS / FIREBASE_CREDENTIALS if a service
+    account file is provided, otherwise falls back to Application Default
+    Credentials (works automatically on Google Cloud Run).
+    """
+    global _firebase_app, _firebase_init_error
+    if _firebase_app is not None:
+        return _firebase_app
+    if _firebase_init_error is not None:
+        return None
+    try:
+        import firebase_admin
+        from firebase_admin import credentials
+
+        cred_path = (
+            os.getenv("FIREBASE_CREDENTIALS")
+            or os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+            or ""
+        ).strip()
+        if firebase_admin._apps:
+            _firebase_app = firebase_admin.get_app()
+        elif cred_path and Path(cred_path).exists():
+            _firebase_app = firebase_admin.initialize_app(
+                credentials.Certificate(cred_path)
+            )
+        else:
+            # Application Default Credentials (Cloud Run, gcloud auth, etc.)
+            _firebase_app = firebase_admin.initialize_app()
+        return _firebase_app
+    except Exception as exc:  # pragma: no cover - environment dependent
+        _firebase_init_error = str(exc)
+        return None
+
+
+def _verify_google_id_token(id_token: str) -> Dict[str, object]:
+    """Verify a Firebase/Google ID token and return its decoded claims."""
+    app = _ensure_firebase()
+    if app is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Authentication is not configured on the server",
+        )
+    try:
+        from firebase_admin import auth as firebase_auth
+
+        return firebase_auth.verify_id_token(id_token)
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid or expired Google sign-in token")
+
+def _create_session(username: str, role: str, email: str = "", language: Optional[str] = None) -> Dict[str, object]:
     token = secrets.token_urlsafe(32)
     exp = time.time() + SESSION_TTL_SECONDS
     SESSIONS[token] = {
         "username": username,
         "role": role,
+        "email": email,
+        "language": language,
         "exp": exp,
     }
     return {
         "token": token,
         "username": username,
         "role": role,
+        "email": email,
+        "language": language,
         "expires_at": datetime.utcfromtimestamp(exp).isoformat(),
     }
 
@@ -303,7 +367,7 @@ def _get_valid_session(token: str) -> Optional[Dict[str, object]]:
         return None
     return sess
 
-def _require_session_role(authorization: Optional[str], role: str) -> Dict[str, object]:
+def _require_session(authorization: Optional[str]) -> Dict[str, object]:
     if not authorization or not authorization.lower().startswith("bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
     token = authorization.split(" ", 1)[1].strip()
@@ -312,6 +376,10 @@ def _require_session_role(authorization: Optional[str], role: str) -> Dict[str, 
     sess = _get_valid_session(token)
     if not sess:
         raise HTTPException(status_code=401, detail="Session is invalid or expired")
+    return sess
+
+def _require_session_role(authorization: Optional[str], role: str) -> Dict[str, object]:
+    sess = _require_session(authorization)
     if str(sess.get("role", "")).lower() != role.lower():
         raise HTTPException(status_code=403, detail="Insufficient permissions")
     return sess
@@ -511,6 +579,7 @@ def _analyze_human_scores() -> Dict[str, Any]:
             "date": timestamp.split("T", 1)[0] if timestamp else "Unknown",
             "language": (row.get("language") or "unknown").strip() or "unknown",
             "evaluator_id": (row.get("evaluator_id") or "").strip() or "Anonymous",
+            "evaluator_name": (row.get("evaluator_name") or "").strip(),
             "source_segment": (row.get("source_segment") or "").strip(),
             "translated_segment": (row.get("translated_segment") or "").strip(),
             "notes": _extract_notes((row.get("rationale") or "").strip()),
@@ -552,6 +621,7 @@ def _analyze_human_scores() -> Dict[str, Any]:
     evaluators = [
         {
             "evaluator_id": evaluator,
+            "evaluator_name": next((str(i["evaluator_name"]) for i in items if i.get("evaluator_name")), ""),
             "count": len(items),
             "languages": sorted({str(i["language"]) for i in items}),
             "average_score": round(_safe_mean([float(i["average_score"]) for i in items]), 2),
@@ -575,6 +645,7 @@ def _analyze_human_scores() -> Dict[str, Any]:
         {
             "timestamp": row["timestamp"],
             "evaluator_id": row["evaluator_id"],
+            "evaluator_name": row["evaluator_name"],
             "language": row["language"],
             "average_score_pct": row["average_score_pct"],
             "source_preview": row["source_segment"][:120],
@@ -691,17 +762,31 @@ async def config():
         "REPLICATE_LLAMA3_MODEL": os.getenv("REPLICATE_LLAMA3_MODEL", "meta/meta-llama-3-8b-instruct"),
     }
 
-@app.post("/auth/login", response_model=LoginResponse)
-async def auth_login(req: LoginRequest):
-    username = (req.username or "").strip()
-    if not username:
-        raise HTTPException(status_code=400, detail="Username is required")
-    expected_password = _password_for_role(req.role)
-    if not expected_password:
-        raise HTTPException(status_code=503, detail="Authentication is not configured on the server")
-    if not hmac.compare_digest(req.password, expected_password):
-        raise HTTPException(status_code=401, detail="Invalid username or password")
-    session = _create_session(username=username, role=req.role)
+@app.post("/auth/google", response_model=LoginResponse)
+async def auth_google(req: GoogleLoginRequest):
+    """Sign in with a Google (Firebase) ID token.
+
+    The token is verified server-side, then the account's email is checked
+    against the allowlist to assign role and (for evaluators) language.
+    """
+    if not req.id_token:
+        raise HTTPException(status_code=400, detail="Missing Google sign-in token")
+    claims = _verify_google_id_token(req.id_token)
+    email = str(claims.get("email", "")).strip().lower()
+    if not email:
+        raise HTTPException(status_code=401, detail="Google account has no email")
+    if not claims.get("email_verified", False):
+        raise HTTPException(status_code=403, detail="Google email is not verified")
+    entry = ACCESS_ALLOWLIST.get(email)
+    if not entry:
+        raise HTTPException(status_code=403, detail="This account is not authorized to access the app")
+    display_name = str(claims.get("name") or email)
+    session = _create_session(
+        username=display_name,
+        role=str(entry["role"]),
+        email=email,
+        language=entry.get("language"),
+    )
     return LoginResponse(**session)
 
 @app.get("/auth/session", response_model=SessionStatusResponse)
@@ -719,6 +804,8 @@ async def auth_session(authorization: Optional[str] = Header(default=None)):
         valid=True,
         role=str(sess.get("role", "user")),
         username=str(sess.get("username", "")),
+        email=str(sess.get("email", "")),
+        language=sess.get("language"),
         expires_at=datetime.utcfromtimestamp(exp).isoformat(),
     )
 
@@ -967,7 +1054,13 @@ async def evaluate(req: EvaluationRequest):
     return EvaluationResponse(scores=scores, rationale=ev.rationale)
 
 @app.post("/evaluate/human", response_model=HumanEvaluationResponse)
-async def evaluate_human(req: HumanEvaluationRequest):
+async def evaluate_human(req: HumanEvaluationRequest, authorization: Optional[str] = Header(default=None)):
+    # Require an authenticated session; the evaluator identity is taken from the
+    # signed-in user (authoritative) so submissions can be attributed reliably.
+    sess = _require_session(authorization)
+    evaluator_email = str(sess.get("email") or "").strip()
+    evaluator_name = str(sess.get("username") or "").strip()
+    evaluator_id = evaluator_email or evaluator_name or "Anonymous"
     allowed_keys = FAIRNESS_METRIC_KEYS
     # basic validation
     for k, v in req.scores.items():
@@ -984,28 +1077,50 @@ async def evaluate_human(req: HumanEvaluationRequest):
     fieldnames = [
         "timestamp",
         "evaluator_id",
+        "evaluator_name",
         "language",
         "source_segment",
         "translated_segment",
         *allowed_keys,
         "rationale",
     ]
-    write_header = not csv_path.exists() or csv_path.stat().st_size == 0
-    with open(csv_path, "a", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
-        if write_header:
+    row = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "evaluator_id": evaluator_id,
+        "evaluator_name": evaluator_name,
+        "language": req.language,
+        "source_segment": req.source_segment,
+        "translated_segment": req.translated_segment,
+        "rationale": json.dumps(req.rationale or {}, ensure_ascii=False),
+    }
+    for key in allowed_keys:
+        row[key] = req.scores.get(key, "")
+
+    # Determine whether the existing file uses the current header. Older files
+    # may predate the evaluator_name column, so migrate them in place.
+    existing_rows: List[Dict[str, str]] = []
+    needs_migration = False
+    file_empty = not csv_path.exists() or csv_path.stat().st_size == 0
+    if not file_empty:
+        with open(csv_path, "r", encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            if (reader.fieldnames or []) != fieldnames:
+                needs_migration = True
+                existing_rows = list(reader)
+
+    if needs_migration:
+        with open(csv_path, "w", encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=fieldnames)
             w.writeheader()
-        row = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "evaluator_id": req.evaluator_id or "",
-            "language": req.language,
-            "source_segment": req.source_segment,
-            "translated_segment": req.translated_segment,
-            "rationale": json.dumps(req.rationale or {}, ensure_ascii=False),
-        }
-        for key in allowed_keys:
-            row[key] = req.scores.get(key, "")
-        w.writerow(row)
+            for old in existing_rows:
+                w.writerow({key: old.get(key, "") for key in fieldnames})
+            w.writerow(row)
+    else:
+        with open(csv_path, "a", encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=fieldnames)
+            if file_empty:
+                w.writeheader()
+            w.writerow(row)
     return HumanEvaluationResponse(saved=True, path=str(csv_path))
 
 @app.post("/pipeline/run", response_model=PipelineResponse)

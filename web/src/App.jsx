@@ -1,12 +1,60 @@
 import { useEffect, useState, useRef } from 'react'
 import { Bar, Line } from 'react-chartjs-2'
 import 'chart.js/auto'
+import { signInWithPopup, signOut } from 'firebase/auth'
+import { auth as firebaseAuth, googleProvider, firebaseConfigured } from './firebase'
 import './App.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const apiUrl = (path) => `${API_BASE_URL}${path}`
 const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval', 'Alert Pool', 'Admin Analytics']
-const USER_TABS = ['Health', 'Alerts', 'Single Eval', 'Batch Eval', 'Whole Eval']
+const USER_TABS = ['Whole Eval']
+
+const LANGUAGE_LABELS = { es: 'Spanish', hi: 'Hindi' }
+
+// Returns the language codes the current signed-in user may evaluate in.
+// Evaluators are locked to a single language; admins (no lock) get both.
+function getAllowedLanguages() {
+  try {
+    const raw = sessionStorage.getItem('ui_auth')
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      if (parsed?.language) return [parsed.language]
+    }
+  } catch {}
+  return ['es', 'hi']
+}
+
+// Picks a valid initial language: keep the stored choice if still allowed,
+// otherwise fall back to the user's first allowed language.
+function resolveLanguage(stored) {
+  const allowed = getAllowedLanguages()
+  if (stored && allowed.includes(stored)) return stored
+  return allowed[0]
+}
+
+// Renders <option> elements for only the languages the user is allowed to use.
+function LanguageOptions() {
+  return getAllowedLanguages().map(code => (
+    <option key={code} value={code}>{LANGUAGE_LABELS[code]}</option>
+  ))
+}
+
+// Reads the signed-in user's stored session (set at login).
+function getStoredAuth() {
+  try {
+    const raw = sessionStorage.getItem('ui_auth')
+    if (raw) return JSON.parse(raw)
+  } catch {}
+  return null
+}
+
+// Builds request headers including the session Bearer token so the backend can
+// attribute actions (e.g. human evaluations) to the signed-in user.
+function authHeaders(extra = {}) {
+  const a = getStoredAuth()
+  return a?.token ? { ...extra, Authorization: `Bearer ${a.token}` } : { ...extra }
+}
 
 function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TABS }) {
   const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Whole Eval': '▥', 'Alert Pool': '⬚', 'Admin Analytics': '◈' }
@@ -31,27 +79,33 @@ function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TA
 }
 
 function LoginPage({ onLogin, light, onToggleTheme }) {
-  const [role, setRole] = useState('user')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const submit = async (e) => {
-    e.preventDefault()
+  const signIn = async () => {
     setError('')
-    if (!username.trim() || !password.trim()) {
-      setError('Enter username and password to continue.')
+    if (!firebaseConfigured || !firebaseAuth) {
+      setError('Google sign-in is not configured. Set the VITE_FIREBASE_* environment variables.')
       return
     }
     setLoading(true)
-    const result = await onLogin({ role, username: username.trim(), password })
-    if (!result?.ok) {
-      setError(result?.error || 'Login failed. Please try again.')
+    try {
+      const cred = await signInWithPopup(firebaseAuth, googleProvider)
+      const idToken = await cred.user.getIdToken()
+      const result = await onLogin({ idToken })
+      if (!result?.ok) {
+        try { await signOut(firebaseAuth) } catch {}
+        setError(result?.error || 'Sign-in failed. Please try again.')
+      }
+    } catch (err) {
+      if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') {
+        setError('')
+      } else {
+        setError('Unable to sign in with Google. Please try again.')
+      }
+    } finally {
       setLoading(false)
-      return
     }
-    setLoading(false)
   }
 
   return (
@@ -64,24 +118,14 @@ function LoginPage({ onLogin, light, onToggleTheme }) {
       </header>
       <div className="container" style={{ maxWidth: 560 }}>
         <div className="card" style={{ padding: 16, marginTop: 24 }}>
-          <h2 style={{ marginTop: 0 }}>Login</h2>
-          <p style={{ opacity: 0.8 }}>Sign in as User or Admin.</p>
-          <form onSubmit={submit} style={{ display: 'grid', gap: 10, marginTop: 10 }}>
-            <label>Role
-              <select value={role} onChange={e => setRole(e.target.value)}>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-            </label>
-            <label>Username
-              <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Enter username" />
-            </label>
-            <label>Password
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter password" />
-            </label>
+          <h2 style={{ marginTop: 0 }}>Sign in</h2>
+          <p style={{ opacity: 0.8 }}>Use your authorized Google account to continue.</p>
+          <div style={{ display: 'grid', gap: 10, marginTop: 10 }}>
             {error && <p className="error" style={{ margin: 0 }}>{error}</p>}
-            <button className="primary" type="submit" disabled={loading}>{loading ? 'Signing in…' : `Login as ${role === 'admin' ? 'Admin' : 'User'}`}</button>
-          </form>
+            <button className="primary" type="button" onClick={signIn} disabled={loading}>
+              {loading ? 'Signing in…' : 'Sign in with Google'}
+            </button>
+          </div>
         </div>
       </div>
     </>
@@ -719,7 +763,7 @@ function AdminAnalytics({ auth }) {
               <tbody>
                 {evaluators.length > 0 ? evaluators.slice(0, 8).map(item => (
                   <tr key={item.evaluator_id}>
-                    <td>{item.evaluator_id}</td>
+                    <td title={item.evaluator_id}>{item.evaluator_name || item.evaluator_id}</td>
                     <td>{item.count}</td>
                     <td>{formatPercent(item.average_score_pct)}</td>
                     <td>{(item.languages || []).join(', ') || '—'}</td>
@@ -783,7 +827,7 @@ function AdminAnalytics({ auth }) {
               {recentSubmissions.length > 0 ? recentSubmissions.map((item, idx) => (
                 <tr key={`${item.timestamp}-${idx}`}>
                   <td>{item.timestamp ? new Date(item.timestamp).toLocaleString() : '—'}</td>
-                  <td>{item.evaluator_id}</td>
+                  <td title={item.evaluator_id}>{item.evaluator_name || item.evaluator_id}</td>
                   <td>{item.language?.toUpperCase()}</td>
                   <td>{formatPercent(item.average_score_pct)}</td>
                   <td>{item.source_preview || '—'}</td>
@@ -1105,7 +1149,7 @@ function Alerts() {
 
 function Translate() {
   const [source, setSource] = useState('Evacuate immediately due to wildfire.')
-  const [target, setTarget] = useState('es')
+  const [target, setTarget] = useState(() => resolveLanguage(null))
   const [system, setSystem] = useState('gemini')
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -1135,8 +1179,7 @@ function Translate() {
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <label>Language
           <select value={target} onChange={e => setTarget(e.target.value)}>
-            <option value="es">Spanish</option>
-            <option value="hi">Hindi</option>
+            {LanguageOptions()}
           </select>
         </label>
         <label>System
@@ -1198,7 +1241,7 @@ function ScoreGrid({ scores }) {
 function Evaluate() {
   const [source, setSource] = useState(() => sessionStorage.getItem('eval_source') || 'Evacuate immediately due to wildfire.')
   const [translated, setTranslated] = useState(() => sessionStorage.getItem('eval_translated') || 'Evacúe de inmediato debido a un incendio forestal.')
-  const [language, setLanguage] = useState(() => sessionStorage.getItem('eval_language') || 'es')
+  const [language, setLanguage] = useState(() => resolveLanguage(sessionStorage.getItem('eval_language')))
   const [context, setContext] = useState('')
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -1234,8 +1277,7 @@ function Evaluate() {
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <label>Language
           <select value={language} onChange={e => setLanguage(e.target.value)}>
-            <option value="es">Spanish</option>
-            <option value="hi">Hindi</option>
+            {LanguageOptions()}
           </select>
         </label>
         <button onClick={run} disabled={loading}>{loading ? 'Evaluating…' : 'Evaluate'}</button>
@@ -1267,7 +1309,7 @@ function Evaluate() {
 
 function SingleEval() {
   const [source, setSource] = useState('Evacuate immediately due to wildfire.')
-  const [target, setTarget] = useState('es')
+  const [target, setTarget] = useState(() => resolveLanguage(null))
   const [system, setSystem] = useState('gemini')
   const [translation, setTranslation] = useState('')
   const [evalRes, setEvalRes] = useState(null)
@@ -1329,8 +1371,7 @@ function SingleEval() {
       <div style={{ display: 'flex', gap: 8, marginTop: 8, alignItems: 'center' }}>
         <label>Language
           <select value={target} onChange={e => setTarget(e.target.value)}>
-            <option value="es">Spanish</option>
-            <option value="hi">Hindi</option>
+            {LanguageOptions()}
           </select>
         </label>
         <label>System
@@ -1600,20 +1641,22 @@ export default function App() {
     try { localStorage.setItem('ui_theme', light ? 'light' : 'dark') } catch {}
   }, [light])
 
-  const handleLogin = async ({ role, username, password }) => {
+  const handleLogin = async ({ idToken }) => {
     try {
-      const r = await fetch(apiUrl('/auth/login'), {
+      const r = await fetch(apiUrl('/auth/google'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ role, username, password })
+        body: JSON.stringify({ id_token: idToken })
       })
       const data = await r.json()
       if (!r.ok) {
-        return { ok: false, error: data?.detail || 'Invalid username or password' }
+        return { ok: false, error: data?.detail || 'This account is not authorized' }
       }
       const session = {
         role: data.role,
         username: data.username,
+        email: data.email,
+        language: data.language || null,
         token: data.token,
         expires_at: data.expires_at,
       }
@@ -1629,6 +1672,7 @@ export default function App() {
   const handleLogout = () => {
     setAuth(null)
     try { sessionStorage.removeItem('ui_auth') } catch {}
+    if (firebaseAuth) { signOut(firebaseAuth).catch(() => {}) }
     setTab('Health')
   }
 
@@ -1651,6 +1695,7 @@ export default function App() {
       <header className="header">
         <div className="brand">IPAWS Research UI ({auth.role === 'admin' ? 'Admin' : 'User'})</div>
         <div className="row">
+          <span style={{ opacity: 0.85, marginRight: 4 }}>Welcome, <strong>{auth.username}</strong></span>
           <button className="theme-toggle" onClick={() => setLight(v => !v)}>{light ? 'Dark' : 'Light'} Theme</button>
           <button onClick={handleLogout}>Logout</button>
         </div>
@@ -1691,8 +1736,7 @@ function HumanEval() {
   ]
   const [source, setSource] = useState(() => sessionStorage.getItem('he_source') || 'Evacuate immediately due to wildfire.')
   const [translated, setTranslated] = useState(() => sessionStorage.getItem('he_translated') || 'Evacúe de inmediato debido a un incendio forestal.')
-  const [language, setLanguage] = useState(() => sessionStorage.getItem('he_language') || 'es')
-  const [evaluatorId, setEvaluatorId] = useState('')
+  const [language, setLanguage] = useState(() => resolveLanguage(sessionStorage.getItem('he_language')))
   const [scores, setScores] = useState(Object.fromEntries(KEYS.map(([k]) => [k, 1])))
   const [notes, setNotes] = useState(() => sessionStorage.getItem('he_notes') || '')
   const [result, setResult] = useState(null)
@@ -1717,12 +1761,11 @@ function HumanEval() {
     try {
       const r = await fetch(apiUrl('/evaluate/human'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({
           source_segment: source,
           translated_segment: translated,
           language,
-          evaluator_id: evaluatorId,
           scores,
           rationale: notes ? { notes } : {},
         })
@@ -1739,7 +1782,7 @@ function HumanEval() {
     <div className="card">
       <h2>Human Evaluation</h2>
       <p style={{ opacity: 0.8, marginTop: 4 }}>Scoring guide: 0 = Not present, 1 = Partial, 2 = Fully present.</p>
-      <input value={evaluatorId} onChange={e => setEvaluatorId(e.target.value)} placeholder="Evaluator ID (optional)" />
+      <p style={{ opacity: 0.8, marginTop: 4 }}>Signed in as <strong>{getStoredAuth()?.username || 'Unknown'}</strong>{getStoredAuth()?.email ? ` (${getStoredAuth().email})` : ''} — submissions are recorded under this account.</p>
       <textarea ref={heSourceRef} value={source} onChange={e => setSource(e.target.value)} rows={3} style={{ width: '100%', marginTop: 8, overflow: 'hidden', resize: 'none' }} placeholder="Source segment" />
       <textarea ref={heTranslatedRef} value={translated} onChange={e => setTranslated(e.target.value)} rows={3} style={{ width: '100%', marginTop: 8, overflow: 'hidden', resize: 'none' }} placeholder="Translated segment" />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 12 }}>
@@ -1788,7 +1831,7 @@ function HumanEval() {
 function BatchEval() {
   const [daysBack, setDaysBack] = useState('7')
   const [stateCode, setStateCode] = useState('CA')
-  const [targetLanguage, setTargetLanguage] = useState(() => sessionStorage.getItem('batch_language') || 'es')
+  const [targetLanguage, setTargetLanguage] = useState(() => resolveLanguage(sessionStorage.getItem('batch_language')))
   const [useWholeMessage, setUseWholeMessage] = useState(() => {
     try { return sessionStorage.getItem('batch_use_whole') === '1' } catch { return true }
   })
@@ -1983,8 +2026,8 @@ function BatchEval() {
     setAutoLoading(true)
     try {
       const r = await fetch(apiUrl('/evaluate/human'), {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source_segment: currentText, translated_segment: translation, language: targetLanguage, evaluator_id: '', scores, rationale: notes ? { notes } : {} })
+        method: 'POST', headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ source_segment: currentText, translated_segment: translation, language: targetLanguage, scores, rationale: notes ? { notes } : {} })
       })
       const data = await r.json()
       // Show minimal confirmation without overwriting automated scores
@@ -2076,8 +2119,7 @@ function BatchEval() {
           </label>
           <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
-              <option value="es">Spanish</option>
-              <option value="hi">Hindi</option>
+              {LanguageOptions()}
             </select>
           </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -2162,8 +2204,7 @@ function BatchEval() {
           {autoLoading && <LoadingLabel text="Translating…" />}
           <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
-              <option value="es">Spanish</option>
-              <option value="hi">Hindi</option>
+              {LanguageOptions()}
             </select>
           </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -2284,7 +2325,7 @@ function Analytics() {
 function WholeEval() {
   const [daysBack, setDaysBack] = useState('7')
   const [stateCode, setStateCode] = useState('CA')
-  const [targetLanguage, setTargetLanguage] = useState(() => sessionStorage.getItem('whole_language') || 'es')
+  const [targetLanguage, setTargetLanguage] = useState(() => resolveLanguage(sessionStorage.getItem('whole_language')))
   const [alerts, setAlerts] = useState([])
   const [loadingAlerts, setLoadingAlerts] = useState(false)
   const [alertError, setAlertError] = useState(null)
@@ -2438,8 +2479,8 @@ function WholeEval() {
     setAutoLoading(true)
     try {
       const r = await fetch(apiUrl('/evaluate/human'), {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source_segment: currentText, translated_segment: translation, language: targetLanguage, evaluator_id: '', scores, rationale: notes ? { notes } : {} })
+        method: 'POST', headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ source_segment: currentText, translated_segment: translation, language: targetLanguage, scores, rationale: notes ? { notes } : {} })
       })
       const data = await r.json()
       setHumanSaved({ saved: data.saved, path: data.path })
@@ -2513,8 +2554,7 @@ function WholeEval() {
           </label>
           <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
-              <option value="es">Spanish</option>
-              <option value="hi">Hindi</option>
+              {LanguageOptions()}
             </select>
           </label>
           <button onClick={loadBatch} disabled={loadingAlerts}>{loadingAlerts ? <LoadingLabel text="Loading Alerts…" /> : 'Load Alerts'}</button>
@@ -2544,8 +2584,7 @@ function WholeEval() {
           {autoLoading && <LoadingLabel text="Translating…" />}
           <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
-              <option value="es">Spanish</option>
-              <option value="hi">Hindi</option>
+              {LanguageOptions()}
             </select>
           </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>

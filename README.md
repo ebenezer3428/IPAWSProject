@@ -36,6 +36,12 @@ Add these repository secrets before first run:
 - `FIREBASE_PROJECT_ID`: your Firebase project ID
 - `VITE_API_BASE_URL`: public backend base URL used by the deployed frontend
 
+Google Sign-In (Firebase Auth) reads the web app config from `web/.env.production`,
+which is committed to the repo. The Firebase web `apiKey` is a public client
+identifier (not a secret), so no additional GitHub secrets are required for auth.
+If you rotate the Firebase project, regenerate those values from the Firebase
+Console → Project settings → General → "Your apps" → SDK setup and configuration.
+
 You can also trigger deployment manually from the Actions tab via `workflow_dispatch`.
 
 ### PR Preview Deploys
