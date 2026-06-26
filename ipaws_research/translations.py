@@ -1,4 +1,5 @@
 import asyncio
+import re
 from datetime import datetime
 from typing import Dict
 from ipaws_research.utils import logger
@@ -10,6 +11,52 @@ import replicate
 
 # Google NMT
 from typing import Optional
+
+# Replicate throttles accounts with low credit (burst of 1, ~6 requests/min).
+# Serialize prediction calls and retry on HTTP 429 so concurrently-dispatched
+# translations don't fail. Concurrency is configurable via REPLICATE_MAX_CONCURRENCY.
+_REPLICATE_SEMAPHORE: Optional[asyncio.Semaphore] = None
+
+
+def _get_replicate_semaphore() -> asyncio.Semaphore:
+    global _REPLICATE_SEMAPHORE
+    if _REPLICATE_SEMAPHORE is None:
+        limit = max(1, int(os.getenv("REPLICATE_MAX_CONCURRENCY", "1")))
+        _REPLICATE_SEMAPHORE = asyncio.Semaphore(limit)
+    return _REPLICATE_SEMAPHORE
+
+
+def _parse_retry_after_seconds(message: str) -> float:
+    """Extract the throttle reset hint (e.g. 'resets in ~10s') from a Replicate error."""
+    m = re.search(r"reset[s]?\s+in\s+~?(\d+)\s*s", message or "", re.IGNORECASE)
+    if m:
+        return float(m.group(1)) + 1.0
+    return 0.0
+
+
+async def _run_replicate_with_retry(sync_call, label: str, retries: int = 5):
+    """Run a synchronous Replicate call in a thread, serialized and retrying on 429."""
+    delay = 2.0
+    last_err: Optional[Exception] = None
+    sem = _get_replicate_semaphore()
+    for attempt in range(1, retries + 1):
+        try:
+            async with sem:
+                return await asyncio.to_thread(sync_call)
+        except Exception as e:  # noqa: BLE001 - inspect message to detect throttling
+            last_err = e
+            msg = str(e)
+            is_throttle = "429" in msg or "throttle" in msg.lower() or "rate limit" in msg.lower()
+            if not is_throttle:
+                raise
+            if attempt == retries:
+                break
+            wait = _parse_retry_after_seconds(msg) or delay
+            logger.warning(f"{label} throttled (attempt {attempt}/{retries}); retrying in {wait:.0f}s")
+            await asyncio.sleep(wait)
+            delay = min(delay * 2, 30.0)
+    raise RuntimeError(f"{label} failed after {retries} attempts: {last_err}")
+
 
 def _offline_translate(source_text: str, target_language: str) -> Dict[str, Dict]:
     es_map = {
@@ -249,7 +296,7 @@ async def translate_with_llama3(
         )
 
     try:
-        result = await asyncio.to_thread(_run_replicate)
+        result = await _run_replicate_with_retry(_run_replicate, "Replicate Llama 3 translation")
         translation = _coerce_output(result)
         metadata = {
             "model": model_name,
@@ -301,7 +348,7 @@ async def translate_with_gemini(
         return "".join(str(event) for event in output).strip()
 
     try:
-        text = await asyncio.to_thread(_run_gemini)
+        text = await _run_replicate_with_retry(_run_gemini, "Gemini (Replicate) translation")
         metadata = {
             "model": model_name,
             "timestamp": datetime.utcnow().isoformat(),

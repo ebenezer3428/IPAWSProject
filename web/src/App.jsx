@@ -898,7 +898,7 @@ function Alerts() {
   const load = async () => {
     setLoading(true); setError(null)
     try {
-      const params = new URLSearchParams({ daysBack: '7', state: 'CA' })
+      const params = new URLSearchParams({ source: 'research' })
       const r = await fetch(apiUrl('/alerts?' + params.toString()))
       const data = await r.json()
       setAlerts(data)
@@ -1421,6 +1421,7 @@ function AlertPool({ auth }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [selected, setSelected] = useState(new Set())
+  const [expanded, setExpanded] = useState(new Set())
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
   const [saveSuccess, setSaveSuccess] = useState(false)
@@ -1457,6 +1458,15 @@ function AlertPool({ auth }) {
       newSelected.add(id)
     }
     setSelected(newSelected)
+  }
+
+  const toggleExpand = (id) => {
+    setExpanded(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
   }
 
   const saveSelection = async () => {
@@ -1544,19 +1554,34 @@ function AlertPool({ auth }) {
               {categoryLabels[cat]} ({grouped[cat].length})
             </h3>
             <div style={{ display: 'grid', gap: 8 }}>
-              {grouped[cat].map(alert => (
-                <label key={alert.id} style={{ display: 'flex', gap: 8, cursor: 'pointer', padding: '8px', borderRadius: '4px', background: 'var(--bg-secondary)', alignItems: 'flex-start' }}>
-                  <input
-                    type="checkbox"
-                    checked={selected.has(alert.id)}
-                    onChange={() => toggleAlert(alert.id)}
-                    style={{ marginTop: '2px', cursor: 'pointer' }}
-                  />
-                  <span style={{ fontSize: '0.9em', flex: 1, lineHeight: 1.4 }}>
-                    {alert.text.substring(0, 120)}...
-                  </span>
-                </label>
-              ))}
+              {grouped[cat].map(alert => {
+                const isExpanded = expanded.has(alert.id)
+                const isLong = alert.text.length > 120
+                return (
+                  <div key={alert.id} style={{ display: 'flex', gap: 8, padding: '10px', borderRadius: '6px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color, rgba(128,128,128,0.35))', alignItems: 'flex-start' }}>
+                    <input
+                      type="checkbox"
+                      checked={selected.has(alert.id)}
+                      onChange={() => toggleAlert(alert.id)}
+                      style={{ marginTop: '2px', cursor: 'pointer' }}
+                    />
+                    <div style={{ flex: 1 }}>
+                      <span style={{ fontSize: '0.9em', lineHeight: 1.4, whiteSpace: 'pre-wrap', cursor: 'pointer' }} onClick={() => toggleAlert(alert.id)}>
+                        {isExpanded || !isLong ? alert.text : `${alert.text.substring(0, 120)}…`}
+                      </span>
+                      {isLong && (
+                        <button
+                          type="button"
+                          onClick={() => toggleExpand(alert.id)}
+                          style={{ marginLeft: 8, background: 'none', border: 'none', color: 'var(--color-accent, #4a9eff)', cursor: 'pointer', fontSize: '0.85em', padding: 0, textDecoration: 'underline' }}
+                        >
+                          {isExpanded ? 'Show less' : 'Expand'}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         )
@@ -2371,7 +2396,7 @@ function WholeEval() {
   const loadBatch = async () => {
     setLoadingAlerts(true); setAlertError(null)
     try {
-      const params = new URLSearchParams({ daysBack, state: stateCode })
+      const params = new URLSearchParams({ source: 'research' })
       const r = await fetch(apiUrl('/alerts?' + params.toString()))
       const data = await r.json()
       const normalizedAlerts = (Array.isArray(data) ? data : []).slice().sort((a, b) => {
@@ -2391,6 +2416,9 @@ function WholeEval() {
       setLoadingAlerts(false)
     }
   }
+
+  // Auto-load the admin-selected alert pool on mount.
+  useEffect(() => { loadBatch() }, [])
 
   const currentAlert = alerts[idx]
   const currentText = currentAlert?.source_text || ''
