@@ -194,6 +194,10 @@ class HumanEvaluationResponse(BaseModel):
     saved: bool
     path: str
 
+class SubmissionUpdateRequest(BaseModel):
+    scores: Dict[str, int]
+    notes: Optional[str] = ""
+
 class PipelineRequest(BaseModel):
     sample_size: int = 3
     target_languages: List[str] = ["es"]
@@ -414,6 +418,67 @@ def _extract_notes(raw: str) -> str:
     except Exception:
         pass
     return raw
+
+# ---------------------------------------------------------------------------
+# Human submission management (review / edit / delete)
+# ---------------------------------------------------------------------------
+SUBMISSIONS_FIELDNAMES = [
+    "timestamp",
+    "evaluator_id",
+    "evaluator_name",
+    "language",
+    "source_segment",
+    "translated_segment",
+    *FAIRNESS_METRIC_KEYS,
+    "rationale",
+]
+
+
+def _submissions_csv_path() -> Path:
+    return OUTPUTS_DIR / "human_fairness_scores.csv"
+
+
+def _session_owns_submission(sess: Dict[str, object], row: Dict[str, str]) -> bool:
+    """A submission belongs to a user when its recorded identity matches the
+    signed-in account's email or username (case-insensitive)."""
+    email = str(sess.get("email") or "").strip().lower()
+    name = str(sess.get("username") or "").strip().lower()
+    row_id = str(row.get("evaluator_id") or "").strip().lower()
+    row_name = str(row.get("evaluator_name") or "").strip().lower()
+    if email and row_id == email:
+        return True
+    if name and (row_id == name or row_name == name):
+        return True
+    return False
+
+
+def _submission_to_dict(row: Dict[str, str]) -> Dict[str, Any]:
+    scores: Dict[str, Optional[int]] = {}
+    for key in FAIRNESS_METRIC_KEYS:
+        value = _to_float(row.get(key))
+        scores[key] = int(value) if value is not None else None
+    timestamp = (row.get("timestamp") or "").strip()
+    return {
+        "id": timestamp,
+        "timestamp": timestamp,
+        "evaluator_id": (row.get("evaluator_id") or "").strip(),
+        "evaluator_name": (row.get("evaluator_name") or "").strip(),
+        "language": (row.get("language") or "").strip(),
+        "source_segment": (row.get("source_segment") or "").strip(),
+        "translated_segment": (row.get("translated_segment") or "").strip(),
+        "scores": scores,
+        "notes": _extract_notes((row.get("rationale") or "").strip()),
+    }
+
+
+def _write_submissions(csv_path: Path, rows: List[Dict[str, str]]) -> None:
+    OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+    with open(csv_path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=SUBMISSIONS_FIELDNAMES)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({key: row.get(key, "") for key in SUBMISSIONS_FIELDNAMES})
+
 
 def _build_normal_distribution(values: List[float], bucket_count: int = 8) -> Dict[str, Any]:
     if not values:
@@ -1122,6 +1187,71 @@ async def evaluate_human(req: HumanEvaluationRequest, authorization: Optional[st
                 w.writeheader()
             w.writerow(row)
     return HumanEvaluationResponse(saved=True, path=str(csv_path))
+
+@app.get("/submissions")
+async def list_submissions(authorization: Optional[str] = Header(default=None)):
+    """List human-evaluation submissions. Regular users see only their own;
+    admins see every submission."""
+    sess = _require_session(authorization)
+    is_admin = str(sess.get("role", "")).lower() == "admin"
+    rows = _read_csv_rows(_submissions_csv_path())
+    submissions: List[Dict[str, Any]] = []
+    for row in rows:
+        if not is_admin and not _session_owns_submission(sess, row):
+            continue
+        submissions.append(_submission_to_dict(row))
+    submissions.sort(key=lambda item: item.get("timestamp", ""), reverse=True)
+    return {"submissions": submissions, "is_admin": is_admin}
+
+@app.put("/submissions/{submission_id}")
+async def update_submission(submission_id: str, req: SubmissionUpdateRequest, authorization: Optional[str] = Header(default=None)):
+    """Edit a submission's scores and notes. Users may only edit their own."""
+    sess = _require_session(authorization)
+    is_admin = str(sess.get("role", "")).lower() == "admin"
+    for key, value in req.scores.items():
+        if key not in FAIRNESS_METRIC_KEYS:
+            raise HTTPException(status_code=400, detail=f"Invalid score key: {key}")
+        if value not in (0, 1, 2):
+            raise HTTPException(status_code=400, detail=f"Invalid score value for {key}: {value}")
+    csv_path = _submissions_csv_path()
+    rows = _read_csv_rows(csv_path)
+    updated_row: Optional[Dict[str, str]] = None
+    for row in rows:
+        if (row.get("timestamp") or "").strip() != submission_id:
+            continue
+        if not is_admin and not _session_owns_submission(sess, row):
+            raise HTTPException(status_code=403, detail="You can only edit your own submissions")
+        for key in FAIRNESS_METRIC_KEYS:
+            if key in req.scores:
+                row[key] = str(req.scores[key])
+        row["rationale"] = json.dumps({"notes": (req.notes or "").strip()}, ensure_ascii=False)
+        updated_row = row
+        break
+    if updated_row is None:
+        raise HTTPException(status_code=404, detail="Submission not found")
+    _write_submissions(csv_path, rows)
+    return {"updated": True, "submission": _submission_to_dict(updated_row)}
+
+@app.delete("/submissions/{submission_id}")
+async def delete_submission(submission_id: str, authorization: Optional[str] = Header(default=None)):
+    """Delete a submission. Users may only delete their own; admins may delete any."""
+    sess = _require_session(authorization)
+    is_admin = str(sess.get("role", "")).lower() == "admin"
+    csv_path = _submissions_csv_path()
+    rows = _read_csv_rows(csv_path)
+    kept: List[Dict[str, str]] = []
+    removed = False
+    for row in rows:
+        if (row.get("timestamp") or "").strip() == submission_id:
+            if not is_admin and not _session_owns_submission(sess, row):
+                raise HTTPException(status_code=403, detail="You can only delete your own submissions")
+            removed = True
+            continue
+        kept.append(row)
+    if not removed:
+        raise HTTPException(status_code=404, detail="Submission not found")
+    _write_submissions(csv_path, kept)
+    return {"deleted": True}
 
 @app.post("/pipeline/run", response_model=PipelineResponse)
 async def run_pipeline(req: PipelineRequest):

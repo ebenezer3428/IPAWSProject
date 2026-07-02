@@ -7,8 +7,8 @@ import './App.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const apiUrl = (path) => `${API_BASE_URL}${path}`
-const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval', 'Alert Pool', 'Admin Analytics']
-const USER_TABS = ['Whole Eval']
+const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval', 'My Submissions', 'Alert Pool', 'Admin Analytics']
+const USER_TABS = ['Whole Eval', 'My Submissions']
 
 const LANGUAGE_LABELS = { es: 'Spanish', hi: 'Hindi' }
 
@@ -57,7 +57,7 @@ function authHeaders(extra = {}) {
 }
 
 function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TABS }) {
-  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Whole Eval': '▥', 'Alert Pool': '⬚', 'Admin Analytics': '◈' }
+  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Whole Eval': '▥', 'My Submissions': '☷', 'Alert Pool': '⬚', 'Admin Analytics': '◈' }
   return (
     <aside className="sidebar">
       <div className="sidebar-tools">
@@ -413,12 +413,19 @@ function DashboardStat({ label, value, subtext }) {
   )
 }
 
+const ANALYTICS_VIEWS = [
+  { key: 'overview', label: 'Overview' },
+  { key: 'human', label: 'Human Evaluations' },
+  { key: 'model', label: 'Model Performance' },
+]
+
 function AdminAnalytics({ auth }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [downloadError, setDownloadError] = useState('')
   const [downloadingKey, setDownloadingKey] = useState('')
+  const [view, setView] = useState('overview')
 
   const load = async () => {
     setLoading(true)
@@ -579,53 +586,12 @@ function AdminAnalytics({ auth }) {
 
   return (
     <>
-      <div className="row" style={{ justifyContent: 'space-between', marginTop: 12, marginBottom: 12, flexWrap: 'wrap' }}>
+      <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-start', marginTop: 12, marginBottom: 12, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h2 style={{ margin: 0 }}>Admin Analytics</h2>
-          <p style={{ margin: '6px 0 0 0', opacity: 0.8 }}>Analyze submitted human evaluations and model performance exports.</p>
+          <p style={{ margin: '6px 0 0 0', opacity: 0.8 }}>Human evaluation activity and model fairness benchmarks.</p>
         </div>
-        <div className="row" style={{ flexWrap: 'wrap' }}>
-          {downloads.map(download => (
-            <button
-              key={download.key}
-              className="outline"
-              onClick={() => handleDownload(download)}
-              disabled={downloadingKey === download.key}
-            >
-              {downloadingKey === download.key ? `Downloading ${download.label}…` : `Download ${download.label}`}
-            </button>
-          ))}
-          <button className="primary" onClick={load}>Refresh</button>
-        </div>
-      </div>
-      {downloadError && <p className="error" style={{ marginTop: 0 }}>{downloadError}</p>}
-
-      <div className="card chart-card" style={{ marginBottom: 12 }}>
-        <h3 style={{ marginTop: 0 }}>Analytics Page Guide</h3>
-        <p style={{ opacity: 0.82 }}>
-          This page summarizes submitted human evaluations and exported composite fairness results from the files in the
-          <strong> outputs/</strong> folder.
-        </p>
-        <div className="two-col">
-          <div>
-            <h4 style={{ marginBottom: 6 }}>What each section shows</h4>
-            <ul style={{ marginTop: 0 }}>
-              <li><strong>KPI cards</strong>: total submissions, unique messages, evaluator coverage, and record counts.</li>
-              <li><strong>Trend and coverage charts</strong>: submission volume over time and the language mix of reviewed items.</li>
-              <li><strong>Metric performance</strong>: average human score by fairness dimension across the 12 rubric measures.</li>
-              <li><strong>Composite comparisons</strong>: benchmark OFS, PFI, and IFI values across language and system combinations.</li>
-            </ul>
-          </div>
-          <div>
-            <h4 style={{ marginBottom: 6 }}>How to interpret the statistics</h4>
-            <ul style={{ marginTop: 0 }}>
-              <li><strong>Normal distribution curve</strong>: compares the observed spread of human average scores to a fitted bell curve.</li>
-              <li><strong>Two-way ANOVA</strong>: tests whether <strong>language</strong>, <strong>system</strong>, or their interaction materially affects OFS.</li>
-              <li><strong>p-value</strong>: values below <strong>0.05</strong> are typically treated as statistically significant.</li>
-              <li><strong>Effect size</strong>: shows how much variance a factor explains relative to residual noise.</li>
-            </ul>
-          </div>
-        </div>
+        <button className="primary" onClick={load}>Refresh</button>
       </div>
 
       <div className="stat-grid">
@@ -635,213 +601,259 @@ function AdminAnalytics({ auth }) {
         <DashboardStat label="Composite records" value={composite.total_records || 0} subtext={`${bestSystems.length || 0} best-system comparisons`} />
       </div>
 
-      <div className="two-col">
-        <div className="card chart-card">
-          <h3 style={{ marginTop: 0 }}>Submission Trend</h3>
-          <p style={{ marginTop: 0, opacity: 0.75 }}>Daily volume of submitted human scoring rows.</p>
-          {submissionsByDay.length > 0 ? (
-            <div style={{ height: 280 }}>
-              <Line data={trendChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
-            </div>
-          ) : <p style={{ opacity: 0.75 }}>No human submissions available yet.</p>}
-        </div>
-
-        <div className="card chart-card">
-          <h3 style={{ marginTop: 0 }}>Human Evaluation Coverage</h3>
-          <p style={{ marginTop: 0, opacity: 0.75 }}>Submission count by target language.</p>
-          {humanLanguages.length > 0 ? (
-            <div style={{ height: 280 }}>
-              <Bar data={humanLanguageChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
-            </div>
-          ) : <p style={{ opacity: 0.75 }}>No language distribution to display.</p>}
-        </div>
+      <div className="row" style={{ gap: 6, margin: '16px 0 12px', flexWrap: 'wrap' }} role="tablist" aria-label="Analytics sections">
+        {ANALYTICS_VIEWS.map(v => (
+          <button
+            key={v.key}
+            role="tab"
+            aria-selected={view === v.key}
+            className={view === v.key ? 'primary' : 'outline'}
+            onClick={() => setView(v.key)}
+          >
+            {v.label}
+          </button>
+        ))}
       </div>
 
-      <div className="two-col">
-        <div className="card chart-card">
-          <h3 style={{ marginTop: 0 }}>Metric Performance</h3>
-          <p style={{ marginTop: 0, opacity: 0.75 }}>Average human score by fairness dimension.</p>
-          {humanMetrics.length > 0 ? (
-            <div style={{ height: 320 }}>
-              <Bar data={metricChart} options={{ responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { suggestedMax: 100 } } }} />
-            </div>
-          ) : <p style={{ opacity: 0.75 }}>Metric averages will appear after submissions are saved.</p>}
-        </div>
-
-        <div className="card chart-card">
-          <h3 style={{ marginTop: 0 }}>Composite OFS by Language & System</h3>
-          <p style={{ marginTop: 0, opacity: 0.75 }}>Overall fairness score benchmarks from exported composite data.</p>
-          {systemRows.length > 0 ? (
-            <div style={{ height: 320 }}>
-              <Bar data={compositeChart} options={{ responsive: true, maintainAspectRatio: false, scales: { y: { suggestedMin: 0 } } }} />
-            </div>
-          ) : <p style={{ opacity: 0.75 }}>No composite score exports were found.</p>}
-        </div>
-      </div>
-
-      <div className="two-col">
-        <div className="card chart-card">
-          <h3 style={{ marginTop: 0 }}>Normal Distribution Curve</h3>
-          <p style={{ marginTop: 0, opacity: 0.75 }}>Observed human average-score distribution versus a fitted normal curve.</p>
-          <div className="metric-inline-grid" style={{ marginBottom: 12 }}>
-            <div className="pill">Mean: {formatPercent(distribution.mean || 0)}</div>
-            <div className="pill">Std dev: {formatScore(distribution.stddev || 0)}</div>
-            <div className="pill">Sample size: {distribution.count || 0}</div>
+      {view === 'overview' && (
+        <div className="two-col">
+          <div className="card chart-card">
+            <h3 style={{ marginTop: 0 }}>Submission Trend</h3>
+            <p style={{ marginTop: 0, opacity: 0.75 }}>Daily volume of submitted human scoring rows.</p>
+            {submissionsByDay.length > 0 ? (
+              <div style={{ height: 280 }}>
+                <Line data={trendChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+              </div>
+            ) : <p style={{ opacity: 0.75 }}>No human submissions available yet.</p>}
           </div>
-          {distributionBins.length > 0 ? (
-            <div style={{ height: 320 }}>
-              <Bar
-                data={distributionChart}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scales: {
-                    y: { beginAtZero: true, title: { display: true, text: 'Submission count' } },
-                  },
-                }}
-              />
-            </div>
-          ) : <p style={{ opacity: 0.75 }}>Not enough human-score data to fit a distribution yet.</p>}
-        </div>
 
-        <div className="card chart-card">
-          <h3 style={{ marginTop: 0 }}>Two-Way ANOVA</h3>
-          <p style={{ marginTop: 0, opacity: 0.75 }}>Effect of language and translation system on overall fairness score (OFS).</p>
-          <div className="table-wrap">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Factor</th>
-                  <th>df</th>
-                  <th>F</th>
-                  <th>p-value</th>
-                  <th>Effect size</th>
-                  <th>Variance share</th>
-                </tr>
-              </thead>
-              <tbody>
-                {anovaRows.length > 0 ? anovaRows.map(item => (
-                  <tr key={item.source}>
-                    <td>{item.label}</td>
-                    <td>{item.df}</td>
-                    <td>{item.f_value ?? '—'}</td>
-                    <td>{formatPValue(item.p_value)}</td>
-                    <td>{item.effect_size ?? '—'}</td>
-                    <td>{formatPercent(item.variance_share)}</td>
-                  </tr>
-                )) : (
+          <div className="card chart-card">
+            <h3 style={{ marginTop: 0 }}>Language Coverage</h3>
+            <p style={{ marginTop: 0, opacity: 0.75 }}>Submission count by target language.</p>
+            {humanLanguages.length > 0 ? (
+              <div style={{ height: 280 }}>
+                <Bar data={humanLanguageChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+              </div>
+            ) : <p style={{ opacity: 0.75 }}>No language distribution to display.</p>}
+          </div>
+        </div>
+      )}
+
+      {view === 'human' && (
+        <>
+          <div className="two-col">
+            <div className="card chart-card">
+              <h3 style={{ marginTop: 0 }}>Metric Performance</h3>
+              <p style={{ marginTop: 0, opacity: 0.75 }}>Average human score by fairness dimension (12 rubric measures).</p>
+              {humanMetrics.length > 0 ? (
+                <div style={{ height: 320 }}>
+                  <Bar data={metricChart} options={{ responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { suggestedMax: 100 } } }} />
+                </div>
+              ) : <p style={{ opacity: 0.75 }}>Metric averages will appear after submissions are saved.</p>}
+            </div>
+
+            <div className="card chart-card">
+              <h3 style={{ marginTop: 0 }}>Score Distribution</h3>
+              <p style={{ marginTop: 0, opacity: 0.75 }}>Observed average scores versus a fitted normal curve.</p>
+              <div className="metric-inline-grid" style={{ marginBottom: 12 }}>
+                <div className="pill">Mean: {formatPercent(distribution.mean || 0)}</div>
+                <div className="pill">Std dev: {formatScore(distribution.stddev || 0)}</div>
+                <div className="pill">n = {distribution.count || 0}</div>
+              </div>
+              {distributionBins.length > 0 ? (
+                <div style={{ height: 300 }}>
+                  <Bar
+                    data={distributionChart}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: { y: { beginAtZero: true, title: { display: true, text: 'Submission count' } } },
+                    }}
+                  />
+                </div>
+              ) : <p style={{ opacity: 0.75 }}>Not enough human-score data to fit a distribution yet.</p>}
+            </div>
+          </div>
+
+          <div className="card chart-card">
+            <h3 style={{ marginTop: 0 }}>Evaluator Activity</h3>
+            <div className="table-wrap">
+              <table className="data-table">
+                <thead>
                   <tr>
-                    <td colSpan={6} style={{ opacity: 0.75 }}>Not enough composite data is available to compute a two-way ANOVA.</td>
+                    <th>Evaluator</th>
+                    <th>Submissions</th>
+                    <th>Avg score</th>
+                    <th>Languages</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          {!!(anova.insights || []).length && (
-            <div style={{ marginTop: 12 }}>
-              {(anova.insights || []).map((insight, idx) => (
-                <p key={idx} style={{ margin: '6px 0', opacity: 0.86 }}>{insight}</p>
-              ))}
+                </thead>
+                <tbody>
+                  {evaluators.length > 0 ? evaluators.slice(0, 8).map(item => (
+                    <tr key={item.evaluator_id}>
+                      <td title={item.evaluator_id}>{item.evaluator_name || item.evaluator_id}</td>
+                      <td>{item.count}</td>
+                      <td>{formatPercent(item.average_score_pct)}</td>
+                      <td>{(item.languages || []).join(', ') || '—'}</td>
+                    </tr>
+                  )) : (
+                    <tr>
+                      <td colSpan={4} style={{ opacity: 0.75 }}>No evaluator activity yet.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
-          )}
-        </div>
-      </div>
-
-      <div className="two-col">
-        <div className="card chart-card">
-          <h3 style={{ marginTop: 0 }}>Evaluator Activity</h3>
-          <div className="table-wrap">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Evaluator</th>
-                  <th>Submissions</th>
-                  <th>Avg score</th>
-                  <th>Languages</th>
-                </tr>
-              </thead>
-              <tbody>
-                {evaluators.length > 0 ? evaluators.slice(0, 8).map(item => (
-                  <tr key={item.evaluator_id}>
-                    <td title={item.evaluator_id}>{item.evaluator_name || item.evaluator_id}</td>
-                    <td>{item.count}</td>
-                    <td>{formatPercent(item.average_score_pct)}</td>
-                    <td>{(item.languages || []).join(', ') || '—'}</td>
-                  </tr>
-                )) : (
-                  <tr>
-                    <td colSpan={4} style={{ opacity: 0.75 }}>No evaluator activity yet.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
           </div>
-        </div>
 
-        <div className="card chart-card">
-          <h3 style={{ marginTop: 0 }}>Best Composite System by Language</h3>
-          <div className="table-wrap">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Language</th>
-                  <th>System</th>
-                  <th>OFS</th>
-                  <th>PFI / IFI</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bestSystems.length > 0 ? bestSystems.map(item => (
-                  <tr key={item.language}>
-                    <td>{item.language?.toUpperCase()}</td>
-                    <td>{item.system}</td>
-                    <td>{formatScore(item.avg_ofs)}</td>
-                    <td>{formatScore(item.avg_pfi)} / {formatScore(item.avg_ifi)}</td>
-                  </tr>
-                )) : (
+          <div className="card chart-card">
+            <h3 style={{ marginTop: 0 }}>Recent Submissions</h3>
+            <div className="table-wrap">
+              <table className="data-table">
+                <thead>
                   <tr>
-                    <td colSpan={4} style={{ opacity: 0.75 }}>No composite export data yet.</td>
+                    <th>Timestamp</th>
+                    <th>Evaluator</th>
+                    <th>Language</th>
+                    <th>Avg score</th>
+                    <th>Source preview</th>
+                    <th>Notes</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {recentSubmissions.length > 0 ? recentSubmissions.map((item, idx) => (
+                    <tr key={`${item.timestamp}-${idx}`}>
+                      <td>{item.timestamp ? new Date(item.timestamp).toLocaleString() : '—'}</td>
+                      <td title={item.evaluator_id}>{item.evaluator_name || item.evaluator_id}</td>
+                      <td>{item.language?.toUpperCase()}</td>
+                      <td>{formatPercent(item.average_score_pct)}</td>
+                      <td>{item.source_preview || '—'}</td>
+                      <td>{item.notes || '—'}</td>
+                    </tr>
+                  )) : (
+                    <tr>
+                      <td colSpan={6} style={{ opacity: 0.75 }}>Submitted rows will appear here after evaluators save scores.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
 
-      <div className="card chart-card">
-        <h3 style={{ marginTop: 0 }}>Recent Human Submissions</h3>
-        <div className="table-wrap">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Timestamp</th>
-                <th>Evaluator</th>
-                <th>Language</th>
-                <th>Avg score</th>
-                <th>Source preview</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentSubmissions.length > 0 ? recentSubmissions.map((item, idx) => (
-                <tr key={`${item.timestamp}-${idx}`}>
-                  <td>{item.timestamp ? new Date(item.timestamp).toLocaleString() : '—'}</td>
-                  <td title={item.evaluator_id}>{item.evaluator_name || item.evaluator_id}</td>
-                  <td>{item.language?.toUpperCase()}</td>
-                  <td>{formatPercent(item.average_score_pct)}</td>
-                  <td>{item.source_preview || '—'}</td>
-                  <td>{item.notes || '—'}</td>
-                </tr>
-              )) : (
-                <tr>
-                  <td colSpan={6} style={{ opacity: 0.75 }}>Submitted rows will appear here after evaluators save scores.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+      {view === 'model' && (
+        <>
+          <div className="two-col">
+            <div className="card chart-card">
+              <h3 style={{ marginTop: 0 }}>Composite OFS by Language & System</h3>
+              <p style={{ marginTop: 0, opacity: 0.75 }}>Overall fairness score benchmarks from exported composite data.</p>
+              {systemRows.length > 0 ? (
+                <div style={{ height: 320 }}>
+                  <Bar data={compositeChart} options={{ responsive: true, maintainAspectRatio: false, scales: { y: { suggestedMin: 0 } } }} />
+                </div>
+              ) : <p style={{ opacity: 0.75 }}>No composite score exports were found.</p>}
+            </div>
+
+            <div className="card chart-card">
+              <h3 style={{ marginTop: 0 }}>Best System by Language</h3>
+              <p style={{ marginTop: 0, opacity: 0.75 }}>Highest-scoring translation system per language.</p>
+              <div className="table-wrap">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Language</th>
+                      <th>System</th>
+                      <th>OFS</th>
+                      <th>PFI / IFI</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bestSystems.length > 0 ? bestSystems.map(item => (
+                      <tr key={item.language}>
+                        <td>{item.language?.toUpperCase()}</td>
+                        <td>{item.system}</td>
+                        <td>{formatScore(item.avg_ofs)}</td>
+                        <td>{formatScore(item.avg_pfi)} / {formatScore(item.avg_ifi)}</td>
+                      </tr>
+                    )) : (
+                      <tr>
+                        <td colSpan={4} style={{ opacity: 0.75 }}>No composite export data yet.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div className="card chart-card">
+            <h3 style={{ marginTop: 0 }}>Two-Way ANOVA</h3>
+            <p style={{ marginTop: 0, opacity: 0.75 }}>Effect of language and translation system on overall fairness score (OFS).</p>
+            <div className="table-wrap">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Factor</th>
+                    <th>df</th>
+                    <th>F</th>
+                    <th>p-value</th>
+                    <th>Effect size</th>
+                    <th>Variance share</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {anovaRows.length > 0 ? anovaRows.map(item => (
+                    <tr key={item.source}>
+                      <td>{item.label}</td>
+                      <td>{item.df}</td>
+                      <td>{item.f_value ?? '—'}</td>
+                      <td>{formatPValue(item.p_value)}</td>
+                      <td>{item.effect_size ?? '—'}</td>
+                      <td>{formatPercent(item.variance_share)}</td>
+                    </tr>
+                  )) : (
+                    <tr>
+                      <td colSpan={6} style={{ opacity: 0.75 }}>Not enough composite data is available to compute a two-way ANOVA.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            {!!(anova.insights || []).length && (
+              <div style={{ marginTop: 12 }}>
+                {(anova.insights || []).map((insight, idx) => (
+                  <p key={idx} style={{ margin: '6px 0', opacity: 0.86 }}>{insight}</p>
+                ))}
+              </div>
+            )}
+            <details style={{ marginTop: 10 }}>
+              <summary style={{ cursor: 'pointer', opacity: 0.85 }}>How to read this</summary>
+              <ul style={{ marginTop: 8, opacity: 0.85 }}>
+                <li><strong>p-value</strong> below <strong>0.05</strong> indicates a statistically significant effect.</li>
+                <li><strong>Effect size</strong> is the share of variance a factor explains relative to residual noise.</li>
+                <li><strong>Variance share</strong> compares each factor's contribution to total variation.</li>
+              </ul>
+            </details>
+          </div>
+        </>
+      )}
+
+      <details className="card chart-card" style={{ marginTop: 12 }}>
+        <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Export data{downloads.length ? ` (${downloads.length})` : ''}</summary>
+        <div className="row" style={{ flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
+          {downloads.length > 0 ? downloads.map(download => (
+            <button
+              key={download.key}
+              className="outline"
+              onClick={() => handleDownload(download)}
+              disabled={downloadingKey === download.key}
+            >
+              {downloadingKey === download.key ? `Downloading ${download.label}…` : `Download ${download.label}`}
+            </button>
+          )) : <p style={{ opacity: 0.75, margin: 0 }}>No exports available.</p>}
         </div>
-      </div>
+        {downloadError && <p className="error" style={{ marginTop: 10, marginBottom: 0 }}>{downloadError}</p>}
+      </details>
     </>
   )
 }
@@ -1605,6 +1617,247 @@ function AlertPool({ auth }) {
   )
 }
 
+function MySubmissions({ auth }) {
+  const KEYS = [
+    ['pf1_urgency_preservation', 'Urgency preservation'],
+    ['pf2_directive_clarity', 'Directive clarity'],
+    ['pf3_risk_severity', 'Risk severity'],
+    ['pf4_authority_attribution', 'Authority attribution'],
+    ['pf5_temporal_accuracy', 'Temporal accuracy'],
+    ['pf6_procedural_completeness', 'Procedural completeness'],
+    ['if1_respectful_tone', 'Respectful tone'],
+    ['if2_inclusion', 'Inclusion'],
+    ['if3_empathy_marker', 'Empathy marker'],
+    ['if4_linguistic_clarity', 'Linguistic clarity'],
+    ['if5_cultural_appropriateness', 'Cultural appropriateness'],
+    ['if6_trust_signal', 'Trust signal'],
+  ]
+  const isAdminView = auth?.role === 'admin'
+  const [subs, setSubs] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  const [query, setQuery] = useState('')
+  const [editingId, setEditingId] = useState(null)
+  const [editScores, setEditScores] = useState({})
+  const [editNotes, setEditNotes] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [busyId, setBusyId] = useState(null)
+  const [expanded, setExpanded] = useState(new Set())
+
+  const load = async () => {
+    setLoading(true); setError('')
+    try {
+      const r = await fetch(apiUrl('/submissions'), { headers: authHeaders() })
+      const data = await r.json().catch(() => ({}))
+      if (!r.ok) throw new Error(typeof data?.detail === 'string' ? data.detail : `Request failed (${r.status})`)
+      setSubs(Array.isArray(data.submissions) ? data.submissions : [])
+    } catch (e) {
+      setError(String(e.message || e))
+    } finally {
+      setLoading(false)
+    }
+  }
+  useEffect(() => { load() }, [])
+
+  const fmtDate = (ts) => {
+    if (!ts) return 'Unknown date'
+    const iso = /[zZ]|[+-]\d\d:?\d\d$/.test(ts) ? ts : ts + 'Z'
+    const d = new Date(iso)
+    return isNaN(d.getTime()) ? ts : d.toLocaleString()
+  }
+  const langLabel = (code) => LANGUAGE_LABELS[code] || code || '—'
+  const avgOf = (scores) => {
+    const vals = KEYS.map(([k]) => scores?.[k]).filter(v => typeof v === 'number')
+    if (!vals.length) return null
+    return vals.reduce((a, b) => a + b, 0) / vals.length
+  }
+  const scoreColor = (v) => v === 2 ? '#1a7f37' : v === 1 ? '#b7791f' : v === 0 ? '#b42318' : 'rgba(128,128,128,0.7)'
+
+  const startEdit = (s) => {
+    setEditingId(s.id); setNotice('')
+    setEditScores(Object.fromEntries(KEYS.map(([k]) => [k, typeof s.scores?.[k] === 'number' ? s.scores[k] : 1])))
+    setEditNotes(s.notes || '')
+  }
+  const cancelEdit = () => { setEditingId(null); setEditScores({}); setEditNotes('') }
+  const changeScore = (k, v) => setEditScores(s => ({ ...s, [k]: Number(v) }))
+
+  const saveEdit = async (id) => {
+    setSaving(true); setError('')
+    try {
+      const r = await fetch(apiUrl(`/submissions/${encodeURIComponent(id)}`), {
+        method: 'PUT', headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ scores: editScores, notes: editNotes })
+      })
+      const d = await r.json().catch(() => ({}))
+      if (!r.ok) throw new Error(typeof d?.detail === 'string' ? d.detail : `Update failed (${r.status})`)
+      setSubs(prev => prev.map(s => s.id === id ? (d.submission || s) : s))
+      setNotice('Submission updated.')
+      cancelEdit()
+    } catch (e) {
+      setError(String(e.message || e))
+    } finally {
+      setSaving(false)
+    }
+  }
+  const removeSub = async (id) => {
+    if (!window.confirm('Delete this submission? This action cannot be undone.')) return
+    setBusyId(id); setError('')
+    try {
+      const r = await fetch(apiUrl(`/submissions/${encodeURIComponent(id)}`), { method: 'DELETE', headers: authHeaders() })
+      const d = await r.json().catch(() => ({}))
+      if (!r.ok) throw new Error(typeof d?.detail === 'string' ? d.detail : `Delete failed (${r.status})`)
+      setSubs(prev => prev.filter(s => s.id !== id))
+      setNotice('Submission deleted.')
+      if (editingId === id) cancelEdit()
+    } catch (e) {
+      setError(String(e.message || e))
+    } finally {
+      setBusyId(null)
+    }
+  }
+  const toggleExpand = (id) => setExpanded(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n })
+
+  const q = query.trim().toLowerCase()
+  const filtered = !q ? subs : subs.filter(s =>
+    [s.evaluator_name, s.evaluator_id, s.language, s.source_segment, s.translated_segment, s.notes]
+      .filter(Boolean).some(v => String(v).toLowerCase().includes(q)))
+
+  const cardBorder = '1px solid var(--border-color, rgba(128,128,128,0.35))'
+
+  return (
+    <div className="card">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
+        <div>
+          <h2 style={{ margin: 0 }}>My Submissions</h2>
+          <p style={{ opacity: 0.8, margin: '4px 0 0 0' }}>
+            {isAdminView
+              ? 'Reviewing every evaluator’s submissions. You can edit or delete any record.'
+              : 'Review, edit, or remove the human evaluations you have submitted.'}
+          </p>
+        </div>
+        <button onClick={load} disabled={loading}>{loading ? 'Refreshing…' : 'Refresh'}</button>
+      </div>
+
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 12, flexWrap: 'wrap' }}>
+        <input
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder={isAdminView ? 'Search by evaluator, language, or text…' : 'Search your submissions…'}
+          style={{ flex: 1, minWidth: 220, padding: '8px 10px' }}
+        />
+        <span className="pill">{filtered.length} {filtered.length === 1 ? 'record' : 'records'}</span>
+      </div>
+
+      {notice && <p style={{ marginTop: 10, color: '#1a7f37' }}>{notice}</p>}
+      {error && <p className="error" style={{ marginTop: 10 }}>{error}</p>}
+
+      {loading ? (
+        <div style={{ marginTop: 16 }}><LoadingLabel text="Loading submissions…" /></div>
+      ) : filtered.length === 0 ? (
+        <div className="card" style={{ marginTop: 12, padding: 16, textAlign: 'center', opacity: 0.85 }}>
+          <p style={{ margin: 0 }}>
+            {subs.length === 0
+              ? 'No submissions yet. Complete a human evaluation to see it here.'
+              : 'No submissions match your search.'}
+          </p>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
+          {filtered.map(s => {
+            const editing = editingId === s.id
+            const avg = avgOf(s.scores)
+            const isLongSrc = (s.source_segment || '').length > 220
+            const isLongTr = (s.translated_segment || '').length > 220
+            const open = expanded.has(s.id)
+            return (
+              <div key={s.id} className="card" style={{ padding: 14, border: cardBorder }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                    <strong>{fmtDate(s.timestamp)}</strong>
+                    <span className="pill">{langLabel(s.language)}</span>
+                    {isAdminView && <span className="pill" title={s.evaluator_id}>{s.evaluator_name || s.evaluator_id || 'Anonymous'}</span>}
+                  </div>
+                  {avg != null && (
+                    <span className="pill" style={{ background: 'transparent', border: `1px solid ${scoreColor(Math.round(avg))}`, color: scoreColor(Math.round(avg)) }}>
+                      Avg {avg.toFixed(2)} / 2
+                    </span>
+                  )}
+                </div>
+
+                <div style={{ marginTop: 10 }}>
+                  <div style={{ fontSize: 12, opacity: 0.7, textTransform: 'uppercase', letterSpacing: 0.4 }}>Source</div>
+                  <div style={{ marginTop: 2 }}>{open || !isLongSrc ? s.source_segment : `${(s.source_segment || '').substring(0, 220)}…`}</div>
+                </div>
+                <div style={{ marginTop: 8 }}>
+                  <div style={{ fontSize: 12, opacity: 0.7, textTransform: 'uppercase', letterSpacing: 0.4 }}>Translation</div>
+                  <div style={{ marginTop: 2 }}>{open || !isLongTr ? s.translated_segment : `${(s.translated_segment || '').substring(0, 220)}…`}</div>
+                </div>
+                {(isLongSrc || isLongTr) && (
+                  <button onClick={() => toggleExpand(s.id)} style={{ marginTop: 6, padding: '2px 8px', fontSize: 13 }}>
+                    {open ? 'Show less' : 'Show full text'}
+                  </button>
+                )}
+
+                {editing ? (
+                  <div style={{ marginTop: 12 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 10 }}>
+                      {KEYS.map(([k, label]) => (
+                        <label key={k} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                          <span>{label}</span>
+                          <select value={editScores[k]} onChange={e => changeScore(k, e.target.value)}>
+                            <option value={0}>0</option>
+                            <option value={1}>1</option>
+                            <option value={2}>2</option>
+                          </select>
+                        </label>
+                      ))}
+                    </div>
+                    <textarea
+                      value={editNotes}
+                      onChange={e => setEditNotes(e.target.value)}
+                      rows={3}
+                      placeholder="Notes / rationale (optional)"
+                      style={{ width: '100%', marginTop: 10, resize: 'vertical' }}
+                    />
+                    <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                      <button className="primary" onClick={() => saveEdit(s.id)} disabled={saving}>{saving ? 'Saving…' : 'Save changes'}</button>
+                      <button onClick={cancelEdit} disabled={saving}>Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 6, marginTop: 12 }}>
+                      {KEYS.map(([k, label]) => (
+                        <div key={k} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13 }}>
+                          <span style={{ opacity: 0.85 }}>{label}</span>
+                          <strong style={{ color: scoreColor(s.scores?.[k]) }}>{typeof s.scores?.[k] === 'number' ? s.scores[k] : '—'}</strong>
+                        </div>
+                      ))}
+                    </div>
+                    {s.notes && (
+                      <div style={{ marginTop: 10 }}>
+                        <div style={{ fontSize: 12, opacity: 0.7, textTransform: 'uppercase', letterSpacing: 0.4 }}>Notes</div>
+                        <div style={{ marginTop: 2, whiteSpace: 'pre-wrap' }}>{s.notes}</div>
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                      <button className="primary" onClick={() => startEdit(s)}>Edit</button>
+                      <button onClick={() => removeSub(s.id)} disabled={busyId === s.id} style={{ color: '#b42318' }}>
+                        {busyId === s.id ? 'Deleting…' : 'Delete'}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function App() {
   const [tab, setTab] = useState('Health')
   const [light, setLight] = useState(() => {
@@ -1735,6 +1988,7 @@ export default function App() {
             {tab === 'Human Eval' && <HumanEval />}
             {tab === 'Batch Eval' && <BatchEval />}
             {tab === 'Whole Eval' && <WholeEval />}
+            {tab === 'My Submissions' && <MySubmissions auth={auth} />}
             {tab === 'Alert Pool' && auth?.role === 'admin' && <AlertPool auth={auth} />}
             {tab === 'Admin Analytics' && auth?.role === 'admin' && <AdminAnalytics auth={auth} />}
           </main>
@@ -2348,8 +2602,6 @@ function Analytics() {
 }
 
 function WholeEval() {
-  const [daysBack, setDaysBack] = useState('7')
-  const [stateCode, setStateCode] = useState('CA')
   const [targetLanguage, setTargetLanguage] = useState(() => resolveLanguage(sessionStorage.getItem('whole_language')))
   const [alerts, setAlerts] = useState([])
   const [loadingAlerts, setLoadingAlerts] = useState(false)
@@ -2573,19 +2825,13 @@ function WholeEval() {
         error={translationError}
       />
       <div className="card" style={{ padding: 12, marginTop: 12 }}>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <label>Days Back
-            <input value={daysBack} onChange={e => setDaysBack(e.target.value)} style={{ width: 80 }} />
-          </label>
-          <label>State
-            <input value={stateCode} onChange={e => setStateCode(e.target.value)} style={{ width: 80 }} />
-          </label>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
           <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
               {LanguageOptions()}
             </select>
           </label>
-          <button onClick={loadBatch} disabled={loadingAlerts}>{loadingAlerts ? <LoadingLabel text="Loading Alerts…" /> : 'Load Alerts'}</button>
+          {loadingAlerts && <LoadingLabel text="Loading Alerts…" />}
         </div>
         {alertError && <p className="error" style={{ marginTop: 8 }}>{alertError}</p>}
       </div>
@@ -2602,7 +2848,7 @@ function WholeEval() {
 
       {alerts.length === 0 && (
         <div className="card" style={{ padding: 12, marginTop: 12 }}>
-          <p style={{ margin: 0 }}>No alerts loaded yet. Click <strong>Load Alerts</strong> to begin.</p>
+          <p style={{ margin: 0 }}>{loadingAlerts ? 'Loading alerts…' : 'No alerts available.'}</p>
         </div>
       )}
 
