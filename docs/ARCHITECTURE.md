@@ -109,7 +109,7 @@ Authentication is handled through **Google Sign-In (Firebase)**. There is no pas
 - `POST /translate` — translation by selected system (e.g. `gemini`, `gpt4o`, `google_nmt`, `llama3`)
 - `POST /segment` — source segmentation
 - `POST /evaluate` — automated fairness scoring
-- `POST /evaluate/human` — persists a human score row to CSV (evaluator taken from session)
+- `POST /evaluate/human` — persists a human score row to the durable submission store (Cloud Storage JSON, or local CSV fallback; evaluator taken from session)
 - `GET /submissions` — list submissions (users see own; admins see all)
 - `PUT /submissions/{submission_id}` — edit a submission's scores/notes (ownership enforced)
 - `DELETE /submissions/{submission_id}` — delete a submission (ownership enforced)
@@ -120,12 +120,13 @@ Authentication is handled through **Google Sign-In (Firebase)**. There is no pas
 
 - Main outputs in `/outputs`:
   - fairness/human scores, segment outputs, composite/statistical results
-- Human evaluation appends rows to `outputs/human_fairness_scores.csv`.
-- Submission list/edit/delete operations read and rewrite `outputs/human_fairness_scores.csv`; each submission is keyed by its `timestamp`.
-- Admin analytics reads from `outputs/human_fairness_scores.csv` and `outputs/composite_scores.csv` to build dashboard summaries.
+- Human evaluation submissions are stored durably in Google Cloud Storage as a single JSON object (`submissions/human_fairness_scores.json`) when the `SUBMISSIONS_GCS_BUCKET` environment variable is set; otherwise the app falls back to `outputs/human_fairness_scores.csv` for local development.
+- All submission reads/writes go through a single storage layer (`_load_submission_rows` / `_save_submission_rows` / `_append_submission_row`), so list/edit/delete operations and analytics share the same durable source. Each submission is keyed by its `timestamp`.
+- On first read, if the bucket object does not yet exist it is seeded once from any shipped CSV, then all subsequent writes update the bucket object.
+- Admin analytics reads the same durable submission store plus `outputs/composite_scores.csv` to build dashboard summaries.
 - The admin-selected alert pool is persisted so evaluators consistently see the same 48 alerts.
 - Session and current-state caches are in memory (non-persistent).
-- **Note:** Cloud Run instances are ephemeral, so CSV writes are per-instance and are not durable across revisions/restarts.
+- **Note:** Cloud Run instances are ephemeral, so local CSV writes are not durable across revisions/restarts. Durable submission persistence therefore requires the Cloud Storage backend (`SUBMISSIONS_GCS_BUCKET`).
 
 ## 3.5 Admin Analytics Model
 
@@ -382,7 +383,7 @@ Evaluators can later review, edit, or delete their saved scores from the **My Su
 ### H) Human scoring persistence
 - **Trigger**: evaluator submits manual rubric scores.
 - **Endpoint**: `POST /evaluate/human`.
-- **Processing**: server validates and appends submission row to persisted CSV.
+- **Processing**: server validates and appends the submission row to the durable submission store (Cloud Storage JSON object, or local CSV fallback).
 - **Output**: stored human-evaluation record.
 - **Failure behavior**: malformed values or file-write issues prevent persistence.
 
@@ -418,6 +419,8 @@ Evaluators can later review, edit, or delete their saved scores from the **My Su
   - `OPENAI_MODEL`
   - `REPLICATE_API_TOKEN`
   - `OFFLINE_MODE`
+  - `SUBMISSIONS_GCS_BUCKET` — Cloud Storage bucket for durable human-evaluation submissions (e.g. `ipawsproject-live-202602252025-data`). When unset, submissions fall back to a local CSV (not durable on Cloud Run).
+  - `SUBMISSIONS_GCS_OBJECT` — optional object path within the bucket (defaults to `submissions/human_fairness_scores.json`).
 - Authentication uses Google Sign-In verified via `firebase-admin`; authorized accounts are defined in the backend email allowlist (`ACCESS_ALLOWLIST`).
 
 ## 7) Security Notes

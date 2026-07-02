@@ -12,6 +12,7 @@ import csv
 import json
 import math
 import os
+import logging
 from pathlib import Path
 from dotenv import load_dotenv
 import secrets
@@ -480,6 +481,96 @@ def _write_submissions(csv_path: Path, rows: List[Dict[str, str]]) -> None:
             writer.writerow({key: row.get(key, "") for key in SUBMISSIONS_FIELDNAMES})
 
 
+# ---------------------------------------------------------------------------
+# Durable submission storage (Google Cloud Storage)
+#
+# Cloud Run instances are ephemeral, so submissions written to the local CSV do
+# not survive restarts or new deployments. When ``SUBMISSIONS_GCS_BUCKET`` is
+# set the submission rows are stored as a single JSON object in Cloud Storage
+# (source of truth) so records persist until explicitly deleted. Without the
+# env var the code falls back to the local CSV, which keeps local development
+# working unchanged.
+# ---------------------------------------------------------------------------
+_submissions_logger = logging.getLogger("ipaws.submissions")
+SUBMISSIONS_GCS_BUCKET = os.getenv("SUBMISSIONS_GCS_BUCKET", "").strip()
+SUBMISSIONS_GCS_OBJECT = os.getenv("SUBMISSIONS_GCS_OBJECT", "submissions/human_fairness_scores.json").strip()
+_gcs_client = None
+_gcs_client_error: Optional[str] = None
+
+
+def _submissions_gcs_blob():
+    """Return the Cloud Storage blob holding submissions, or ``None`` when the
+    GCS backend is not configured/available (falls back to local CSV)."""
+    global _gcs_client, _gcs_client_error
+    if not SUBMISSIONS_GCS_BUCKET or _gcs_client_error is not None:
+        return None
+    try:
+        if _gcs_client is None:
+            from google.cloud import storage
+
+            _gcs_client = storage.Client()
+        return _gcs_client.bucket(SUBMISSIONS_GCS_BUCKET).blob(SUBMISSIONS_GCS_OBJECT)
+    except Exception as exc:  # pragma: no cover - environment dependent
+        _gcs_client_error = str(exc)
+        _submissions_logger.error("Cloud Storage submissions backend unavailable: %s", exc)
+        return None
+
+
+def _normalize_submission_row(row: Dict[str, Any]) -> Dict[str, str]:
+    normalized: Dict[str, str] = {}
+    for key in SUBMISSIONS_FIELDNAMES:
+        value = row.get(key)
+        normalized[key] = "" if value is None else str(value)
+    return normalized
+
+
+def _load_submission_rows() -> List[Dict[str, str]]:
+    """Load all submission rows from the durable store (GCS) or local CSV."""
+    blob = _submissions_gcs_blob()
+    if blob is None:
+        return _read_csv_rows(_submissions_csv_path())
+    try:
+        if blob.exists():
+            raw = blob.download_as_text()
+            data = json.loads(raw) if raw.strip() else []
+            if isinstance(data, list):
+                return [_normalize_submission_row(r) for r in data if isinstance(r, dict)]
+            return []
+        # Blob does not exist yet: seed it once from any CSV shipped in the
+        # image so pre-existing records are preserved, then treat GCS as
+        # authoritative from here on.
+        seed_rows = [_normalize_submission_row(r) for r in _read_csv_rows(_submissions_csv_path())]
+        _save_submission_rows(seed_rows)
+        return seed_rows
+    except Exception as exc:
+        _submissions_logger.error("Failed to load submissions from Cloud Storage: %s", exc)
+        return _read_csv_rows(_submissions_csv_path())
+
+
+def _save_submission_rows(rows: List[Dict[str, Any]]) -> None:
+    """Persist the full set of submission rows to the durable store."""
+    normalized = [_normalize_submission_row(r) for r in rows]
+    blob = _submissions_gcs_blob()
+    if blob is None:
+        _write_submissions(_submissions_csv_path(), normalized)
+        return
+    try:
+        blob.upload_from_string(
+            json.dumps(normalized, ensure_ascii=False, indent=2),
+            content_type="application/json",
+        )
+    except Exception as exc:
+        _submissions_logger.error("Failed to save submissions to Cloud Storage: %s", exc)
+        raise HTTPException(status_code=500, detail="Failed to persist submissions")
+
+
+def _append_submission_row(row: Dict[str, Any]) -> None:
+    rows = _load_submission_rows()
+    rows.append(_normalize_submission_row(row))
+    _save_submission_rows(rows)
+
+
+
 def _build_normal_distribution(values: List[float], bucket_count: int = 8) -> Dict[str, Any]:
     if not values:
         return {
@@ -626,8 +717,7 @@ def _available_downloads() -> List[Dict[str, str]]:
     return downloads
 
 def _analyze_human_scores() -> Dict[str, Any]:
-    csv_path = OUTPUTS_DIR / "human_fairness_scores.csv"
-    rows = _read_csv_rows(csv_path)
+    rows = _load_submission_rows()
     parsed_rows: List[Dict[str, Any]] = []
 
     for row in rows:
@@ -721,7 +811,11 @@ def _analyze_human_scores() -> Dict[str, Any]:
 
     average_scores = [float(r["average_score"]) for r in parsed_rows]
     return {
-        "path": str(csv_path),
+        "path": (
+            f"gs://{SUBMISSIONS_GCS_BUCKET}/{SUBMISSIONS_GCS_OBJECT}"
+            if SUBMISSIONS_GCS_BUCKET
+            else str(_submissions_csv_path())
+        ),
         "total_submissions": len(parsed_rows),
         "unique_messages": len({str(r["source_segment"]) for r in parsed_rows if r.get("source_segment")}),
         "named_evaluators": len({str(r["evaluator_id"]) for r in parsed_rows if r.get("evaluator_id") and r["evaluator_id"] != "Anonymous"}),
@@ -1133,22 +1227,8 @@ async def evaluate_human(req: HumanEvaluationRequest, authorization: Optional[st
             raise HTTPException(status_code=400, detail=f"Invalid score key: {k}")
         if v not in (0, 1, 2):
             raise HTTPException(status_code=400, detail=f"Invalid score value for {k}: {v}")
-    # persist to outputs/human_fairness_scores.csv
-    from datetime import datetime
-    from pathlib import Path
-    import csv, json
-    OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
-    csv_path = OUTPUTS_DIR / "human_fairness_scores.csv"
-    fieldnames = [
-        "timestamp",
-        "evaluator_id",
-        "evaluator_name",
-        "language",
-        "source_segment",
-        "translated_segment",
-        *allowed_keys,
-        "rationale",
-    ]
+    # Persist to the durable submissions store (Cloud Storage in production,
+    # local CSV in development). Each submission is keyed by its timestamp.
     row = {
         "timestamp": datetime.utcnow().isoformat(),
         "evaluator_id": evaluator_id,
@@ -1161,32 +1241,13 @@ async def evaluate_human(req: HumanEvaluationRequest, authorization: Optional[st
     for key in allowed_keys:
         row[key] = req.scores.get(key, "")
 
-    # Determine whether the existing file uses the current header. Older files
-    # may predate the evaluator_name column, so migrate them in place.
-    existing_rows: List[Dict[str, str]] = []
-    needs_migration = False
-    file_empty = not csv_path.exists() or csv_path.stat().st_size == 0
-    if not file_empty:
-        with open(csv_path, "r", encoding="utf-8", newline="") as f:
-            reader = csv.DictReader(f)
-            if (reader.fieldnames or []) != fieldnames:
-                needs_migration = True
-                existing_rows = list(reader)
-
-    if needs_migration:
-        with open(csv_path, "w", encoding="utf-8", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=fieldnames)
-            w.writeheader()
-            for old in existing_rows:
-                w.writerow({key: old.get(key, "") for key in fieldnames})
-            w.writerow(row)
-    else:
-        with open(csv_path, "a", encoding="utf-8", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=fieldnames)
-            if file_empty:
-                w.writeheader()
-            w.writerow(row)
-    return HumanEvaluationResponse(saved=True, path=str(csv_path))
+    _append_submission_row(row)
+    storage_target = (
+        f"gs://{SUBMISSIONS_GCS_BUCKET}/{SUBMISSIONS_GCS_OBJECT}"
+        if SUBMISSIONS_GCS_BUCKET
+        else str(_submissions_csv_path())
+    )
+    return HumanEvaluationResponse(saved=True, path=storage_target)
 
 @app.get("/submissions")
 async def list_submissions(authorization: Optional[str] = Header(default=None)):
@@ -1194,7 +1255,7 @@ async def list_submissions(authorization: Optional[str] = Header(default=None)):
     admins see every submission."""
     sess = _require_session(authorization)
     is_admin = str(sess.get("role", "")).lower() == "admin"
-    rows = _read_csv_rows(_submissions_csv_path())
+    rows = _load_submission_rows()
     submissions: List[Dict[str, Any]] = []
     for row in rows:
         if not is_admin and not _session_owns_submission(sess, row):
@@ -1213,8 +1274,7 @@ async def update_submission(submission_id: str, req: SubmissionUpdateRequest, au
             raise HTTPException(status_code=400, detail=f"Invalid score key: {key}")
         if value not in (0, 1, 2):
             raise HTTPException(status_code=400, detail=f"Invalid score value for {key}: {value}")
-    csv_path = _submissions_csv_path()
-    rows = _read_csv_rows(csv_path)
+    rows = _load_submission_rows()
     updated_row: Optional[Dict[str, str]] = None
     for row in rows:
         if (row.get("timestamp") or "").strip() != submission_id:
@@ -1229,7 +1289,7 @@ async def update_submission(submission_id: str, req: SubmissionUpdateRequest, au
         break
     if updated_row is None:
         raise HTTPException(status_code=404, detail="Submission not found")
-    _write_submissions(csv_path, rows)
+    _save_submission_rows(rows)
     return {"updated": True, "submission": _submission_to_dict(updated_row)}
 
 @app.delete("/submissions/{submission_id}")
@@ -1237,8 +1297,7 @@ async def delete_submission(submission_id: str, authorization: Optional[str] = H
     """Delete a submission. Users may only delete their own; admins may delete any."""
     sess = _require_session(authorization)
     is_admin = str(sess.get("role", "")).lower() == "admin"
-    csv_path = _submissions_csv_path()
-    rows = _read_csv_rows(csv_path)
+    rows = _load_submission_rows()
     kept: List[Dict[str, str]] = []
     removed = False
     for row in rows:
@@ -1250,7 +1309,7 @@ async def delete_submission(submission_id: str, authorization: Optional[str] = H
         kept.append(row)
     if not removed:
         raise HTTPException(status_code=404, detail="Submission not found")
-    _write_submissions(csv_path, kept)
+    _save_submission_rows(kept)
     return {"deleted": True}
 
 @app.post("/pipeline/run", response_model=PipelineResponse)
