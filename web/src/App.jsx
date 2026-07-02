@@ -2769,48 +2769,6 @@ function WholeEval() {
     }
   }
 
-  // Visuals based on loaded alerts (optional, same as Batch Eval)
-  const dateKey = (iso) => { try { return new Date(iso).toISOString().slice(0,10) } catch { return '' } }
-  const byDate = alerts.reduce((acc, a) => { const d = dateKey(a.timestamp); if (!d) return acc; acc[d] = (acc[d] || 0) + 1; return acc }, {})
-  const dates = Object.keys(byDate).sort()
-  const totalTrend = {
-    labels: dates,
-    datasets: [{ label: 'Alerts per day', data: dates.map(d => byDate[d] || 0), borderColor: 'rgba(70, 100, 255, 1)', backgroundColor: 'rgba(70, 100, 255, 0.25)', fill: true, tension: 0.2 }]
-  }
-  const categories = Array.from(new Set(alerts.map(a => a.category))).filter(Boolean)
-  const colors = ['#4664ff','#00b894','#e17055','#fdcb6e','#6c5ce7','#00cec9','#0984e3','#d63031']
-  const byDateCat = {}
-  alerts.forEach(a => { const d = dateKey(a.timestamp); if (!d) return; const c = a.category || 'unknown'; byDateCat[d] = byDateCat[d] || {}; byDateCat[d][c] = (byDateCat[d][c] || 0) + 1 })
-  const stackedData = {
-    labels: dates,
-    datasets: categories.map((c, i) => ({
-      label: c,
-      data: dates.map(d => (byDateCat[d]?.[c] || 0)),
-      backgroundColor: colors[i % colors.length] + 'cc',
-      borderColor: colors[i % colors.length],
-      borderWidth: 1,
-      stack: 'cat',
-    }))
-  }
-  const exportCsv = (name, header, rows) => {
-    try {
-      const lines = [header.join(','), ...rows.map(r => header.map(h => '"' + String(r[h] ?? '').replace(/"/g, '""') + '"').join(','))]
-      const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `${name}_${new Date().toISOString().slice(0,19)}.csv`
-      document.body.appendChild(a)
-      a.click(); document.body.removeChild(a); URL.revokeObjectURL(url)
-    } catch {}
-  }
-  const exportTrend = () => exportCsv('whole_alerts_trend', ['date','count'], dates.map(d => ({ date: d, count: byDate[d] || 0 })))
-  const exportStacked = () => {
-    const rows = []
-    dates.forEach(d => { categories.forEach(c => rows.push({ date: d, category: c, count: (byDateCat[d]?.[c] || 0) })) })
-    exportCsv('whole_alerts_by_category_daily', ['date','category','count'], rows)
-  }
-
   return (
     <div className="card">
       <h2>Whole Message Evaluation</h2>
@@ -2856,11 +2814,6 @@ function WholeEval() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <h3 style={{ margin: 0, flex: 1 }}>Translation</h3>
           {autoLoading && <LoadingLabel text="Translating…" />}
-          <label>Language
-            <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
-              {LanguageOptions()}
-            </select>
-          </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <input type="checkbox" checked={compare} onChange={e => setCompare(e.target.checked)} /> Compare mode
           </label>
@@ -2954,31 +2907,6 @@ function WholeEval() {
             <strong>Human score saved.</strong> Appended to: <span style={{ opacity: 0.8 }}>{humanSaved.path}</span>
           </div>
         )}
-      </div>
-
-      <div className="card" style={{ padding: 12, marginTop: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <h3 style={{ margin: 0, flex: 1 }}>Alert Visualizations</h3>
-          {/* Toggle removed to keep simple; charts always visible when data exists */}
-        </div>
-        {dates.length ? (
-          <div className="card" style={{ padding: 12, marginTop: 12, marginBottom: 12 }}>
-            <h4>Alerts Per Day</h4>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-              <button onClick={exportTrend} disabled={!dates.length}>Export CSV</button>
-            </div>
-            <Line data={totalTrend} options={{ responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }} />
-          </div>
-        ) : <p>No data.</p>}
-        {dates.length && categories.length ? (
-          <div className="card" style={{ padding: 12 }}>
-            <h4>Stacked by Category</h4>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-              <button onClick={exportStacked} disabled={!(dates.length && categories.length)}>Export CSV</button>
-            </div>
-            <Bar data={stackedData} options={{ responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } } }} />
-          </div>
-        ) : null}
       </div>
 
       <div className="bottom-nav" style={{ marginTop: 12 }}>

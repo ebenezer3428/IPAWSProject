@@ -1,6 +1,6 @@
 # IPAWS Emergency Alert Translation Fairness Research
 
-Automated LangGraph pipeline to translate IPAWS alerts (English → Spanish/Hindi) across GPT-4o, Google NMT, and Meta NLLB-200, segment texts, evaluate fairness (12 metrics), aggregate scores, run statistical tests (H1–H3), generate visualizations, and export results.
+Automated LangGraph pipeline to translate IPAWS alerts (English → Spanish/Hindi) across GPT-4o, Google NMT, Meta Llama 3, and Google Gemini (the latter two via Replicate), segment texts, evaluate fairness (12 metrics), aggregate scores, run statistical tests (H1–H3), generate visualizations, and export results.
 
 ## Quick Start
 
@@ -43,6 +43,15 @@ If you rotate the Firebase project, regenerate those values from the Firebase
 Console → Project settings → General → "Your apps" → SDK setup and configuration.
 
 You can also trigger deployment manually from the Actions tab via `workflow_dispatch`.
+
+### Manual Firebase Hosting deploy
+
+If CI is unavailable, the frontend can be deployed manually with the included script (uses a gcloud access token against the Hosting REST API):
+
+```powershell
+cd web; npm run build; cd ..
+powershell -ExecutionPolicy Bypass -File scripts\deploy_hosting.ps1
+```
 
 ### PR Preview Deploys
 

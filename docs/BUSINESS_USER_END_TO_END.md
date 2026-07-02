@@ -48,7 +48,7 @@ flowchart TD
 Research output: a documented protocol that reduces hindsight bias.
 
 ### 2) Authenticate and verify environment readiness
-- Log in with your assigned role (`user` or `admin`).
+- Sign in with Google using an account authorized on the backend allowlist (your role and evaluation language are assigned automatically).
 - Confirm system readiness in the Health view before collecting results.
 - Record environment details (date, app version/deployment target, model/provider settings).
 
@@ -99,11 +99,11 @@ Research output: reproducible artifact set for manuscripts and appendices.
 ## How each step works (technical walkthrough)
 
 ### Step 1: Authentication
-- **User action:** submit username, password, and role.
-- **Backend action:** `POST /auth/login` validates role password from environment variables and creates a token with TTL.
+- **User action:** sign in with Google (Firebase Auth popup).
+- **Backend action:** `POST /auth/google` verifies the Google ID token, checks the email allowlist, assigns role/language, and creates a token with TTL.
 - **System state change:** session token is cached server-side; token and expiry are returned.
 - **Success output:** authenticated session available for protected routes.
-- **Failure modes:** invalid credentials (`401`), expired/invalid token on later calls (`401`).
+- **Failure modes:** unverified email or non-allowlisted account (`401`/`403`); expired/invalid token on later calls (`401`).
 
 ### Step 2: Session validation and readiness
 - **User action:** app loads or refreshes.
@@ -149,10 +149,17 @@ Research output: reproducible artifact set for manuscripts and appendices.
 
 ### Step 8: Human evaluation capture
 - **User action:** submit manual scores and rationale.
-- **Backend action:** `POST /evaluate/human` appends submission rows to persisted CSV.
+- **Backend action:** `POST /evaluate/human` appends submission rows to persisted CSV (evaluator identity taken from the signed-in session).
 - **System state change:** `outputs/human_fairness_scores.csv` gains new records.
 - **Success output:** auditable human-judgment dataset for triangulation.
 - **Failure modes:** invalid form values or write failures.
+
+### Step 8b: Review and revise submissions
+- **User action:** open the **My Submissions** page to review saved evaluations.
+- **Backend action:** `GET /submissions` returns your rows (admins see all); `PUT`/`DELETE /submissions/{id}` edit or remove a row.
+- **System state change:** `outputs/human_fairness_scores.csv` is rewritten on edit/delete.
+- **Success output:** corrected, self-managed evaluation record.
+- **Failure modes:** editing another user's row is rejected (`403`); missing row (`404`).
 
 ### Step 9: Statistical/fairness aggregation
 - **User action:** open analytics views or run full pipeline.
@@ -188,7 +195,7 @@ Research output: reproducible artifact set for manuscripts and appendices.
 - **Pipeline failures:** keep health checks and failure logs with results.
 
 ## Practical troubleshooting for research runs
-- **Login failure:** validate role/password and session state.
+- **Login failure:** confirm your Google account is authorized on the backend allowlist and that the session is valid.
 - **Health not OK:** stop data collection and re-run only after service recovery.
 - **Translation errors:** verify provider credentials and provider-specific limits.
 - **Missing outputs:** rerun affected alerts and annotate rerun criteria.

@@ -14,6 +14,7 @@ export default defineConfig({
       '/segment': 'http://127.0.0.1:8000',
       '/translate': 'http://127.0.0.1:8000',
       '/evaluate': 'http://127.0.0.1:8000',
+      '/submissions': 'http://127.0.0.1:8000',
       '/templates': 'http://127.0.0.1:8000',
       '/pipeline': 'http://127.0.0.1:8000',
     },

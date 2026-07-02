@@ -6,8 +6,8 @@ This document describes the full architecture and runtime behavior of the IPAWS 
 
 The application has two primary layers:
 
-- **Backend API**: FastAPI service in `api/main.py`, exposing endpoints for alert retrieval, translation, segmentation, fairness evaluation, human scoring, template generation, authentication, and admin analytics.
-- **Frontend UI**: React SPA in `web/src/App.jsx`, providing workflows for Health, Alerts, Single Eval, Human Eval, Batch Eval, Whole Eval, and an admin-only analytics dashboard.
+- **Backend API**: FastAPI service in `api/main.py`, exposing endpoints for alert retrieval, translation, segmentation, fairness evaluation, human scoring, submission management, template generation, Google Sign-In authentication, alert-pool curation, and admin analytics.
+- **Frontend UI**: React SPA in `web/src/App.jsx`, providing workflows for Health, Alerts, Single Eval, Human Eval, Batch Eval, Whole Eval, My Submissions, Alert Pool, and an admin-only analytics dashboard.
 
 Supporting layer:
 
@@ -70,37 +70,49 @@ Supporting layer:
 
 ## 3.2 Authentication & Session Model
 
+Authentication is handled through **Google Sign-In (Firebase)**. There is no password-based login. The frontend obtains a Google ID token via Firebase Auth, and the backend verifies it and maps the account to a role and language through an email allowlist.
+
 ### Endpoints
 
-- `POST /auth/login`
-  - Input: `username`, `password`, `role` (`user`|`admin`)
-  - Validates password from env vars:
-    - admin: `APP_ADMIN_PASSWORD` (or `ADMIN_PASSWORD` fallback)
-    - user: `APP_USER_PASSWORD` (falls back to admin password if unset)
-  - Creates session token + expiry
-  - Returns: token + role + username + expiry
+- `POST /auth/google`
+  - Input: `id_token` (Google/Firebase ID token)
+  - Verifies the token server-side with `firebase-admin`
+  - Requires a verified email present in the `ACCESS_ALLOWLIST`
+  - Allowlist entry supplies the account's `role` (`user`|`admin`) and, for evaluators, an assigned `language` (`es`/`hi`)
+  - Creates a session token + expiry
+  - Returns: token + role + username + email + language + expiry
+  - Rejections: missing token (`400`), no/unverified email (`401`/`403`), account not on allowlist (`403`)
 
 - `GET /auth/session`
   - Requires `Authorization: Bearer <token>`
   - Validates token existence and TTL
-  - Returns session status and identity
+  - Returns session validity and identity (role, username, email, language, expiry)
 
 ### Session behavior
 
 - Default TTL: `SESSION_TTL_SECONDS=28800` (8 hours)
 - Expired tokens are removed lazily when validated.
 - Session storage is in-process memory (not durable across service restarts/revisions).
+- The signed-in identity (email/username) is authoritative and is used to attribute human-evaluation submissions.
 
 ## 3.3 Functional Endpoints
 
 - `GET /health` — service health and server time
 - `GET /config` — selected runtime config visibility
+- `POST /auth/google` — Google Sign-In verification and session issuance
+- `GET /auth/session` — bearer-token session validation
 - `GET /admin/analysis` — admin-only analytics summary for submitted human scores and composite exports
-- `GET /alerts` — stratified/sample retrieval from FEMA Open API with filters
-- `POST /translate` — translation by selected system (`gpt4o`, `gpt5.5`, `google_nmt`, `llama3`)
+- `GET /admin/download/{dataset_key}` — admin-only CSV export download
+- `GET /admin/alert-pool` — admin-only: full 70-item alert pool with selection status
+- `POST /admin/alert-pool/select` — admin-only: set the 48 alerts shown to evaluators
+- `GET /alerts` — alert retrieval; `?source=research` returns the admin-selected alert pool
+- `POST /translate` — translation by selected system (e.g. `gemini`, `gpt4o`, `google_nmt`, `llama3`)
 - `POST /segment` — source segmentation
 - `POST /evaluate` — automated fairness scoring
-- `POST /evaluate/human` — persists human scores to CSV
+- `POST /evaluate/human` — persists a human score row to CSV (evaluator taken from session)
+- `GET /submissions` — list submissions (users see own; admins see all)
+- `PUT /submissions/{submission_id}` — edit a submission's scores/notes (ownership enforced)
+- `DELETE /submissions/{submission_id}` — delete a submission (ownership enforced)
 - `POST /pipeline/run` — end-to-end research workflow execution
 - `POST /templates/build` — template extraction and save
 
@@ -109,8 +121,11 @@ Supporting layer:
 - Main outputs in `/outputs`:
   - fairness/human scores, segment outputs, composite/statistical results
 - Human evaluation appends rows to `outputs/human_fairness_scores.csv`.
+- Submission list/edit/delete operations read and rewrite `outputs/human_fairness_scores.csv`; each submission is keyed by its `timestamp`.
 - Admin analytics reads from `outputs/human_fairness_scores.csv` and `outputs/composite_scores.csv` to build dashboard summaries.
+- The admin-selected alert pool is persisted so evaluators consistently see the same 48 alerts.
 - Session and current-state caches are in memory (non-persistent).
+- **Note:** Cloud Run instances are ephemeral, so CSV writes are per-instance and are not durable across revisions/restarts.
 
 ## 3.5 Admin Analytics Model
 
@@ -152,19 +167,20 @@ The admin analytics endpoint aggregates persisted evaluation data into BI-style 
 - Main shell now uses the full available canvas width.
 - Sidebar is rendered as a sticky left rail aligned to the far left of the app layout.
 - Left navigation tabs are role-aware:
-  - **Admin**: all tabs, including `Admin Analytics`
-  - **User**: subset excluding admin-only page(s) (currently hides Human Eval tab)
+  - **Admin**: all tabs — `Health`, `Alerts`, `Single Eval`, `Human Eval`, `Batch Eval`, `Whole Eval`, `My Submissions`, `Alert Pool`, `Admin Analytics`
+  - **User (evaluator)**: `Whole Eval` and `My Submissions` only
 
 ## 4.2 Login Gate
 
 Before app content is shown:
 
-1. Login form submits to `POST /auth/login`.
-2. On success, session token is stored in `sessionStorage`.
-3. App validates token via `GET /auth/session` on startup.
-4. If invalid or expired, user is returned to login screen.
+1. User signs in with Google (Firebase Auth popup).
+2. The frontend sends the Google ID token to `POST /auth/google`.
+3. On success, the backend session token is stored in `sessionStorage`.
+4. App validates the token via `GET /auth/session` on startup.
+5. If invalid or expired, the user is returned to the sign-in screen.
 
-Wrong password = login failure, app pages remain inaccessible.
+Accounts that are not on the backend allowlist cannot access the app pages.
 
 ## 4.3 Major UI Functional Areas
 
@@ -178,18 +194,22 @@ Wrong password = login failure, app pages remain inaccessible.
   - compare mode for source vs translation panes
   - loading indicators and context strip
 - **Whole Eval**:
-  - side pane for metadata/load controls
-  - main pane for translation/evaluation workflow
-  - compare mode + loading indicators
+  - auto-loads the admin-selected alert pool (`/alerts?source=research`) on open
+  - auto-translates the current message to the evaluator's language
+  - single language selector + compare-mode toggle
+  - 12-metric human scoring form and save action
+  - collapsible alert picker + Back/Next traversal
+- **My Submissions**:
+  - lists the signed-in user's saved evaluations (admins see all)
+  - search/filter, inline edit of the 12 scores + notes, and delete
+  - color-coded metric rows and per-submission average
+- **Alert Pool** (admin):
+  - review the full 70-item alert pool and select the 48 shown to evaluators
 - **Admin Analytics**:
-  - KPI summary cards
-  - submission trend line chart
-  - human language coverage chart
-  - fairness metric performance chart
-  - composite OFS chart by language and system
-  - normal distribution curve for human average scores
-  - two-way ANOVA table and significance insights
-  - evaluator activity and recent submission tables
+  - always-visible KPI summary cards
+  - segmented views: **Overview**, **Human Evaluations**, **Model Performance**
+  - charts and tables for trends, coverage, metric performance, composite OFS, score distribution, two-way ANOVA, evaluator activity, and recent submissions
+  - collapsible "Export data" section for CSV downloads
 
 ## 4.3.1 Analytics Dashboard Reference
 
@@ -208,34 +228,34 @@ The `Admin Analytics` page is intended for admin users who need a BI-style summa
 - `outputs/composite_scores.csv`
   - source for composite score benchmarking, system comparisons, and ANOVA analysis
 
-### Dashboard sections
+### Layout
 
-- **Analytics Page Guide**
-  - embedded documentation explaining the purpose of each chart and the interpretation of the statistical outputs
-- **KPI cards**
-  - total submissions
-  - unique messages
-  - named evaluators
-  - composite record count
-- **Submission Trend**
-  - daily counts of submitted human evaluations
-- **Human Evaluation Coverage**
-  - language distribution of submitted evaluations
-- **Metric Performance**
-  - average score by the 12 fairness dimensions (`PF1–PF6`, `IF1–IF6`)
-- **Composite OFS by Language & System**
-  - average `OFS` comparison across translation systems for each language
-- **Normal Distribution Curve**
-  - observed distribution of average human scores compared against a fitted normal curve
-- **Two-Way ANOVA**
-  - significance testing for `OFS` by:
-    - `language`
-    - `system`
-    - `language × system`
-- **Evaluator Activity**
-  - evaluator participation counts and average scores
-- **Recent Human Submissions**
-  - latest saved rows with evaluator, language, score, and notes preview
+The page opens with a row of KPI cards that stay visible, followed by a segmented control that switches between three focused views (progressive disclosure to reduce on-screen density):
+
+- **Overview** — submission trend and language coverage charts
+- **Human Evaluations** — metric performance, score distribution, evaluator activity, and recent submissions
+- **Model Performance** — composite OFS by language and system, best system per language, and the two-way ANOVA table with an inline "How to read this" disclosure
+
+A collapsible **Export data** section at the bottom holds the CSV download buttons, and a **Refresh** button reloads the latest aggregated data.
+
+### KPI cards
+
+- total submissions
+- unique messages
+- named evaluators
+- composite record count
+
+### Charts and tables
+
+- **Submission Trend** — daily counts of submitted human evaluations
+- **Language Coverage** — language distribution of submitted evaluations
+- **Metric Performance** — average score by the 12 fairness dimensions (`PF1–PF6`, `IF1–IF6`)
+- **Score Distribution** — observed average human scores vs. a fitted normal curve
+- **Composite OFS by Language & System** — average `OFS` across translation systems per language
+- **Best System by Language** — highest-scoring system per language with OFS/PFI/IFI
+- **Two-Way ANOVA** — significance testing for `OFS` by `language`, `system`, and `language × system`
+- **Evaluator Activity** — evaluator participation counts and average scores
+- **Recent Submissions** — latest saved rows with evaluator, language, score, and notes preview
 
 ### Statistical interpretation
 
@@ -274,11 +294,11 @@ flowchart TD
 
 ## 5.1 Authentication Flow
 
-1. User submits role + username + password.
-2. Backend validates password against role config.
-3. Backend returns token with expiry.
-4. Frontend stores token in session storage.
-5. Frontend validates token on app load.
+1. User signs in with Google (Firebase Auth popup) in the frontend.
+2. Frontend sends the Google ID token to `POST /auth/google`.
+3. Backend verifies the token and checks the email against the allowlist to assign role + language.
+4. Backend returns a bearer token with expiry.
+5. Frontend stores the token in session storage and validates it on app load.
 
 Admin users use the same session token to call `GET /admin/analysis` from the analytics dashboard.
 
@@ -290,9 +310,11 @@ Admin users use the same session token to call `GET /admin/analysis` from the an
 4. Optional fairness scoring requested (`/evaluate`).
 5. Optional human scoring saved (`/evaluate/human`).
 
+Evaluators can later review, edit, or delete their saved scores from the **My Submissions** page via `GET/PUT/DELETE /submissions`.
+
 ## 5.3 Admin Analytics Flow
 
-1. Admin signs in via `POST /auth/login`.
+1. Admin signs in via `POST /auth/google`.
 2. Frontend stores the bearer token in `sessionStorage`.
 3. Admin opens the `Admin Analytics` tab.
 4. Frontend requests `GET /admin/analysis` with the bearer token.
@@ -309,11 +331,11 @@ Admin users use the same session token to call `GET /admin/analysis` from the an
 ## 5.5 How Each Step Works
 
 ### A) Login and token issuance
-- **Trigger**: user submits credentials from frontend login form.
-- **Endpoint**: `POST /auth/login`.
-- **Processing**: backend validates role-specific password from environment variables and creates an expiring session token.
-- **Output**: bearer token, role, username, expiry.
-- **Failure behavior**: invalid credentials return `401`.
+- **Trigger**: user completes the Google Sign-In popup in the frontend.
+- **Endpoint**: `POST /auth/google`.
+- **Processing**: backend verifies the Google ID token with `firebase-admin`, checks the email allowlist to assign role/language, and creates an expiring session token.
+- **Output**: bearer token, role, username, email, language, expiry.
+- **Failure behavior**: unverified email or non-allowlisted account returns `401`/`403`.
 
 ### B) Session validation on app load
 - **Trigger**: app startup/refresh.
@@ -385,29 +407,31 @@ Admin users use the same session token to call `GET /admin/analysis` from the an
 - Built by Vite (`web/dist`).
 - Deployed to Firebase Hosting.
 - Uses `VITE_API_BASE_URL` for backend target in production.
-- In local development, Vite proxies `/auth`, `/admin`, `/alerts`, `/translate`, `/evaluate`, `/templates`, `/pipeline`, `/health`, and `/config` to the backend.
+- In local development, Vite proxies `/auth`, `/admin`, `/alerts`, `/translate`, `/evaluate`, `/segment`, `/submissions`, `/templates`, `/pipeline`, `/health`, and `/config` to the backend.
 
 ## 6.2 Backend
 
 - Deployed on Cloud Run (`ipaws-api`).
 - Runtime env vars control auth, model, and behavior:
-  - `APP_ADMIN_PASSWORD`
-  - `APP_USER_PASSWORD` (optional)
   - `SESSION_TTL_SECONDS`
   - `OPENAI_API_KEY`
   - `OPENAI_MODEL`
+  - `REPLICATE_API_TOKEN`
   - `OFFLINE_MODE`
+- Authentication uses Google Sign-In verified via `firebase-admin`; authorized accounts are defined in the backend email allowlist (`ACCESS_ALLOWLIST`).
 
 ## 7) Security Notes
 
-- Authentication is now backend-enforced (not frontend-only).
+- Authentication is backend-enforced via Google Sign-In (Firebase ID tokens verified with `firebase-admin`).
+- Access is restricted to accounts on the backend email allowlist (`ACCESS_ALLOWLIST`).
 - Session tokens are bearer tokens stored in browser session storage.
 - In-memory sessions are reset on service restarts/revisions.
+- Submission edit/delete enforce ownership (users may only modify their own rows; admins may modify any).
 - For higher assurance in production, consider:
   - external session store (Redis/Firestore)
-  - hashed password management
   - HTTPS-only secure cookies instead of JS-readable tokens
-  - rate limiting and login attempt throttling
+  - rate limiting and abuse throttling
+  - moving the allowlist to a managed datastore
 
 ## 8) Operational Notes / Current Constraints
 
