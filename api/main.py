@@ -83,14 +83,65 @@ DOWNLOADABLE_OUTPUTS: Dict[str, Dict[str, str]] = {
     },
 }
 
+# ---------------------------------------------------------------------------
+# Durable storage (Google Cloud Storage) shared across features.
+#
+# Cloud Run instances are ephemeral, so anything written to the local disk does
+# not survive restarts or new deployments. When ``SUBMISSIONS_GCS_BUCKET`` is
+# set, feature data (human submissions, alert-pool selection) is stored as JSON
+# objects in Cloud Storage so it persists until explicitly changed. Without the
+# env var the code falls back to local files, keeping local development working.
+# ---------------------------------------------------------------------------
+_storage_logger = logging.getLogger("ipaws.storage")
+GCS_BUCKET = os.getenv("SUBMISSIONS_GCS_BUCKET", "").strip()
+_gcs_client = None
+_gcs_client_error: Optional[str] = None
+
+
+def _gcs_blob(object_name: str):
+    """Return a Cloud Storage blob for ``object_name``, or ``None`` when the
+    GCS backend is not configured/available (callers fall back to local files)."""
+    global _gcs_client, _gcs_client_error
+    if not GCS_BUCKET or _gcs_client_error is not None:
+        return None
+    try:
+        if _gcs_client is None:
+            from google.cloud import storage
+
+            _gcs_client = storage.Client()
+        return _gcs_client.bucket(GCS_BUCKET).blob(object_name)
+    except Exception as exc:  # pragma: no cover - environment dependent
+        _gcs_client_error = str(exc)
+        _storage_logger.error("Cloud Storage backend unavailable: %s", exc)
+        return None
+
+
 # Alert pool: admin selects which alerts are used in evaluation
 ALERT_POOL_FILE = OUTPUTS_DIR / ".alert_pool_selected.json"
+ALERT_POOL_GCS_OBJECT = os.getenv("ALERT_POOL_GCS_OBJECT", "alert-pool/selected.json").strip()
 ALERT_POOL_SELECTED: set = set()  # in-memory cache of selected alert IDs
 
 
 def _load_alert_pool():
-    """Load selected alert IDs from disk into memory."""
+    """Load selected alert IDs from the durable store (GCS) or local disk."""
     global ALERT_POOL_SELECTED
+    blob = _gcs_blob(ALERT_POOL_GCS_OBJECT)
+    if blob is not None:
+        try:
+            if blob.exists():
+                raw = blob.download_as_text()
+                data = json.loads(raw) if raw.strip() else {}
+                ALERT_POOL_SELECTED = set(data.get("selected_ids", []))
+                return
+            # Seed the bucket object once from any local selection shipped in
+            # the image, then treat GCS as authoritative going forward.
+            if ALERT_POOL_FILE.exists():
+                with open(ALERT_POOL_FILE, "r", encoding="utf-8") as f:
+                    ALERT_POOL_SELECTED = set(json.load(f).get("selected_ids", []))
+                _save_alert_pool()
+            return
+        except Exception as exc:
+            _storage_logger.error("Failed to load alert pool from Cloud Storage: %s", exc)
     if ALERT_POOL_FILE.exists():
         try:
             with open(ALERT_POOL_FILE, "r", encoding="utf-8") as f:
@@ -101,7 +152,17 @@ def _load_alert_pool():
 
 
 def _save_alert_pool():
-    """Persist selected alert IDs to disk."""
+    """Persist selected alert IDs to the durable store (GCS) or local disk."""
+    blob = _gcs_blob(ALERT_POOL_GCS_OBJECT)
+    if blob is not None:
+        try:
+            blob.upload_from_string(
+                json.dumps({"selected_ids": list(ALERT_POOL_SELECTED)}),
+                content_type="application/json",
+            )
+            return
+        except Exception as exc:
+            _storage_logger.error("Failed to save alert pool to Cloud Storage: %s", exc)
     try:
         with open(ALERT_POOL_FILE, "w", encoding="utf-8") as f:
             json.dump({"selected_ids": list(ALERT_POOL_SELECTED)}, f)
@@ -492,28 +553,14 @@ def _write_submissions(csv_path: Path, rows: List[Dict[str, str]]) -> None:
 # working unchanged.
 # ---------------------------------------------------------------------------
 _submissions_logger = logging.getLogger("ipaws.submissions")
-SUBMISSIONS_GCS_BUCKET = os.getenv("SUBMISSIONS_GCS_BUCKET", "").strip()
+SUBMISSIONS_GCS_BUCKET = GCS_BUCKET
 SUBMISSIONS_GCS_OBJECT = os.getenv("SUBMISSIONS_GCS_OBJECT", "submissions/human_fairness_scores.json").strip()
-_gcs_client = None
-_gcs_client_error: Optional[str] = None
 
 
 def _submissions_gcs_blob():
     """Return the Cloud Storage blob holding submissions, or ``None`` when the
     GCS backend is not configured/available (falls back to local CSV)."""
-    global _gcs_client, _gcs_client_error
-    if not SUBMISSIONS_GCS_BUCKET or _gcs_client_error is not None:
-        return None
-    try:
-        if _gcs_client is None:
-            from google.cloud import storage
-
-            _gcs_client = storage.Client()
-        return _gcs_client.bucket(SUBMISSIONS_GCS_BUCKET).blob(SUBMISSIONS_GCS_OBJECT)
-    except Exception as exc:  # pragma: no cover - environment dependent
-        _gcs_client_error = str(exc)
-        _submissions_logger.error("Cloud Storage submissions backend unavailable: %s", exc)
-        return None
+    return _gcs_blob(SUBMISSIONS_GCS_OBJECT)
 
 
 def _normalize_submission_row(row: Dict[str, Any]) -> Dict[str, str]:

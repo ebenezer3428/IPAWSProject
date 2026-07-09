@@ -7,8 +7,8 @@ import './App.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const apiUrl = (path) => `${API_BASE_URL}${path}`
-const DEFAULT_TABS = ['Health', 'Alerts', 'Single Eval', 'Human Eval', 'Batch Eval', 'Whole Eval', 'My Submissions', 'Alert Pool', 'Admin Analytics']
-const USER_TABS = ['Whole Eval', 'My Submissions']
+const DEFAULT_TABS = ['Health', 'Evaluation', 'My Submissions', 'Alert Pool', 'Admin Analytics']
+const USER_TABS = ['Evaluation', 'My Submissions']
 
 const LANGUAGE_LABELS = { es: 'Spanish', hi: 'Hindi' }
 
@@ -57,7 +57,7 @@ function authHeaders(extra = {}) {
 }
 
 function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TABS }) {
-  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Whole Eval': '▥', 'My Submissions': '☷', 'Alert Pool': '⬚', 'Admin Analytics': '◈' }
+  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Evaluation': '▥', 'My Submissions': '☷', 'Alert Pool': '⬚', 'Admin Analytics': '◈' }
   return (
     <aside className="sidebar">
       <div className="sidebar-tools">
@@ -195,11 +195,7 @@ function Health({ onNavigate }) {
         <h2>Welcome</h2>
         <p style={{ opacity: 0.85 }}>Choose an action below to get started.</p>
         <div className="menu-grid" style={{ marginTop: 12 }}>
-          <MenuCard icon="📡" title="Alerts" desc="Browse and filter recent alerts." to="Alerts" />
-          <MenuCard icon="🧪" title="Single Eval" desc="Translate and evaluate a single message." to="Single Eval" />
-          <MenuCard icon="📚" title="Batch Eval" desc="Segmented batch translation and evaluation." to="Batch Eval" />
-          <MenuCard icon="🧾" title="Whole Eval" desc="Whole-message translation and evaluation." to="Whole Eval" />
-          <MenuCard icon="👤" title="Human Eval" desc="Manually score translations across factors." to="Human Eval" />
+          <MenuCard icon="🧾" title="Evaluation" desc="Whole-message translation and evaluation." to="Evaluation" />
         </div>
       </div>
       <div className="card" style={{ marginTop: 12 }}>
@@ -1987,7 +1983,7 @@ export default function App() {
             {tab === 'Single Eval' && <SingleEval />}
             {tab === 'Human Eval' && <HumanEval />}
             {tab === 'Batch Eval' && <BatchEval />}
-            {tab === 'Whole Eval' && <WholeEval />}
+            {tab === 'Evaluation' && <WholeEval />}
             {tab === 'My Submissions' && <MySubmissions auth={auth} />}
             {tab === 'Alert Pool' && auth?.role === 'admin' && <AlertPool auth={auth} />}
             {tab === 'Admin Analytics' && auth?.role === 'admin' && <AdminAnalytics auth={auth} />}
@@ -2771,7 +2767,7 @@ function WholeEval() {
 
   return (
     <div className="card">
-      <h2>Whole Message Evaluation</h2>
+      <h2>Evaluation</h2>
       <p style={{ opacity: 0.8, marginTop: 4 }}>Use this page for full-message translation review and scoring without segmentation.</p>
       <EvalContextStrip
         mode="Whole Message"
