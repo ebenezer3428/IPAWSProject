@@ -120,35 +120,39 @@ def _gcs_blob(object_name: str):
 ALERT_POOL_FILE = OUTPUTS_DIR / ".alert_pool_selected.json"
 ALERT_POOL_GCS_OBJECT = os.getenv("ALERT_POOL_GCS_OBJECT", "alert-pool/selected.json").strip()
 ALERT_POOL_SELECTED: set = set()  # in-memory cache of selected alert IDs
+# When no selection has been saved yet, default to the first 48 alerts so the
+# admin pool and evaluator view stay consistent (matches the /alerts fallback).
+DEFAULT_ALERT_POOL_IDS = [str(i) for i in range(48)]
 
 
 def _load_alert_pool():
-    """Load selected alert IDs from the durable store (GCS) or local disk."""
+    """Load selected alert IDs from the durable store (GCS) or local disk.
+
+    When nothing is stored yet, seed the default first-48 selection and persist
+    it so the choice is durable and shown as checked in the admin pool."""
     global ALERT_POOL_SELECTED
+    loaded: Optional[set] = None
     blob = _gcs_blob(ALERT_POOL_GCS_OBJECT)
     if blob is not None:
         try:
             if blob.exists():
                 raw = blob.download_as_text()
                 data = json.loads(raw) if raw.strip() else {}
-                ALERT_POOL_SELECTED = set(data.get("selected_ids", []))
-                return
-            # Seed the bucket object once from any local selection shipped in
-            # the image, then treat GCS as authoritative going forward.
-            if ALERT_POOL_FILE.exists():
-                with open(ALERT_POOL_FILE, "r", encoding="utf-8") as f:
-                    ALERT_POOL_SELECTED = set(json.load(f).get("selected_ids", []))
-                _save_alert_pool()
-            return
+                loaded = set(data.get("selected_ids", []))
         except Exception as exc:
             _storage_logger.error("Failed to load alert pool from Cloud Storage: %s", exc)
-    if ALERT_POOL_FILE.exists():
+    if loaded is None and ALERT_POOL_FILE.exists():
         try:
             with open(ALERT_POOL_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                ALERT_POOL_SELECTED = set(data.get("selected_ids", []))
+                loaded = set(json.load(f).get("selected_ids", []))
         except Exception:
-            pass
+            loaded = None
+    if loaded:
+        ALERT_POOL_SELECTED = loaded
+        return
+    # Nothing stored yet: seed the default selection and persist it.
+    ALERT_POOL_SELECTED = set(DEFAULT_ALERT_POOL_IDS)
+    _save_alert_pool()
 
 
 def _save_alert_pool():
