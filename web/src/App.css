@@ -273,6 +273,11 @@
 .quota-card-top > span { color: var(--muted); font-variant-numeric: tabular-nums; }
 .quota-track { display: block; height: 6px; overflow: hidden; border-radius: 999px; background: color-mix(in srgb, var(--border) 80%, transparent); }
 .quota-track > span { display: block; height: 100%; border-radius: inherit; background: var(--pool-green); transition: width 240ms ease; }
+.translation-progress { display: grid; gap: 6px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; background: color-mix(in srgb, var(--panel) 92%, var(--pool-green)); }
+.translation-progress-label { display: flex; justify-content: space-between; gap: 12px; font-size: 0.84rem; }
+.translation-progress-label span, .translation-progress small { color: var(--muted); }
+.translation-progress-track { height: 8px; overflow: hidden; border-radius: 999px; background: color-mix(in srgb, var(--border) 80%, transparent); }
+.translation-progress-track > span { display: block; height: 100%; border-radius: inherit; background: var(--pool-green); transition: width 240ms ease; }
 .quota-card small { color: var(--muted); font-size: 0.74rem; }
 
 .audit-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 18px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }

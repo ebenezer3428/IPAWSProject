@@ -1633,6 +1633,7 @@ function AlertPool({ auth }) {
   const [corpusSummary, setCorpusSummary] = useState(null)
   const [corpusBusy, setCorpusBusy] = useState('')
   const [corpusError, setCorpusError] = useState('')
+  const [translationProgress, setTranslationProgress] = useState(null)
   const [translationReviewReasons, setTranslationReviewReasons] = useState({})
   const [translationEdits, setTranslationEdits] = useState({})
   const [translationFilter, setTranslationFilter] = useState({ system: 'all', language: 'all', status: 'pending' })
@@ -1784,8 +1785,10 @@ function AlertPool({ auth }) {
 
   const generateCorpusBatch = async (system, language) => {
     const condition = `${system}:${language}`
+    const total = Number(corpusSummary?.missing_by_condition?.[condition] || 0)
     setCorpusBusy(condition)
     setCorpusError('')
+    setTranslationProgress({ condition, system, language, total, completed: 0, remaining: total })
     try {
       let previousRemaining = Number.POSITIVE_INFINITY
       while (previousRemaining > 0) {
@@ -1798,6 +1801,7 @@ function AlertPool({ auth }) {
         if (!r.ok) throw new Error(payload?.detail || `Translation preparation failed (${r.status})`)
         setCorpusSummary(payload)
         const remaining = Number(payload?.missing_by_condition?.[condition] || 0)
+        setTranslationProgress({ condition, system, language, total, completed: total - remaining, remaining })
         if (remaining === 0) break
         if (!payload?.generated || remaining >= previousRemaining) {
           throw new Error(`Translation preparation made no progress for ${system} / ${language}`)
@@ -2137,6 +2141,25 @@ function AlertPool({ auth }) {
                 )
               })}
             </div>
+            {translationProgress && corpusBusy === translationProgress.condition && (
+              <div className="translation-progress" aria-live="polite">
+                <div className="translation-progress-label">
+                  <strong>{systemLabel(translationProgress.system)} / {LANGUAGE_LABELS[translationProgress.language] || translationProgress.language}</strong>
+                  <span>{translationProgress.completed} of {translationProgress.total} translated</span>
+                </div>
+                <div
+                  className="translation-progress-track"
+                  role="progressbar"
+                  aria-label={`${systemLabel(translationProgress.system)} ${LANGUAGE_LABELS[translationProgress.language] || translationProgress.language} translation progress`}
+                  aria-valuemin="0"
+                  aria-valuemax={translationProgress.total}
+                  aria-valuenow={translationProgress.completed}
+                >
+                  <span style={{ width: `${translationProgress.total ? (translationProgress.completed / translationProgress.total) * 100 : 0}%` }} />
+                </div>
+                <small>{translationProgress.remaining} remaining</small>
+              </div>
+            )}
             {(corpusSummary.translations || []).length > 0 && (
               <details style={{ marginTop: 8 }}>
                 <summary><strong>Optional translation quality review</strong></summary>
