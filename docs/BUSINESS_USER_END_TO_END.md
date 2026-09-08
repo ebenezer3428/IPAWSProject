@@ -62,11 +62,17 @@ Research output: a traceable run context for reproducibility.
 Research output: a curated dataset aligned with your sampling frame.
 
 ### 4) Execute translation pipeline (if multilingual study)
-- Run translation with your selected provider/model configuration.
+- In **Alert Pool**, choose **Build 200 eligible pool**. The system scans required CAP categories together, then independently enforces 50 strictly eligible records per study category or reports the remaining OpenFEMA archive shortfalls.
+- Review retained flagged and excluded records; they remain visible for audit but do not count toward or enter the 200 eligible-record pool, including after a flag is approved.
+- Confirm the acquisition mapping: `Met` to Weather, `Safety`/`Security` to Public Safety, `Health` to Health, and `Geo`/`Rescue`/`Fire` to Evacuation only when CAP `responseType` or explicit source text indicates evacuation or shelter.
+- In **Alert Pool**, select the exact balanced 48-alert corpus and choose **Prepare exact corpus**.
+- Generate each declared system/language condition in resumable batches. Completed artifacts persist after every batch.
+- Review each generated artifact against its official source. Approve it, reject it with a reason, or correct the reviewed text while retaining the generated original.
+- Confirm that zero translations are missing and zero are awaiting approval, then choose **Freeze corpus**.
 - Keep provider and model fixed within a study condition.
 - Note any failed or partial translations as explicit exclusions or error strata.
 
-Research output: standardized translated corpus with known configuration.
+Research output: an immutable, hash-verified source and translation corpus with known configuration.
 
 ### 5) Run segmentation and inspect unit boundaries
 - Segment alerts into smaller analytical units.
@@ -127,11 +133,12 @@ Research output: reproducible artifact set for manuscripts and appendices.
 - **Failure modes:** upstream data unavailability or empty filtered sample.
 
 ### Step 5: Translation
-- **User action:** run translation for active message(s).
-- **Backend action:** `POST /translate` dispatches to configured translation system (`gpt4o`, `gpt5.5`, `google_nmt`, `llama3`).
-- **System state change:** translated text is attached to the active analysis context.
-- **Success output:** translated content available for downstream scoring.
-- **Failure modes:** credential/provider/model errors; partial translation outputs.
+- **Admin action:** prepare the selected corpus, generate every declared translation condition, complete bilingual quality review, and freeze it.
+- **Backend action:** corpus endpoints snapshot exact official sources, generate small resumable translation batches, verify completeness and SHA-256 hashes, and persist the manifest in Cloud Storage or the local fallback.
+- **System state change:** draft translations accumulate until every artifact has a current hash-bound approval. Corrections preserve generated text; regeneration invalidates approval but retains history. After freeze, source selection and translation artifacts are immutable.
+- **Evaluator action:** Whole Eval resolves a read-only frozen translation by corpus ID, alert ID, system, and language.
+- **Success output:** every evaluator scores the same source and translation artifact for a study condition.
+- **Failure modes:** provider errors preserve completed batches; missing translations prevent freeze; changed selected sources require a new preparation; unfrozen or mismatched scoring inputs return `409`.
 
 ### Step 6: Segmentation
 - **User action:** request segmentation for source or translated text.
@@ -150,7 +157,7 @@ Research output: reproducible artifact set for manuscripts and appendices.
 ### Step 8: Human evaluation capture
 - **User action:** submit manual scores and rationale.
 - **Backend action:** `POST /evaluate/human` appends submission rows to persisted CSV (evaluator identity taken from the signed-in session).
-- **System state change:** `outputs/human_fairness_scores.csv` gains new records.
+- **System state change:** the durable submission store gains a record containing corpus ID, official alert ID, and source/translation hashes alongside scores.
 - **Success output:** auditable human-judgment dataset for triangulation.
 - **Failure modes:** invalid form values or write failures.
 

@@ -103,8 +103,14 @@ Authentication is handled through **Google Sign-In (Firebase)**. There is no pas
 - `GET /auth/session` — bearer-token session validation
 - `GET /admin/analysis` — admin-only analytics summary for submitted human scores and composite exports
 - `GET /admin/download/{dataset_key}` — admin-only CSV export download
-- `GET /admin/alert-pool` — admin-only: full 70-item alert pool with selection status
+- `GET /admin/alert-pool` — admin-only: full official candidate pool with quality, eligibility, acquisition-target, and selection status
+- `POST /admin/alert-pool/expand` — admin-only: fetch required CAP categories in one California-filtered archive pass, then enforce independent 50-record eligible quotas for Weather, Evacuation/Shelter, Public Safety, and Health
 - `POST /admin/alert-pool/select` — admin-only: set the 48 alerts shown to evaluators
+- `GET /admin/research-corpus` — admin-only: inspect preparation and freeze status
+- `POST /admin/research-corpus/prepare` — admin-only: snapshot the exact selected source corpus and declared study conditions
+- `POST /admin/research-corpus/translate` — admin-only: generate and durably save the next translation batch for one system/language condition
+- `POST /admin/research-corpus/review-translation` — admin-only: approve or reject one translation with reviewer identity, reason, hashes, and an optional correction
+- `POST /admin/research-corpus/freeze` — admin-only: lock a complete source/translation manifest before scoring
 - `GET /alerts` — alert retrieval; `?source=research` returns the admin-selected alert pool
 - `POST /translate` — translation by selected system (e.g. `gemini`, `gpt4o`, `google_nmt`, `llama3`)
 - `POST /segment` — source segmentation
@@ -124,7 +130,12 @@ Authentication is handled through **Google Sign-In (Firebase)**. There is no pas
 - All submission reads/writes go through a single storage layer (`_load_submission_rows` / `_save_submission_rows` / `_append_submission_row`), so list/edit/delete operations and analytics share the same durable source. Each submission is keyed by its `timestamp`.
 - On first read, if the bucket object does not yet exist it is seeded once from any shipped CSV, then all subsequent writes update the bucket object.
 - Admin analytics reads the same durable submission store plus `outputs/composite_scores.csv` to build dashboard summaries.
-- The admin-selected alert pool is persisted so evaluators consistently see the same 48 alerts.
+- The official candidate pool retains eligible, flagged, excluded, and unmapped records for audit. Acquisition targets 200 strictly eligible records: 50 in each study category. Flagged records remain audit-only even after review approval and never count toward or enter the research pool. CAP mapping is `Met` to Weather, `Safety`/`Security` to Public Safety, and `Health` to Health. `Geo`/`Rescue`/`Fire` records count as Evacuation only when CAP `responseType` or explicit text indicates evacuation/shelter. Other CAP categories are not requested by pool acquisition.
+- The admin-selected 48-alert subset is persisted so evaluators consistently see the same balanced corpus.
+- The research corpus manifest is stored at `research-corpus/manifest-v1.json` in the configured Cloud Storage bucket, with `outputs/.research_corpus_v1.json` as the local fallback. It contains exact source and translation text, SHA-256 hashes, official identifiers, model metadata, creator/freezer identity, and timestamps.
+- Generated translation text is retained as immutable provenance. Bilingual review may supply corrected scoring text without overwriting the generated artifact; every decision records reviewer identity, timestamp, reason, source hash, generated hash, effective translation hash, and transition history.
+- A draft can freeze only when the current balanced 48-alert selection still matches the prepared source hash, every declared alert/system/language translation exists with valid hashes, and every translation has a current approval. Rejection blocks freeze, and regeneration resets approval while preserving audit history. A frozen manifest cannot be modified, and alert selection is locked.
+- Human submissions persist the corpus ID, official alert ID, source hash, and translation hash. Scoring endpoints return `409` when inputs do not exactly match a frozen artifact.
 - Session and current-state caches are in memory (non-persistent).
 - **Note:** Cloud Run instances are ephemeral, so local CSV writes are not durable across revisions/restarts. Durable submission persistence therefore requires the Cloud Storage backend (`SUBMISSIONS_GCS_BUCKET`).
 
@@ -195,8 +206,9 @@ Accounts that are not on the backend allowlist cannot access the app pages.
   - compare mode for source vs translation panes
   - loading indicators and context strip
 - **Whole Eval**:
-  - auto-loads the admin-selected alert pool (`/alerts?source=research`) on open
-  - auto-translates the current message to the evaluator's language
+  - auto-loads the frozen research corpus (`/alerts?source=research`) on open
+  - resolves the exact frozen translation for the current alert, system, and evaluator language
+  - keeps frozen translation text read-only and submits corpus/alert identity with every score
   - single language selector + compare-mode toggle
   - 12-metric human scoring form and save action
   - collapsible alert picker + Back/Next traversal
@@ -205,7 +217,9 @@ Accounts that are not on the backend allowlist cannot access the app pages.
   - search/filter, inline edit of the 12 scores + notes, and delete
   - color-coded metric rows and per-submission average
 - **Alert Pool** (admin):
-  - review the full 70-item alert pool and select the 48 shown to evaluators
+  - build a 200-eligible-record pool through independent 50-record category quotas
+  - retain and review ineligible records without counting them toward acquisition quotas
+  - select the balanced 48-record subset shown to evaluators
 - **Admin Analytics**:
   - always-visible KPI summary cards
   - segmented views: **Overview**, **Human Evaluations**, **Model Performance**

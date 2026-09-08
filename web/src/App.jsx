@@ -2,15 +2,18 @@ import { useEffect, useState, useRef } from 'react'
 import { Bar, Line } from 'react-chartjs-2'
 import 'chart.js/auto'
 import { signInWithPopup, signOut } from 'firebase/auth'
+import { Check, Download, RefreshCw, Search, SlidersHorizontal, Sparkles } from 'lucide-react'
 import { auth as firebaseAuth, googleProvider, firebaseConfigured } from './firebase'
 import './App.css'
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const apiUrl = (path) => `${API_BASE_URL}${path}`
-const DEFAULT_TABS = ['Health', 'Evaluation', 'My Submissions', 'Alert Pool', 'Admin Analytics']
+const DEFAULT_TABS = ['Health', 'Evaluation', 'My Submissions', 'Alert Pool', 'Users', 'Admin Analytics']
 const USER_TABS = ['Evaluation', 'My Submissions']
 
 const LANGUAGE_LABELS = { es: 'Spanish', hi: 'Hindi' }
+const SYSTEM_LABELS = { gemini: 'Gemini 2.0 Flash', 'gpt5.5': 'GPT-5.5', llama3: 'Llama 3' }
+const systemLabel = (code) => SYSTEM_LABELS[code] || (code ? String(code) : '—')
 
 // Returns the language codes the current signed-in user may evaluate in.
 // Evaluators are locked to a single language; admins (no lock) get both.
@@ -57,7 +60,7 @@ function authHeaders(extra = {}) {
 }
 
 function Nav({ current, onChange, collapsed, onToggleCollapse, tabs = DEFAULT_TABS }) {
-  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Evaluation': '▥', 'My Submissions': '☷', 'Alert Pool': '⬚', 'Admin Analytics': '◈' }
+  const icons = { 'Health': '⌂', 'Alerts': '◉', 'Single Eval': '✦', 'Human Eval': '✓', 'Batch Eval': '▤', 'Evaluation': '▥', 'My Submissions': '☷', 'Alert Pool': '⬚', 'Users': '☺', 'Admin Analytics': '◈' }
   return (
     <aside className="sidebar">
       <div className="sidebar-tools">
@@ -497,6 +500,7 @@ function AdminAnalytics({ auth }) {
   const composite = data?.composite || {}
   const downloads = data?.downloads || []
   const humanLanguages = human.languages || []
+  const humanSystems = human.systems || []
   const humanMetrics = human.metrics || []
   const submissionsByDay = human.submissions_by_day || []
   const evaluators = human.evaluators || []
@@ -514,6 +518,16 @@ function AdminAnalytics({ auth }) {
       label: 'Submissions',
       data: humanLanguages.map(item => item.count || 0),
       backgroundColor: humanLanguages.map((_, idx) => palette[idx % palette.length]),
+      borderRadius: 8,
+    }],
+  }
+
+  const humanSystemChart = {
+    labels: humanSystems.map(item => systemLabel(item.system)),
+    datasets: [{
+      label: 'Submissions',
+      data: humanSystems.map(item => item.count || 0),
+      backgroundColor: humanSystems.map((_, idx) => palette[idx % palette.length]),
       borderRadius: 8,
     }],
   }
@@ -612,27 +626,39 @@ function AdminAnalytics({ auth }) {
       </div>
 
       {view === 'overview' && (
-        <div className="two-col">
-          <div className="card chart-card">
-            <h3 style={{ marginTop: 0 }}>Submission Trend</h3>
-            <p style={{ marginTop: 0, opacity: 0.75 }}>Daily volume of submitted human scoring rows.</p>
-            {submissionsByDay.length > 0 ? (
-              <div style={{ height: 280 }}>
-                <Line data={trendChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
-              </div>
-            ) : <p style={{ opacity: 0.75 }}>No human submissions available yet.</p>}
+        <>
+          <div className="two-col">
+            <div className="card chart-card">
+              <h3 style={{ marginTop: 0 }}>Submission Trend</h3>
+              <p style={{ marginTop: 0, opacity: 0.75 }}>Daily volume of submitted human scoring rows.</p>
+              {submissionsByDay.length > 0 ? (
+                <div style={{ height: 280 }}>
+                  <Line data={trendChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+                </div>
+              ) : <p style={{ opacity: 0.75 }}>No human submissions available yet.</p>}
+            </div>
+
+            <div className="card chart-card">
+              <h3 style={{ marginTop: 0 }}>Language Coverage</h3>
+              <p style={{ marginTop: 0, opacity: 0.75 }}>Submission count by target language.</p>
+              {humanLanguages.length > 0 ? (
+                <div style={{ height: 280 }}>
+                  <Bar data={humanLanguageChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+                </div>
+              ) : <p style={{ opacity: 0.75 }}>No language distribution to display.</p>}
+            </div>
           </div>
 
           <div className="card chart-card">
-            <h3 style={{ marginTop: 0 }}>Language Coverage</h3>
-            <p style={{ marginTop: 0, opacity: 0.75 }}>Submission count by target language.</p>
-            {humanLanguages.length > 0 ? (
+            <h3 style={{ marginTop: 0 }}>Translation System Coverage</h3>
+            <p style={{ marginTop: 0, opacity: 0.75 }}>Submission count by translation model used.</p>
+            {humanSystems.length > 0 ? (
               <div style={{ height: 280 }}>
-                <Bar data={humanLanguageChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+                <Bar data={humanSystemChart} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
               </div>
-            ) : <p style={{ opacity: 0.75 }}>No language distribution to display.</p>}
+            ) : <p style={{ opacity: 0.75 }}>No translation-system data to display yet.</p>}
           </div>
-        </div>
+        </>
       )}
 
       {view === 'human' && (
@@ -710,6 +736,7 @@ function AdminAnalytics({ auth }) {
                     <th>Timestamp</th>
                     <th>Evaluator</th>
                     <th>Language</th>
+                    <th>System</th>
                     <th>Avg score</th>
                     <th>Source preview</th>
                     <th>Notes</th>
@@ -721,13 +748,14 @@ function AdminAnalytics({ auth }) {
                       <td>{item.timestamp ? new Date(item.timestamp).toLocaleString() : '—'}</td>
                       <td title={item.evaluator_id}>{item.evaluator_name || item.evaluator_id}</td>
                       <td>{item.language?.toUpperCase()}</td>
+                      <td>{systemLabel(item.system)}</td>
                       <td>{formatPercent(item.average_score_pct)}</td>
                       <td>{item.source_preview || '—'}</td>
                       <td>{item.notes || '—'}</td>
                     </tr>
                   )) : (
                     <tr>
-                      <td colSpan={6} style={{ opacity: 0.75 }}>Submitted rows will appear here after evaluators save scores.</td>
+                      <td colSpan={7} style={{ opacity: 0.75 }}>Submitted rows will appear here after evaluators save scores.</td>
                     </tr>
                   )}
                 </tbody>
@@ -1424,15 +1452,190 @@ function SingleEval() {
   )
 }
 
+function UsersAdmin({ auth }) {
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [busyEmail, setBusyEmail] = useState('')
+  const [email, setEmail] = useState('')
+  const [role, setRole] = useState('user')
+  const [language, setLanguage] = useState('es')
+
+  const load = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const r = await fetch(apiUrl('/admin/users'), { headers: authHeaders() })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) throw new Error(payload?.detail || `Unable to load users (${r.status})`)
+      setUsers(payload.users || [])
+    } catch (e) {
+      setError(e?.message || String(e))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => { load() }, [auth?.token])
+
+  const addUser = async (e) => {
+    e?.preventDefault?.()
+    setBusy(true)
+    setError('')
+    setNotice('')
+    try {
+      const body = { email: email.trim().toLowerCase(), role }
+      if (role === 'user') body.language = language
+      const r = await fetch(apiUrl('/admin/users'), {
+        method: 'POST',
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(body)
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) throw new Error(payload?.detail || `Save failed (${r.status})`)
+      setUsers(payload.users || [])
+      setNotice(`Saved ${body.email}.`)
+      setEmail('')
+    } catch (err) {
+      setError(err?.message || String(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const removeUser = async (target) => {
+    if (!window.confirm(`Remove ${target} from the allowlist? They will lose access.`)) return
+    setBusyEmail(target)
+    setError('')
+    setNotice('')
+    try {
+      const r = await fetch(apiUrl(`/admin/users/${encodeURIComponent(target)}`), {
+        method: 'DELETE',
+        headers: authHeaders()
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) throw new Error(payload?.detail || `Delete failed (${r.status})`)
+      setUsers(payload.users || [])
+      setNotice(`Removed ${target}.`)
+    } catch (err) {
+      setError(err?.message || String(err))
+    } finally {
+      setBusyEmail('')
+    }
+  }
+
+  const cardBorder = '1px solid var(--border-color, rgba(128,128,128,0.35))'
+
+  return (
+    <div className="card chart-card" style={{ maxHeight: '90vh', overflow: 'auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
+        <div>
+          <h2 style={{ marginTop: 0 }}>User Management</h2>
+          <p style={{ opacity: 0.8, margin: '4px 0 0 0' }}>
+            Authorize Google accounts to sign in. Evaluators are locked to one language; admins have full access.
+          </p>
+        </div>
+        <button onClick={load} disabled={loading}>{loading ? 'Refreshing…' : 'Refresh'}</button>
+      </div>
+
+      <form onSubmit={addUser} style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'flex-end', marginTop: 16, paddingBottom: 16, borderBottom: cardBorder }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, minWidth: 220 }}>
+          <label style={{ fontSize: '0.85em', opacity: 0.8 }}>Google email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="person@example.com"
+            required
+            style={{ padding: '8px 10px' }}
+          />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <label style={{ fontSize: '0.85em', opacity: 0.8 }}>Role</label>
+          <select value={role} onChange={e => setRole(e.target.value)} style={{ padding: '8px 10px' }}>
+            <option value="user">Evaluator (user)</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        {role === 'user' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <label style={{ fontSize: '0.85em', opacity: 0.8 }}>Language</label>
+            <select value={language} onChange={e => setLanguage(e.target.value)} style={{ padding: '8px 10px' }}>
+              <option value="es">Spanish</option>
+              <option value="hi">Hindi</option>
+            </select>
+          </div>
+        )}
+        <button type="submit" className="primary" disabled={busy}>
+          {busy ? 'Saving…' : 'Add / Update user'}
+        </button>
+      </form>
+
+      {notice && <p style={{ color: 'var(--color-success)', marginTop: 12 }}>{notice}</p>}
+      {error && <p className="error" style={{ marginTop: 12 }}>{error}</p>}
+
+      {loading ? (
+        <div style={{ marginTop: 16 }}><LoadingLabel text="Loading users…" /></div>
+      ) : (
+        <div style={{ marginTop: 16, display: 'grid', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
+            <span className="pill">{users.length} {users.length === 1 ? 'user' : 'users'}</span>
+          </div>
+          {users.map(u => (
+            <div key={u.email} style={{ display: 'flex', gap: 12, alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderRadius: 6, background: 'var(--bg-secondary)', border: cardBorder }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 600, wordBreak: 'break-all' }}>{u.email}</div>
+                <div style={{ fontSize: '0.85em', opacity: 0.8 }}>
+                  {u.role === 'admin' ? 'Admin' : `Evaluator · ${LANGUAGE_LABELS[u.language] || u.language || '—'}`}
+                  {u.is_default && <span className="pill" style={{ marginLeft: 8 }}>seed</span>}
+                </div>
+              </div>
+              <button
+                onClick={() => removeUser(u.email)}
+                disabled={busyEmail === u.email}
+                style={{ color: 'var(--color-danger, #b42318)' }}
+              >
+                {busyEmail === u.email ? 'Removing…' : 'Remove'}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function AlertPool({ auth }) {
   const [alerts, setAlerts] = useState([])
+  const [poolSummary, setPoolSummary] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [selected, setSelected] = useState(new Set())
+  const [savedSelected, setSavedSelected] = useState(new Set())
   const [expanded, setExpanded] = useState(new Set())
+  const [workflowStage, setWorkflowStage] = useState('acquire')
+  const [alertSearch, setAlertSearch] = useState('')
+  const [alertStatus, setAlertStatus] = useState('eligible')
+  const [alertCategory, setAlertCategory] = useState('all')
+  const [alertSort, setAlertSort] = useState('newest')
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
   const [saveSuccess, setSaveSuccess] = useState(false)
+  const [expanding, setExpanding] = useState(false)
+  const [expandMsg, setExpandMsg] = useState('')
+  const [expandError, setExpandError] = useState('')
+  const [downloading, setDownloading] = useState(false)
+  const [reviewReasons, setReviewReasons] = useState({})
+  const [reviewingId, setReviewingId] = useState('')
+  const [reviewError, setReviewError] = useState('')
+  const [corpusSummary, setCorpusSummary] = useState(null)
+  const [corpusBusy, setCorpusBusy] = useState('')
+  const [corpusError, setCorpusError] = useState('')
+  const [translationReviewReasons, setTranslationReviewReasons] = useState({})
+  const [translationEdits, setTranslationEdits] = useState({})
+  const [translationFilter, setTranslationFilter] = useState({ system: 'all', language: 'all', status: 'pending' })
 
   const load = async () => {
     setLoading(true)
@@ -1446,11 +1649,73 @@ function AlertPool({ auth }) {
         throw new Error(payload?.detail || `Unable to load alert pool (${r.status})`)
       }
       setAlerts(payload.alerts || [])
-      setSelected(new Set(payload.alerts.filter(a => a.selected).map(a => a.id)))
+      setPoolSummary(payload)
+      const selectedIds = new Set(payload.alerts.filter(a => a.selected).map(a => a.id))
+      setSelected(selectedIds)
+      setSavedSelected(new Set(selectedIds))
+      const corpusResponse = await fetch(apiUrl('/admin/research-corpus'), {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      })
+      const corpusPayload = await corpusResponse.json().catch(() => null)
+      if (!corpusResponse.ok) throw new Error(corpusPayload?.detail || `Unable to load research corpus (${corpusResponse.status})`)
+      setCorpusSummary(corpusPayload)
     } catch (e) {
       setError(e?.message || String(e))
     } finally {
       setLoading(false)
+    }
+  }
+
+  const expandPool = async () => {
+    setExpanding(true)
+    setExpandError('')
+    setExpandMsg('')
+    try {
+      const r = await fetch(apiUrl('/admin/alert-pool/expand'), {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${auth.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ targetTotal: 200 })
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) {
+        throw new Error(payload?.detail || `Expand failed (${r.status})`)
+      }
+      setExpandMsg(payload?.message || 'Alert pool expanded.')
+      await load()
+    } catch (e) {
+      setExpandError(e?.message || String(e))
+    } finally {
+      setExpanding(false)
+    }
+  }
+
+  const downloadCsv = async () => {
+    setDownloading(true)
+    setExpandError('')
+    try {
+      const r = await fetch(apiUrl('/admin/alert-pool/download'), {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      })
+      if (!r.ok) {
+        const payload = await r.json().catch(() => null)
+        throw new Error(payload?.detail || `Download failed (${r.status})`)
+      }
+      const blob = await r.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'alert_pool.csv'
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (e) {
+      setExpandError(e?.message || String(e))
+    } finally {
+      setDownloading(false)
     }
   }
 
@@ -1459,6 +1724,8 @@ function AlertPool({ auth }) {
   }, [auth?.token])
 
   const toggleAlert = (id) => {
+    const alert = alerts.find(item => item.id === id)
+    if (!alert?.selectable) return
     const newSelected = new Set(selected)
     if (newSelected.has(id)) {
       newSelected.delete(id)
@@ -1466,6 +1733,160 @@ function AlertPool({ auth }) {
       newSelected.add(id)
     }
     setSelected(newSelected)
+  }
+
+  const reviewAlert = async (alert, decision) => {
+    const reason = (reviewReasons[alert.id] || '').trim()
+    if (reason.length < 3) {
+      setReviewError('Enter a review reason of at least three characters.')
+      return
+    }
+    setReviewingId(alert.id)
+    setReviewError('')
+    try {
+      const r = await fetch(apiUrl(`/admin/alert-pool/${encodeURIComponent(alert.id)}/review`), {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${auth.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ decision, reason })
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) throw new Error(payload?.detail || `Review failed (${r.status})`)
+      setReviewReasons(prev => ({ ...prev, [alert.id]: '' }))
+      await load()
+    } catch (e) {
+      setReviewError(e?.message || String(e))
+    } finally {
+      setReviewingId('')
+    }
+  }
+
+  const prepareCorpus = async () => {
+    setCorpusBusy('prepare')
+    setCorpusError('')
+    try {
+      const r = await fetch(apiUrl('/admin/research-corpus/prepare'), {
+        method: 'POST',
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ systems: ['gemini', 'gpt5.5', 'llama3'], languages: ['es', 'hi'] })
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) throw new Error(payload?.detail || `Corpus preparation failed (${r.status})`)
+      setCorpusSummary(payload)
+    } catch (e) {
+      setCorpusError(e?.message || String(e))
+    } finally {
+      setCorpusBusy('')
+    }
+  }
+
+  const generateCorpusBatch = async (system, language) => {
+    const condition = `${system}:${language}`
+    setCorpusBusy(condition)
+    setCorpusError('')
+    try {
+      let previousRemaining = Number.POSITIVE_INFINITY
+      while (previousRemaining > 0) {
+        const r = await fetch(apiUrl('/admin/research-corpus/translate'), {
+          method: 'POST',
+          headers: authHeaders({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ system, language, batch_size: 10 })
+        })
+        const payload = await r.json().catch(() => null)
+        if (!r.ok) throw new Error(payload?.detail || `Translation preparation failed (${r.status})`)
+        setCorpusSummary(payload)
+        const remaining = Number(payload?.missing_by_condition?.[condition] || 0)
+        if (remaining === 0) break
+        if (!payload?.generated || remaining >= previousRemaining) {
+          throw new Error(`Translation preparation made no progress for ${system} / ${language}`)
+        }
+        previousRemaining = remaining
+      }
+    } catch (e) {
+      setCorpusError(e?.message || String(e))
+    } finally {
+      setCorpusBusy('')
+    }
+  }
+
+  const freezeCorpus = async () => {
+    setCorpusBusy('freeze')
+    setCorpusError('')
+    try {
+      const r = await fetch(apiUrl('/admin/research-corpus/freeze'), {
+        method: 'POST',
+        headers: authHeaders()
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) throw new Error(payload?.detail || `Corpus freeze failed (${r.status})`)
+      setCorpusSummary(payload)
+    } catch (e) {
+      setCorpusError(e?.message || String(e))
+    } finally {
+      setCorpusBusy('')
+    }
+  }
+
+  const reviewTranslation = async (item, decision) => {
+    const key = `${item.alert_id}:${item.system}:${item.language}`
+    const reason = (translationReviewReasons[key] || '').trim()
+    if (reason.length < 3) {
+      setCorpusError('Enter a translation review reason of at least three characters.')
+      return
+    }
+    setCorpusBusy(`review:${key}`)
+    setCorpusError('')
+    try {
+      const r = await fetch(apiUrl('/admin/research-corpus/review-translation'), {
+        method: 'POST',
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          alert_id: item.alert_id,
+          system: item.system,
+          language: item.language,
+          decision,
+          reason,
+          reviewed_text: translationEdits[key] ?? item.translation_text
+        })
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) throw new Error(payload?.detail || `Translation review failed (${r.status})`)
+      setCorpusSummary(payload)
+      setTranslationReviewReasons(prev => ({ ...prev, [key]: '' }))
+      setTranslationEdits(prev => { const next = { ...prev }; delete next[key]; return next })
+    } catch (e) {
+      setCorpusError(e?.message || String(e))
+    } finally {
+      setCorpusBusy('')
+    }
+  }
+
+  const regenerateTranslation = async (item) => {
+    const key = `${item.alert_id}:${item.system}:${item.language}`
+    setCorpusBusy(`regenerate:${key}`)
+    setCorpusError('')
+    try {
+      const r = await fetch(apiUrl('/admin/research-corpus/translate'), {
+        method: 'POST',
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          system: item.system,
+          language: item.language,
+          batch_size: 1,
+          regenerate_alert_id: item.alert_id
+        })
+      })
+      const payload = await r.json().catch(() => null)
+      if (!r.ok) throw new Error(payload?.detail || `Translation regeneration failed (${r.status})`)
+      setCorpusSummary(payload)
+      setTranslationEdits(prev => { const next = { ...prev }; delete next[key]; return next })
+    } catch (e) {
+      setCorpusError(e?.message || String(e))
+    } finally {
+      setCorpusBusy('')
+    }
   }
 
   const toggleExpand = (id) => {
@@ -1498,6 +1919,7 @@ function AlertPool({ auth }) {
       if (!r.ok) {
         throw new Error(payload?.detail || `Save failed (${r.status})`)
       }
+      setSavedSelected(new Set(selected))
       setSaveSuccess(true)
       setTimeout(() => setSaveSuccess(false), 3000)
     } catch (e) {
@@ -1526,13 +1948,6 @@ function AlertPool({ auth }) {
     )
   }
 
-  // Group alerts by category
-  const grouped = {}
-  alerts.forEach(alert => {
-    if (!grouped[alert.category]) grouped[alert.category] = []
-    grouped[alert.category].push(alert)
-  })
-
   const categories = ['weather', 'evacuation', 'public_safety', 'health']
   const categoryLabels = {
     'weather': 'Weather',
@@ -1540,40 +1955,349 @@ function AlertPool({ auth }) {
     'public_safety': 'Public Safety',
     'health': 'Health'
   }
+  const targets = poolSummary?.target_counts || { evacuation: 19, weather: 14, health: 8, public_safety: 7 }
+  const poolTargets = poolSummary?.pool_target_counts || { evacuation: 50, weather: 50, health: 50, public_safety: 50 }
+  const availableCounts = poolSummary?.available_counts || {}
+  const selectedCounts = Object.fromEntries(categories.map(cat => [
+    cat,
+    alerts.filter(alert => alert.category === cat && selected.has(alert.id)).length
+  ]))
+  const selectionMatchesTargets = categories.every(cat => selectedCounts[cat] === (targets[cat] || 0))
+  const hasCategoryShortfall = categories.some(cat => (availableCounts[cat] || 0) < (targets[cat] || 0))
+  const hasPoolShortfall = categories.some(cat => (availableCounts[cat] || 0) < (poolTargets[cat] || 0))
+  const acquisitionCategories = categories.filter(cat => (availableCounts[cat] || 0) < (poolTargets[cat] || 0))
+  const acquisitionCategoryLabels = acquisitionCategories.map(cat => categoryLabels[cat])
+  const qualitySummary = poolSummary?.quality_summary || {}
+  const hasUnsavedSelection = selected.size !== savedSelected.size || [...selected].some(id => !savedSelected.has(id))
+  const selectionBlockers = categories
+    .map(cat => ({ category: cat, remaining: (targets[cat] || 0) - selectedCounts[cat] }))
+    .filter(item => item.remaining !== 0)
+  const filteredAlerts = alerts
+    .filter(alert => alertCategory === 'all' || alert.category === alertCategory)
+    .filter(alert => alertStatus === 'all' || alert.quality_status === alertStatus)
+    .filter(alert => {
+      const query = alertSearch.trim().toLowerCase()
+      if (!query) return true
+      return [alert.text, alert.event, alert.area, alert.sender, alert.identifier]
+        .some(value => String(value || '').toLowerCase().includes(query))
+    })
+    .sort((left, right) => {
+      if (alertSort === 'oldest') return String(left.sent || '').localeCompare(String(right.sent || ''))
+      if (alertSort === 'event') return String(left.event || '').localeCompare(String(right.event || ''))
+      return String(right.sent || '').localeCompare(String(left.sent || ''))
+    })
+  const filteredGrouped = Object.fromEntries(categories.map(cat => [
+    cat,
+    filteredAlerts.filter(alert => alert.category === cat)
+  ]))
+  const autoSelectBalanced = () => {
+    const balanced = new Set()
+    categories.forEach(cat => {
+      alerts
+        .filter(alert => alert.category === cat && alert.selectable)
+        .sort((left, right) => String(right.sent || '').localeCompare(String(left.sent || '')))
+        .slice(0, targets[cat] || 0)
+        .forEach(alert => balanced.add(alert.id))
+    })
+    setSelected(balanced)
+    setSaveError('')
+  }
+  const clearAlertFilters = () => {
+    setAlertSearch('')
+    setAlertStatus('eligible')
+    setAlertCategory('all')
+    setAlertSort('newest')
+  }
+  const filteredTranslations = (corpusSummary?.translations || []).filter(item =>
+    (translationFilter.system === 'all' || item.system === translationFilter.system) &&
+    (translationFilter.language === 'all' || item.language === translationFilter.language) &&
+    (translationFilter.status === 'all' || item.review_decision === translationFilter.status)
+  )
+  const workflowStages = [
+    { id: 'acquire', number: 1, label: 'Acquire', detail: `${categories.reduce((sum, cat) => sum + (availableCounts[cat] || 0), 0)} / 200 eligible`, complete: !hasPoolShortfall },
+    { id: 'select', number: 2, label: 'Select', detail: `${selected.size} / 48 selected`, complete: selectionMatchesTargets },
+    { id: 'prepare', number: 3, label: 'Prepare & review', detail: (corpusSummary?.status || 'not prepared').replaceAll('_', ' '), complete: corpusSummary?.status === 'frozen' }
+  ]
 
   return (
-    <div className="card chart-card" style={{ maxHeight: '90vh', overflow: 'auto' }}>
-      <h2 style={{ marginTop: 0 }}>Alert Pool Selection</h2>
-      <div style={{ marginBottom: 16 }}>
-        <p style={{ marginBottom: 8 }}>
-          <strong>Selected: {selected.size} / 70 alerts</strong>
-        </p>
-        {selected.size !== 48 && (
-          <p style={{ color: 'var(--color-warn)', marginBottom: 8, fontSize: '0.9em' }}>
-            ⚠ Select exactly 48 alerts to enable save
+    <div className="card chart-card alert-pool-shell">
+      <div className="alert-pool-header">
+        <div>
+          <p className="alert-pool-eyebrow">Research corpus workflow</p>
+          <h2>Alert Pool</h2>
+          <p className="alert-pool-subtitle">Build a balanced, auditable source set from official California alerts.</p>
+        </div>
+        <div className="alert-pool-header-actions">
+          <button className="icon-button" onClick={load} disabled={loading || expanding} title="Refresh alert pool" aria-label="Refresh alert pool">
+            <RefreshCw size={17} className={loading ? 'spin-icon' : ''} />
+          </button>
+          <button className="secondary-button" onClick={downloadCsv} disabled={downloading || loading}>
+            <Download size={17} /> {downloading ? 'Preparing…' : 'Download CSV'}
+          </button>
+          {workflowStage === 'acquire' && (
+            <button className="primary" onClick={expandPool} disabled={expanding || loading || !hasPoolShortfall}>
+              <Sparkles size={17} /> {expanding
+                ? `Scanning ${acquisitionCategoryLabels.join(' + ')}…`
+                : hasPoolShortfall
+                  ? `Continue: ${acquisitionCategoryLabels.join(' + ')}`
+                  : 'All category quotas complete'}
+            </button>
+          )}
+        </div>
+      </div>
+      <nav className="pool-workflow" aria-label="Alert pool workflow">
+        {workflowStages.map(stage => (
+          <button
+            key={stage.id}
+            type="button"
+            className={`pool-workflow-step ${workflowStage === stage.id ? 'active' : ''} ${stage.complete ? 'complete' : ''}`}
+            onClick={() => setWorkflowStage(stage.id)}
+            aria-current={workflowStage === stage.id ? 'step' : undefined}
+          >
+            <span className="workflow-step-number">{stage.complete ? <Check size={15} /> : stage.number}</span>
+            <span><strong>{stage.label}</strong><small>{stage.detail}</small></span>
+          </button>
+        ))}
+      </nav>
+      {(expandMsg || expandError) && (
+        <div className={`pool-notice ${expandError ? 'error-notice' : 'success-notice'}`}>
+          {expandMsg && <p>{expandMsg}</p>}
+          {expandError && <p className="error" style={{ margin: 0 }}>{expandError}</p>}
+        </div>
+      )}
+      {workflowStage === 'acquire' && poolSummary?.source === 'openfema' && (
+        <section className="pool-stage-panel" aria-labelledby="acquisition-heading">
+          <div className="pool-section-heading">
+            <div>
+              <p className="alert-pool-eyebrow">Step 1</p>
+              <h3 id="acquisition-heading">Acquire 200 eligible alerts</h3>
+            </div>
+            <span className={`pool-readiness ${hasPoolShortfall ? 'incomplete' : 'ready'}`}>
+              {hasPoolShortfall ? 'Acquisition incomplete' : 'Ready for selection'}
+            </span>
+          </div>
+          <div className="quota-grid">
+            {categories.map(cat => {
+              const available = availableCounts[cat] || 0
+              const goal = poolTargets[cat] || 50
+              const percentage = Math.min(100, Math.round((available / goal) * 100))
+              return (
+                <button key={cat} type="button" className="quota-card" onClick={() => { setAlertCategory(cat); setAlertStatus('eligible'); setWorkflowStage('select') }}>
+                  <span className="quota-card-top"><strong>{categoryLabels[cat]}</strong><span>{available} / {goal}</span></span>
+                  <span className="quota-track"><span style={{ width: `${percentage}%` }} /></span>
+                  <small>{available >= goal ? 'Complete' : `${goal - available} eligible needed`}</small>
+                </button>
+              )
+            })}
+          </div>
+          <div className="audit-summary">
+            <div><strong>{poolSummary.total}</strong><span>Official records</span></div>
+            <div><strong>{qualitySummary.eligible || 0}</strong><span>Strictly eligible</span></div>
+            <div><strong>{qualitySummary.flagged || 0}</strong><span>Flagged, audit only</span></div>
+            <div><strong>{qualitySummary.excluded || 0}</strong><span>Excluded, audit only</span></div>
+          </div>
+          <p className="pool-policy-note">Only strictly eligible alerts count toward each 50-record quota. Flagged and excluded records remain available in the audit export.</p>
+          {hasPoolShortfall && (
+            <div className="pool-next-action">
+              <strong>Next action</strong>
+              <span>Continue acquisition will scan only {acquisitionCategoryLabels.join(', ')}. Categories already at 50 are skipped.</span>
+            </div>
+          )}
+        </section>
+      )}
+      <div className="pool-stage-panel" hidden={workflowStage !== 'prepare'}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <strong>Research corpus: {corpusSummary?.status || 'not prepared'}</strong>
+            {corpusSummary?.corpus_id && <div style={{ fontSize: 13, opacity: 0.8 }}>{corpusSummary.corpus_id}</div>}
+          </div>
+          {corpusSummary?.status === 'not_prepared' && (
+            <button className="primary" onClick={prepareCorpus} disabled={corpusBusy || !selectionMatchesTargets}>
+              {corpusBusy === 'prepare' ? 'Preparing…' : 'Prepare exact corpus'}
+            </button>
+          )}
+          {corpusSummary?.status === 'draft' && (
+            <button className="primary" onClick={freezeCorpus} disabled={corpusBusy || corpusSummary.missing_count > 0 || corpusSummary.review_blocker_count > 0}>
+              {corpusBusy === 'freeze' ? 'Freezing…' : 'Freeze corpus'}
+            </button>
+          )}
+        </div>
+        {corpusSummary?.status === 'draft' && (
+          <div style={{ marginTop: 10, display: 'grid', gap: 6 }}>
+            <span>
+              {corpusSummary.translation_count} prepared; {corpusSummary.approved_count || 0} approved; {corpusSummary.rejected_count || 0} rejected; {corpusSummary.missing_count} missing; {corpusSummary.pending_approval_count || 0} queued for automatic approval; {corpusSummary.review_blocker_count || 0} require attention.
+            </span>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {Object.entries(corpusSummary.missing_by_condition || {}).map(([condition, remaining]) => {
+                const [conditionSystem, conditionLanguage] = condition.split(':')
+                return (
+                  <button key={condition} type="button" disabled={corpusBusy || remaining === 0} onClick={() => generateCorpusBatch(conditionSystem, conditionLanguage)}>
+                    {corpusBusy === condition ? 'Generating…' : `${conditionSystem} / ${conditionLanguage}: ${remaining} remaining`}
+                  </button>
+                )
+              })}
+            </div>
+            {(corpusSummary.translations || []).length > 0 && (
+              <details style={{ marginTop: 8 }}>
+                <summary><strong>Optional translation quality review</strong></summary>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
+                  <label>System
+                    <select value={translationFilter.system} onChange={event => setTranslationFilter(prev => ({ ...prev, system: event.target.value }))}>
+                      <option value="all">All</option>
+                      {(corpusSummary.systems || []).map(value => <option key={value} value={value}>{systemLabel(value)}</option>)}
+                    </select>
+                  </label>
+                  <label>Language
+                    <select value={translationFilter.language} onChange={event => setTranslationFilter(prev => ({ ...prev, language: event.target.value }))}>
+                      <option value="all">All</option>
+                      {(corpusSummary.languages || []).map(value => <option key={value} value={value}>{LANGUAGE_LABELS[value] || value}</option>)}
+                    </select>
+                  </label>
+                  <label>Status
+                    <select value={translationFilter.status} onChange={event => setTranslationFilter(prev => ({ ...prev, status: event.target.value }))}>
+                      <option value="pending">Pending</option>
+                      <option value="approved">Approved</option>
+                      <option value="rejected">Rejected</option>
+                      <option value="all">All</option>
+                    </select>
+                  </label>
+                  <span className="pill">{filteredTranslations.length} artifacts</span>
+                </div>
+                <div style={{ display: 'grid', gap: 10, marginTop: 10 }}>
+                  {filteredTranslations.map(item => {
+                    const key = `${item.alert_id}:${item.system}:${item.language}`
+                    const busy = corpusBusy.endsWith(key)
+                    return (
+                      <div key={key} style={{ padding: 10, border: '1px solid var(--border-color, rgba(128,128,128,0.35))', borderRadius: 6 }}>
+                        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+                          <strong>{item.alert_id}</strong>
+                          <span className="pill">{systemLabel(item.system)}</span>
+                          <span className="pill">{LANGUAGE_LABELS[item.language] || item.language}</span>
+                          <span className="pill">{item.review_decision}</span>
+                          {item.metadata?.model && <span style={{ fontSize: 12, opacity: 0.75 }}>{item.metadata.model}</span>}
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 10, marginTop: 8 }}>
+                          <div><strong>Official source</strong><div className="pane" style={{ marginTop: 4, whiteSpace: 'pre-wrap', maxHeight: 220 }}>{item.source_text}</div></div>
+                          <div><strong>Generated translation</strong><div className="pane" style={{ marginTop: 4, whiteSpace: 'pre-wrap', maxHeight: 220 }}>{item.generated_translation_text}</div></div>
+                          <label><strong>Reviewed translation</strong>
+                            <textarea rows={7} value={translationEdits[key] ?? item.translation_text} onChange={event => setTranslationEdits(prev => ({ ...prev, [key]: event.target.value }))} style={{ width: '100%', marginTop: 4 }} />
+                          </label>
+                        </div>
+                        <textarea rows={2} value={translationReviewReasons[key] || ''} onChange={event => setTranslationReviewReasons(prev => ({ ...prev, [key]: event.target.value }))} placeholder="Required review reason" style={{ width: '100%', marginTop: 8 }} />
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
+                          <button type="button" className="primary" disabled={busy || corpusBusy} onClick={() => reviewTranslation(item, 'approved')}>Approve</button>
+                          <button type="button" disabled={busy || corpusBusy} onClick={() => reviewTranslation(item, 'rejected')}>Reject</button>
+                          <button type="button" disabled={busy || corpusBusy} onClick={() => regenerateTranslation(item)}>Regenerate</button>
+                        </div>
+                        {(item.review_history || []).length > 0 && (
+                          <details style={{ marginTop: 8 }}>
+                            <summary>Review history ({item.review_history.length})</summary>
+                            {(item.review_history || []).map((review, index) => (
+                              <div key={`${key}:history:${index}`} style={{ paddingTop: 5, marginTop: 5, borderTop: '1px solid var(--border-color, rgba(128,128,128,0.35))' }}>
+                                {review.previous_decision} → {review.decision} by {review.reviewer_id} on {new Date(review.reviewed_at).toLocaleString()}: {review.reason}
+                              </div>
+                            ))}
+                          </details>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </details>
+            )}
+          </div>
+        )}
+        {corpusSummary?.status === 'frozen' && (
+          <p style={{ color: 'var(--color-success)', margin: '8px 0 0' }}>
+            Sources and translations are locked for scoring.
           </p>
         )}
+        {corpusError && <p className="error" style={{ margin: '8px 0 0' }}>{corpusError}</p>}
+      </div>
+      <section className="pool-stage-panel" hidden={workflowStage !== 'select'} aria-labelledby="selection-heading">
+        <div className="pool-section-heading">
+          <div>
+            <p className="alert-pool-eyebrow">Step 2</p>
+            <h3 id="selection-heading">Select the balanced final 48</h3>
+          </div>
+          <button type="button" className="secondary-button" onClick={autoSelectBalanced} disabled={hasCategoryShortfall || corpusSummary?.status === 'frozen'}>
+            <Sparkles size={16} /> Auto-select newest eligible
+          </button>
+        </div>
+        <div className="selection-target-grid">
+          {categories.map(cat => (
+            <button key={cat} type="button" className={selectedCounts[cat] === targets[cat] ? 'target-complete' : ''} onClick={() => setAlertCategory(cat)}>
+              <span>{categoryLabels[cat]}</span><strong>{selectedCounts[cat]} / {targets[cat]}</strong>
+            </button>
+          ))}
+        </div>
+        <div className="alert-filter-bar">
+          <label className="alert-search"><Search size={17} /><input value={alertSearch} onChange={event => setAlertSearch(event.target.value)} placeholder="Search event, area, sender, ID, or text" /></label>
+          <label><span>Category</span><select value={alertCategory} onChange={event => setAlertCategory(event.target.value)}><option value="all">All categories</option>{categories.map(cat => <option key={cat} value={cat}>{categoryLabels[cat]}</option>)}</select></label>
+          <label><span>Status</span><select value={alertStatus} onChange={event => setAlertStatus(event.target.value)}><option value="eligible">Eligible only</option><option value="flagged">Flagged</option><option value="excluded">Excluded</option><option value="all">All statuses</option></select></label>
+          <label><span>Sort</span><select value={alertSort} onChange={event => setAlertSort(event.target.value)}><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="event">Event name</option></select></label>
+          <button type="button" className="icon-button" onClick={clearAlertFilters} title="Reset filters" aria-label="Reset alert filters"><SlidersHorizontal size={17} /></button>
+        </div>
+        <div className="selection-result-summary">
+          <strong>{filteredAlerts.length} records</strong>
+          <span>{selected.size} of 48 selected</span>
+          {hasUnsavedSelection && <span className="unsaved-indicator">Unsaved changes</span>}
+        </div>
+        <div style={{ marginBottom: 16 }}>
+        <p style={{ marginBottom: 8 }}>
+          <strong>Selection readiness</strong>
+        </p>
+        {!selectionMatchesTargets && (
+          <div className="selection-blockers">
+            {selectionBlockers.map(item => <span key={item.category}>{categoryLabels[item.category]}: {item.remaining > 0 ? `${item.remaining} more needed` : `${Math.abs(item.remaining)} must be removed`}</span>)}
+          </div>
+        )}
+        {reviewError && <p className="error" style={{ marginBottom: 8 }}>{reviewError}</p>}
+      </div>
+
+      <div className="selection-save-bar">
+        <div>
+          <strong>{hasUnsavedSelection ? 'Draft selection' : 'Selection saved'}</strong>
+          <span>{selected.size} / 48 alerts · {selectionMatchesTargets ? 'Category targets met' : 'Category targets incomplete'}</span>
+          {saveSuccess && <p className="save-success"><Check size={15} /> Selection saved successfully</p>}
+          {saveError && <p className="error" style={{ margin: 0 }}>{saveError}</p>}
+        </div>
+        <div className="selection-save-actions">
+          {hasUnsavedSelection && <button type="button" className="secondary-button" onClick={() => setSelected(new Set(savedSelected))}>Discard</button>}
+          <button className="primary" onClick={saveSelection} disabled={saving || !hasUnsavedSelection || !selectionMatchesTargets || hasCategoryShortfall || corpusSummary?.status === 'frozen'}>
+            {saving ? 'Saving…' : 'Save selection'}
+          </button>
+        </div>
       </div>
 
       {categories.map(cat => (
-        grouped[cat]?.length > 0 && (
-          <div key={cat} style={{ marginBottom: 24 }}>
-            <h3 style={{ marginTop: 0, marginBottom: 12 }}>
-              {categoryLabels[cat]} ({grouped[cat].length})
-            </h3>
+        (alertCategory === 'all' || alertCategory === cat) && <div key={cat} className="alert-category-section">
+            <div className="alert-category-heading"><h3>{categoryLabels[cat]}</h3><span>{selectedCounts[cat]} / {targets[cat]} selected</span></div>
             <div style={{ display: 'grid', gap: 8 }}>
-              {grouped[cat].map(alert => {
+              {(filteredGrouped[cat] || []).length === 0 && (
+                <div className="empty-filter-state"><Search size={20} /><span>No records match the current filters.</span><button type="button" onClick={clearAlertFilters}>Clear filters</button></div>
+              )}
+              {(filteredGrouped[cat] || []).map(alert => {
                 const isExpanded = expanded.has(alert.id)
                 const isLong = alert.text.length > 120
+                const selectable = alert.selectable === true
                 return (
-                  <div key={alert.id} style={{ display: 'flex', gap: 8, padding: '10px', borderRadius: '6px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color, rgba(128,128,128,0.35))', alignItems: 'flex-start' }}>
+                  <div key={alert.id} className={`alert-record ${selected.has(alert.id) ? 'selected' : ''}`}>
                     <input
                       type="checkbox"
                       checked={selected.has(alert.id)}
                       onChange={() => toggleAlert(alert.id)}
-                      style={{ marginTop: '2px', cursor: 'pointer' }}
+                      disabled={!selectable}
+                      title={selectable ? 'Select alert' : `Alert is ${alert.quality_status}`}
+                      style={{ marginTop: '2px', cursor: selectable ? 'pointer' : 'not-allowed' }}
                     />
                     <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 5 }}>
+                        <span className={`status-badge ${alert.quality_status || 'unreviewed'}`}>{alert.quality_status || 'unreviewed'}</span>
+                        {alert.review_decision !== 'pending' && <span className="pill">review: {alert.review_decision}</span>}
+                        {alert.event && <span className="pill">{alert.event}</span>}
+                        {alert.language && <span className="pill">{alert.language}</span>}
+                      </div>
                       <span style={{ fontSize: '0.9em', lineHeight: 1.4, whiteSpace: 'pre-wrap', cursor: 'pointer' }} onClick={() => toggleAlert(alert.id)}>
                         {isExpanded || !isLong ? alert.text : `${alert.text.substring(0, 120)}…`}
                       </span>
@@ -1586,29 +2310,74 @@ function AlertPool({ auth }) {
                           {isExpanded ? 'Show less' : 'Expand'}
                         </button>
                       )}
+                      {isExpanded && alert.source === 'openfema' && (
+                        <div style={{ marginTop: 10, fontSize: 13, opacity: 0.85, display: 'grid', gap: 3 }}>
+                          <span><strong>Research ID:</strong> {alert.id}</span>
+                          <span><strong>CAP identifier:</strong> {alert.identifier || 'Missing'}</span>
+                          <span><strong>OpenFEMA ID:</strong> {alert.openfema_id || 'Missing'}</span>
+                          <span><strong>Sender:</strong> {alert.sender || 'Missing'}</span>
+                          <span><strong>Area:</strong> {alert.area || 'Missing'}</span>
+                          <span><strong>Sent:</strong> {alert.sent || 'Missing'}</span>
+                          {(alert.quality_findings || []).map(finding => (
+                            <span key={`${alert.id}-${finding.code}`} style={{ color: finding.severity === 'error' ? 'var(--color-danger, #b42318)' : 'var(--color-warn)' }}>
+                              <strong>{finding.code}:</strong> {finding.message}{finding.evidence ? ` (${finding.evidence})` : ''}
+                            </span>
+                          ))}
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 10, marginTop: 8 }}>
+                            <div>
+                              <strong>Raw extracted text</strong>
+                              <div style={{ marginTop: 4, padding: 8, whiteSpace: 'pre-wrap', background: 'var(--bg-primary)', border: '1px solid var(--border-color, rgba(128,128,128,0.35))', borderRadius: 4 }}>
+                                {alert.raw_text || 'Missing'}
+                              </div>
+                            </div>
+                            <div>
+                              <strong>Cleaned research text</strong>
+                              <div style={{ marginTop: 4, padding: 8, whiteSpace: 'pre-wrap', background: 'var(--bg-primary)', border: '1px solid var(--border-color, rgba(128,128,128,0.35))', borderRadius: 4 }}>
+                                {alert.cleaned_text || 'Missing'}
+                              </div>
+                            </div>
+                          </div>
+                          {alert.quality_status === 'flagged' && (
+                            <div style={{ marginTop: 10, display: 'grid', gap: 8 }}>
+                              <label htmlFor={`review-${alert.id}`}><strong>Review reason</strong></label>
+                              <textarea
+                                id={`review-${alert.id}`}
+                                rows={2}
+                                value={reviewReasons[alert.id] || ''}
+                                onChange={event => setReviewReasons(prev => ({ ...prev, [alert.id]: event.target.value }))}
+                                placeholder="Record why this flagged alert is acknowledged or rejected for audit"
+                              />
+                              <div style={{ display: 'flex', gap: 8 }}>
+                                <button type="button" className="primary" disabled={reviewingId === alert.id} onClick={() => reviewAlert(alert, 'approved')}>
+                                  {reviewingId === alert.id ? 'Saving…' : 'Acknowledge flag'}
+                                </button>
+                                <button type="button" disabled={reviewingId === alert.id} onClick={() => reviewAlert(alert, 'rejected')}>
+                                  Reject
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                          {(alert.review_history || []).length > 0 && (
+                            <div style={{ marginTop: 10, display: 'grid', gap: 5 }}>
+                              <strong>Review history</strong>
+                              {alert.review_history.map((review, index) => (
+                                <div key={`${alert.id}-review-${index}`} style={{ paddingTop: 5, borderTop: '1px solid var(--border-color, rgba(128,128,128,0.35))' }}>
+                                  {review.previous_decision} → {review.decision} by {review.reviewer_id} on {new Date(review.reviewed_at).toLocaleString()}: {review.reason}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 )
               })}
             </div>
           </div>
-        )
       ))}
 
-      <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--bg-secondary)', display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'space-between' }}>
-        <div>
-          {saveSuccess && <p style={{ color: 'var(--color-success)', margin: 0 }}>✓ Selection saved successfully</p>}
-          {saveError && <p className="error" style={{ margin: 0 }}>{saveError}</p>}
-        </div>
-        <button
-          className="primary"
-          onClick={saveSelection}
-          disabled={saving || selected.size !== 48}
-          style={{ opacity: selected.size !== 48 ? 0.5 : 1 }}
-        >
-          {saving ? 'Saving…' : 'Save Selection'}
-        </button>
-      </div>
+      </section>
     </div>
   )
 }
@@ -1716,7 +2485,7 @@ function MySubmissions({ auth }) {
 
   const q = query.trim().toLowerCase()
   const filtered = !q ? subs : subs.filter(s =>
-    [s.evaluator_name, s.evaluator_id, s.language, s.source_segment, s.translated_segment, s.notes]
+    [s.evaluator_name, s.evaluator_id, s.language, systemLabel(s.system), s.source_segment, s.translated_segment, s.notes]
       .filter(Boolean).some(v => String(v).toLowerCase().includes(q)))
 
   const cardBorder = '1px solid var(--border-color, rgba(128,128,128,0.35))'
@@ -1772,6 +2541,7 @@ function MySubmissions({ auth }) {
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
                     <strong>{fmtDate(s.timestamp)}</strong>
                     <span className="pill">{langLabel(s.language)}</span>
+                    {s.system && <span className="pill">{systemLabel(s.system)}</span>}
                     {isAdminView && <span className="pill" title={s.evaluator_id}>{s.evaluator_name || s.evaluator_id || 'Anonymous'}</span>}
                   </div>
                   {avg != null && (
@@ -1986,6 +2756,7 @@ export default function App() {
             {tab === 'Evaluation' && <WholeEval />}
             {tab === 'My Submissions' && <MySubmissions auth={auth} />}
             {tab === 'Alert Pool' && auth?.role === 'admin' && <AlertPool auth={auth} />}
+            {tab === 'Users' && auth?.role === 'admin' && <UsersAdmin auth={auth} />}
             {tab === 'Admin Analytics' && auth?.role === 'admin' && <AdminAnalytics auth={auth} />}
           </main>
         </div>
@@ -2599,6 +3370,7 @@ function Analytics() {
 
 function WholeEval() {
   const [targetLanguage, setTargetLanguage] = useState(() => resolveLanguage(sessionStorage.getItem('whole_language')))
+  const [system, setSystem] = useState(() => sessionStorage.getItem('whole_system') || 'gemini')
   const [alerts, setAlerts] = useState([])
   const [loadingAlerts, setLoadingAlerts] = useState(false)
   const [alertError, setAlertError] = useState(null)
@@ -2614,6 +3386,7 @@ function WholeEval() {
   const autoTranslateKeyRef = useRef('')
 
   useEffect(() => { try { sessionStorage.setItem('whole_language', targetLanguage) } catch {} }, [targetLanguage])
+  useEffect(() => { try { sessionStorage.setItem('whole_system', system) } catch {} }, [system])
   useEffect(() => { try { sessionStorage.setItem('whole_translation', translation) } catch {} }, [translation])
   useEffect(() => {
     const el = translationRef.current
@@ -2682,12 +3455,12 @@ function WholeEval() {
 
   useEffect(() => {
     const alertId = currentAlert?.alert_id || ''
-    const key = `${targetLanguage}|${alertId}|${currentText}`
+    const key = `${targetLanguage}|${system}|${alertId}|${currentText}`
     if (!currentText || autoLoading) return
     if (autoTranslateKeyRef.current === key) return
     autoTranslateKeyRef.current = key
     autoTranslate()
-  }, [currentAlert, currentText, targetLanguage])
+  }, [currentAlert, currentText, targetLanguage, system])
 
   const autoTranslate = async () => {
     if (!currentText) return
@@ -2696,7 +3469,13 @@ function WholeEval() {
     try {
       const r = await fetch(apiUrl('/translate'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source_text: currentText, target_language: targetLanguage, system: 'gemini' })
+        body: JSON.stringify({
+          source_text: currentText,
+          target_language: targetLanguage,
+          system,
+          alert_id: currentAlert?.alert_id,
+          corpus_id: currentAlert?.corpus_id
+        })
       })
       const data = await r.json()
       if (!r.ok) {
@@ -2720,10 +3499,21 @@ function WholeEval() {
     try {
       const r = await fetch(apiUrl('/evaluate'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source_segment: currentText, translated_segment: translation, language: targetLanguage, context: '' })
+        body: JSON.stringify({
+          source_segment: currentText,
+          translated_segment: translation,
+          language: targetLanguage,
+          system,
+          alert_id: currentAlert?.alert_id,
+          corpus_id: currentAlert?.corpus_id,
+          context: ''
+        })
       })
       const data = await r.json()
+      if (!r.ok) throw new Error(data?.detail || `Evaluation failed (${r.status})`)
       setAutoEval(data)
+    } catch (e) {
+      setAutoEval({ error: e?.message || String(e) })
     } finally {
       setAutoLoading(false)
     }
@@ -2756,10 +3546,22 @@ function WholeEval() {
     try {
       const r = await fetch(apiUrl('/evaluate/human'), {
         method: 'POST', headers: authHeaders({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ source_segment: currentText, translated_segment: translation, language: targetLanguage, scores, rationale: notes ? { notes } : {} })
+        body: JSON.stringify({
+          source_segment: currentText,
+          translated_segment: translation,
+          language: targetLanguage,
+          system,
+          alert_id: currentAlert?.alert_id,
+          corpus_id: currentAlert?.corpus_id,
+          scores,
+          rationale: notes ? { notes } : {}
+        })
       })
       const data = await r.json()
+      if (!r.ok) throw new Error(data?.detail || `Save failed (${r.status})`)
       setHumanSaved({ saved: data.saved, path: data.path })
+    } catch (e) {
+      setHumanSaved({ saved: false, error: e?.message || String(e) })
     } finally {
       setAutoLoading(false)
     }
@@ -2783,6 +3585,13 @@ function WholeEval() {
           <label>Language
             <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
               {LanguageOptions()}
+            </select>
+          </label>
+          <label>System
+            <select value={system} onChange={e => setSystem(e.target.value)}>
+              <option value="gemini">Gemini 2.0 Flash</option>
+              <option value="gpt5.5">GPT-5.5</option>
+              <option value="llama3">Llama 3 (Replicate)</option>
             </select>
           </label>
           {loadingAlerts && <LoadingLabel text="Loading Alerts…" />}
@@ -2822,7 +3631,7 @@ function WholeEval() {
             </div>
             <div>
               <h4 style={{ margin: 0 }}>Translation</h4>
-              <textarea ref={translationRef} onScroll={onTransScroll} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Translated message" />
+              <textarea ref={translationRef} onScroll={onTransScroll} value={translation} readOnly rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Frozen translated message" />
             </div>
           </div>
         ) : (
@@ -2830,7 +3639,7 @@ function WholeEval() {
             <h4 style={{ margin: 0 }}>Source</h4>
             <div className="pane" style={{ marginTop: 6, whiteSpace: 'pre-wrap', maxHeight: 300 }}>{currentText}</div>
             <h4 style={{ margin: '10px 0 0 0' }}>Translation</h4>
-            <textarea ref={translationRef} value={translation} onChange={e => setTranslation(e.target.value)} rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Translated message" />
+            <textarea ref={translationRef} value={translation} readOnly rows={6} style={{ width: '100%', marginTop: 6, resize: 'none', maxHeight: 300 }} placeholder="Frozen translated message" />
           </div>
         )}
       </div>
@@ -2903,6 +3712,7 @@ function WholeEval() {
             <strong>Human score saved.</strong> Appended to: <span style={{ opacity: 0.8 }}>{humanSaved.path}</span>
           </div>
         )}
+        {humanSaved?.error && <p className="error" style={{ marginTop: 8 }}>{humanSaved.error}</p>}
       </div>
 
       <div className="bottom-nav" style={{ marginTop: 12 }}>

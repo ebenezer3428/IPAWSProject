@@ -17,6 +17,7 @@ python -m spacy download xx_sent_ud_sm
 3. Set environment variables:
 - `OPENAI_API_KEY` for GPT-4o
 - Google credentials via `GOOGLE_APPLICATION_CREDENTIALS`
+- `SESSION_SECRET` to a stable random value shared by all API instances; authenticated sessions last two hours by default
 
 4. Run a small smoke test:
 

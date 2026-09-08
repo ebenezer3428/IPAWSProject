@@ -1,7 +1,14 @@
 .git
 .gitignore
 logs
-outputs
+outputs/*
+# Keep the downloadable analytics datasets in the deployed image so the
+# admin download endpoints can serve them from Cloud Run's filesystem.
+!outputs/composite_scores.csv
+!outputs/translations.csv
+!outputs/segments.csv
+!outputs/statistical_results.csv
+!outputs/human_fairness_scores.csv
 web/node_modules
 web/dist
 __pycache__

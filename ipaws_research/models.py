@@ -1,7 +1,23 @@
 from __future__ import annotations
 from pydantic import BaseModel, Field
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from datetime import datetime
+
+class QualityFinding(BaseModel):
+    code: str
+    severity: str
+    message: str
+    evidence: str = ""
+
+
+class ReviewEvent(BaseModel):
+    previous_decision: str = "pending"
+    decision: str
+    reviewer_id: str
+    reviewed_at: datetime
+    reason: str
+    source_hash: str
+
 
 class EmergencyAlert(BaseModel):
     alert_id: str
@@ -13,6 +29,32 @@ class EmergencyAlert(BaseModel):
     timestamp: datetime
     state: str = "CA"
     area: str = ""
+    research_id: str = ""
+    openfema_id: str = ""
+    identifier: str = ""
+    sender: str = ""
+    language: str = ""
+    sent: Optional[datetime] = None
+    effective: Optional[datetime] = None
+    expires: Optional[datetime] = None
+    status: str = ""
+    message_type: str = ""
+    scope: str = ""
+    event: str = ""
+    cap_categories: List[str] = Field(default_factory=list)
+    response_types: List[str] = Field(default_factory=list)
+    event_codes: Dict[str, str] = Field(default_factory=dict)
+    raw_source_text: str = ""
+    cleaned_source_text: str = ""
+    original_message: str = ""
+    raw_record: Dict[str, Any] = Field(default_factory=dict)
+    quality_status: str = "unreviewed"
+    quality_findings: List[QualityFinding] = Field(default_factory=list)
+    source_hash: str = ""
+    review_decision: str = "pending"
+    reviewed_source_hash: str = ""
+    reviewed_cleaned_text: str = ""
+    review_history: List[ReviewEvent] = Field(default_factory=list)
 
 class TranslatedAlert(BaseModel):
     alert_id: str
